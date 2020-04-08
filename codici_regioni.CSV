@@ -1,0 +1,22 @@
+codice_storico;denominazione_regione;NUTS3
+20;Sardegna;ITG2
+19;Sicilia;ITG1
+18;Calabria;ITF6
+17;Basilicata;ITF5
+16;Puglia;ITF4
+15;Campania;ITF3
+14;Molise;ITF2
+13;Abruzzo;ITF1
+12;Lazio;ITE4
+11;Marche;ITE3
+10;Umbria;ITE2
+09;Toscana;ITE1
+08;Emilia-Romagna;ITD5
+07;Liguria;ITC3
+06;Friuli Venezia Giulia;ITD4
+05;Veneto;ITD3
+04;P.A. Bolzano;ITD1
+04;P.A. Trento;ITD2
+03;Lombardia;ITC4
+02;Valle d'Aosta;ITC2
+01;Piemonte;ITC1

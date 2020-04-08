@@ -1,0 +1,32 @@
+{
+    "multiindex": [
+        "Impresa con dipendenti",
+        "Classe di addetti",
+        "Forma giuridica",
+        "Ateco 2007",
+        "Tipo dato"
+    ],
+    "data_type_column":"Tipo dato",
+    "data_type_pro_capite":{
+        "numero addetti delle imprese attive (valori medi annui)": true,
+        "numero imprese attive": true
+        },
+    "main_data_type": "Imprese",
+    "main_data_column_name": "Value",
+    "index_name": "D1",
+    "columns_info": {
+        "Ateco 2007": {
+            "total": "TOTALE"
+        },
+        "Impresa con dipendenti": {
+            "total": "totale"
+        },
+        "Classe di addetti": {
+            "total": "totale"
+        },
+        "Forma giuridica": {
+            "total": "totale"
+        }
+        
+    }
+}

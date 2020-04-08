@@ -1,0 +1,16 @@
+{
+    "multiindex": [
+        "Tipo dato",
+        "MISURA_AVQ"
+    ],
+    "time_filter":{"TIME":2018},
+    "main_data_type": "Fumatori",
+    "main_data_column_name": "Value",
+    "index_name": "ITTER107",
+    "columns_info": {
+        "MISURA_AVQ": {
+            "total": "HSC"
+        }
+        
+    }
+}
