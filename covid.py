@@ -67,7 +67,7 @@ styling = """
 
 intro_text = """
         Questa pagina è nata dalla volontà di integrare i dati forniti dalla [Protezione Civile](https://github.com/pcm-dpc/COVID-19) con i database pubblici [ISTAT](http://dati.istat.it). L’obiettivo è quello di trovare possibili correlazioni tra indicatori ambientali, geografici e demografici e i dati sulla diffusione del virus.
-        \n**Qui sotto** è possibile visualizzare l’andamento dei dati principali in una mappa animata. Premere play per ripercorrere l’andamento nazionale dal 24 Febbraio ad oggi
+        \n**Qui sopra** è possibile visualizzare l’andamento dei dati principali in una mappa animata. Premere play per ripercorrere l’andamento nazionale dal 24 Febbraio ad oggi
         \nNel **menu a sinistra** è possibile visualizzare molte altre metriche tra cui la comparazione diretta tra Regioni o Province italiane o la correlazione tra gli indicatori ISTAT e i dati sul COVID-19.
 """
 
@@ -249,8 +249,7 @@ area_filter = st.sidebar.radio("Seleziona il raggio di interesse",["Nazione","Re
 st.markdown("<hr class='portraitAlert'/><p class='portraitAlert'>Per visualizzare i grafici si consiglia di orientare il telefono in orizzontale</p>",unsafe_allow_html=True)
 
 if area_filter == "Nazione":
-    st.markdown("---")
-    st.markdown(intro_text)
+    
     st.markdown("---")
     analytics.page(session_state.user,"Main_category",'Nazionale',{
     'path': '/',
@@ -303,6 +302,9 @@ if area_filter == "Nazione":
                 })
         fig = get_provincial_map(df_province,province_map_json,cmap)
     st.plotly_chart(fig,use_container_width=True)
+
+    st.markdown("---")
+    st.markdown(intro_text)
 
     if True in ISTAT_switches:
         st.markdown("---")
