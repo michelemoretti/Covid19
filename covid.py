@@ -171,7 +171,7 @@ def fig_totale_casi_regione(filtered_data,log_y):
                     log_y=log_y,
                     color='denominazione_regione',
                     title="Totale Casi per giorno", 
-                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_regione': 'Regione'})
+                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_regione': 'Regione', "increased_cases": "Nuovi Casi"})
     return fig.update_traces(mode='lines+markers')
 
 @st.cache(allow_output_mutation=True,show_spinner=False)
@@ -183,7 +183,7 @@ def fig_totale_casi_provincia(filtered_data,log_y):
                     hover_data=["increased_cases"],
                     color='denominazione_provincia',
                     title="Totale Casi per giorno", 
-                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_provincia': 'Provincia'})
+                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_provincia': 'Provincia', "increased_cases": "Nuovi Casi"})
     return fig.update_traces(mode='lines+markers')
 
 
@@ -214,7 +214,7 @@ def fig_nuovi_casi_giornalieri(filtered_data):
         y="increased_cases",
         color='denominazione_provincia',
         title="Nuovi Casi al giorno", 
-        labels={'increased_cases':'Incremento Casi', 'data': 'Data', 'denominazione_provincia': 'Provincia'})
+        labels={'increased_cases':'Nuovi Casi', 'data': 'Data', 'denominazione_provincia': 'Provincia'})
     return fig.update_traces(mode='lines+markers')
 
 mapbox_token = open(".mapbox_token").read()
@@ -574,7 +574,7 @@ elif area_filter == "Regione":
                     log_y=False,
                     color='denominazione_regione',
                     title="Growth rate media ultimi 3gg", 
-                    labels={'increased_cases':'Nuovi casi positivi', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Growth Rate"})
+                    labels={'increased_cases':'Nuovi Casi ', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Growth Rate"})
         fig.update_traces(mode='lines+markers',hovertemplate = "<b>Growth Rate: %{y}</b><extra></extra>")
         st.plotly_chart(fig,use_container_width=True)
 

@@ -165,9 +165,9 @@ def get_dataset(current_date: datetime.date):
     df_nazione = df_nazione.apply(lambda x: convert_datetime(x) if x.name == 'data' else x)
 
     #aggiungere una data formattata come colonna per le mappe
-    df_nazione["giorno"] = df_nazione["data"].apply(lambda x: x.strftime("%m/%d"))
-    df_regioni["giorno"] = df_regioni["data"].apply(lambda x: x.strftime("%m/%d"))
-    df["giorno"] = df["data"].apply(lambda x: x.strftime("%m/%d"))
+    df_nazione["giorno"] = df_nazione["data"].apply(lambda x: x.strftime("%d/%m"))
+    df_regioni["giorno"] = df_regioni["data"].apply(lambda x: x.strftime("%d/%m"))
+    df["giorno"] = df["data"].apply(lambda x: x.strftime("%d/%m"))
 
     pop_path = os.path.join("ISTAT_DATA", "Popolazione.csv")
     if os.path.exists(pop_path):
