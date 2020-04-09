@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento+Sans:wght@400;700&display=swap');
+body{
+
+}
+body, html{
+    margin:0;
+}
+#top-bar{
+
+    display:flex;
+    justify-content: space-around;
+    font-family: 'Quattrocento Sans', sans-serif;
+    text-align: center;
+    flex-wrap:wrap;
+}
+#main-map{
+    max-width:500px;
+}
+.dashboardContainer{
+    border: 1px solid #bbb
+}
+.big-metric{
+
+    flex-grow:1;
+
+}
+.big-metric-number{
+
+    font-weight: 800;
+    font-size:5rem;
+
+}
+
+.big-metric-label{
+
+    font-size:1.5rem;
+
+}
