@@ -35,6 +35,7 @@ def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selecte
         )
     fig.update_layout(
         margin=dict(l=0, r=0, t=0, b=0),
+        clickmode="select"
         #paper_bgcolor="LightSteelBlue",
     )
     return fig

@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime
-
+import logging
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -12,9 +12,17 @@ from dash.dependencies import Input, Output
 
 from figures import get_regional_map
 from utils import (
-    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, get_areas,
-    get_dataset, get_map_json, linear_reg, mean_absolute_percentage_error,
-    pretty_colors, viridis)
+    calcolo_giorni_da_min_positivi,
+    calculate_line,
+    exp_viridis,
+    get_areas,
+    get_dataset,
+    get_map_json,
+    linear_reg,
+    mean_absolute_percentage_error,
+    pretty_colors,
+    viridis,
+)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
 
@@ -67,21 +75,30 @@ app.layout = html.Div(
                 # config={"displayModeBar": False}),
                 className="dashboardContainer",
             ),
-        
+        ),
+        html.Div(
+            [
+                html.Div(
+                    str(df["data"].min().toordinal())
+                ),
+                dcc.Slider(
+                    min=df["data"].min().toordinal(),
+                    max=df["data"].max().toordinal(),
+                    value=df["data"].max().toordinal(),
+                    marks={date.toordinal():{'label':str(date), 'style': {'color': '#77b0b1'}} for date in df["data"].unique()},
+                ),
+            ]
         ),
         html.Div(id="content"),
     ],
     className="row",
 )
 
-@app.callback(
-    Output('content', 'children'),
-    [Input('main-map', 'hoverData'),]
-    )
-def update_x_timeseries(hoverData):
-    
-    return json.dumps(hoverData, indent=2)
 
+@app.callback(Output("content", "children"), [Input("main-map", "hoverData"),])
+def update_x_timeseries(hoverData):
+
+    return json.dumps(hoverData, indent=2)
 
 
 if __name__ == "__main__":
