@@ -10,7 +10,7 @@ from scipy import stats
 import math
 
 
-def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selected_label):
+def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selected_label,max_scale_value):
     fig = px.choropleth_mapbox(
         data_frame=df_regioni, 
         geojson=regions_map_json, 
@@ -18,7 +18,7 @@ def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selecte
         featureidkey='properties.reg_istat_code_num',
         color=data_selected,
         color_continuous_scale=cmap,
-        range_color=(0, math.ceil(df_regioni[data_selected].max()+1)),
+        range_color=(0, max_scale_value),
         hover_data=["increased_cases", "increased_tamponi",data_selected],
         custom_data=["denominazione_regione","codice_regione"],
         mapbox_style="carto-positron",

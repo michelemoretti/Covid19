@@ -1,7 +1,9 @@
 import json
-import os
-from datetime import datetime
 import logging
+import math
+import os
+from datetime import date, datetime
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -12,17 +14,12 @@ from dash.dependencies import Input, Output
 
 from figures import get_regional_map
 from utils import (
-    calcolo_giorni_da_min_positivi,
-    calculate_line,
-    exp_viridis,
-    get_areas,
-    get_dataset,
-    get_map_json,
-    linear_reg,
-    mean_absolute_percentage_error,
-    pretty_colors,
-    viridis,
-)
+    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, get_areas,
+    get_dataset, get_map_json, linear_reg, mean_absolute_percentage_error,
+    pretty_colors, viridis)
+
+logger = logging.getLogger('dash_application')
+logger.setLevel(logging.DEBUG)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
 
@@ -71,6 +68,7 @@ app.layout = html.Div(
                     viridis_exp_scale,
                     "totale_casi",
                     "Totale Casi",
+                    max_scale_value=math.ceil(df_regioni["totale_casi"].max()+1),
                 ),
                 # config={"displayModeBar": False}),
                 className="dashboardContainer",
@@ -78,27 +76,40 @@ app.layout = html.Div(
         ),
         html.Div(
             [
-                html.Div(
-                    str(df["data"].min().toordinal())
-                ),
                 dcc.Slider(
                     min=df["data"].min().toordinal(),
                     max=df["data"].max().toordinal(),
                     value=df["data"].max().toordinal(),
-                    marks={date.toordinal():{'label':str(date), 'style': {'color': '#77b0b1'}} for date in df["data"].unique()},
+                    marks={
+                        giorno.toordinal(): {
+                            "label": f"{str(giorno.day).zfill(2)}/{str(giorno.month).zfill(2)}/{str(giorno.year)[:2]}",
+                            "style": {"color": "#444",
+
+                                    "transform":"rotate(45deg)"},
+                        }
+                        for giorno in df["data"].unique()
+                    },
+                    id="date-slider",
                 ),
-            ]
-        ),
-        html.Div(id="content"),
-    ],
-    className="row",
+            ],
+        )
+    ]
 )
 
 
-@app.callback(Output("content", "children"), [Input("main-map", "hoverData"),])
-def update_x_timeseries(hoverData):
+@app.callback(Output("main-map", component_property="figure"), [Input("date-slider", "value"),])
+def update_map(ordinal_date):
+    giorno = date.fromordinal(ordinal_date)    
 
-    return json.dumps(hoverData, indent=2)
+    figure = get_regional_map(
+                    df_regioni[df_regioni["data"].dt.date==giorno],
+                    regions_map_json,
+                    viridis_exp_scale,
+                    "totale_casi",
+                    "Totale Casi",
+                    math.ceil(df_regioni["totale_casi"].max()+1)
+                )
+    return figure
 
 
 if __name__ == "__main__":
