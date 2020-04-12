@@ -34,12 +34,13 @@ def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selecte
                 'data': 'Data', "growth_rate": "Growth Rate", 
                 "increased_cases": "Nuovi Casi",
                 "increased_tamponi":"Nuovi Tamponi Effettuati",
+                "denominazione_regione":"Regione",
                 "codice_regione":"Codice Regione"},
         height=600,
         )
     fig.update_layout(
         margin=dict(l=0, r=0, t=0, b=0),
-        clickmode="select"
+        clickmode="select+event"
         #paper_bgcolor="LightSteelBlue",
     )
     return fig

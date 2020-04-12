@@ -42,12 +42,14 @@ giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
 viridis_exp_scale = exp_viridis(giorni_da_min_positivi)
 
 metric_names = {
-    "totale_casi": "Contagiati",
+    "totale_casi": "Totale Contagiati",
     "deceduti": "Deceduti",
     "tamponi": "Tamponi",
     "terapia_intensiva": "Terapia Intensiva",
+    "totale_positivi":"Attualmente Positivi",
+    "dimessi_guariti":"Guariti"
 }
-metric_list = ["totale_casi", "deceduti", "tamponi", "terapia_intensiva"]
+metric_list = ["totale_casi" ,"tamponi","totale_positivi", "deceduti","dimessi_guariti", "terapia_intensiva"]
 
 
 def get_top_bar(metrics_list, area="IT", day=datetime.today):
@@ -98,6 +100,7 @@ app.layout = html.Div(
                 html.Div(
                     children=[
                 dcc.Graph(figure=get_tamponi_graph(df_regioni), id="tamponi-graph",className="dashboardContainer"),
+                
                 ],
                 id="graphs-right",
                 className="dashboardContainer",
@@ -121,6 +124,9 @@ app.layout = html.Div(
                     },
                     id="date-slider",
                 ),
+                html.Div(children="CIAO",id="selected_data"),
+                html.Div(children="CIAO",id="clicked_data")
+                
             ],
         ),
     ]
@@ -149,6 +155,28 @@ def update_map(ordinal_date):
     )
     response_number = [f"{filtered_df[metric].sum():n}" for metric in metric_list]
     return [figure] + response_number
+
+@app.callback(
+    Output("selected_data", component_property="children"),
+    [Input("main-map", component_property="selectedData"),]
+)
+def filter_location(selectedData):
+
+    if selectedData:
+       a = [point["customdata"][0] for point in selectedData["points"]]
+       return str(a)
+
+@app.callback(
+    Output("clicked_data", component_property="children"),
+    [Input("main-map", component_property="clickData"),]
+)
+def filter_location_click(selectedData):
+
+    if selectedData:
+       a = [point["customdata"][0] for point in selectedData["points"]]
+       return str(a)
+
+    
 
 
 if __name__ == "__main__":
