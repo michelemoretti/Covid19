@@ -124,21 +124,16 @@ app.layout = html.Div(
                     },
                     id="date-slider",
                 ),
-                html.Div(children="CIAO",id="selected_data"),
-                html.Div(children="CIAO",id="clicked_data")
                 
             ],
         ),
+        html.Div(id="filter",style={'display': 'none'})
     ]
 )
 
 
 @app.callback(
-    [Output("main-map", component_property="figure")]
-    + [
-        Output(f"daily-{metric}-number", component_property="children")
-        for metric in metric_list
-    ],
+    Output("main-map", component_property="figure"),
     [Input("date-slider", "value"),],
 )
 def update_map(ordinal_date):
@@ -153,30 +148,64 @@ def update_map(ordinal_date):
         "Totale Casi",
         math.ceil(df_regioni["totale_casi"].max() + 1),
     )
+    
+    return figure
+
+@app.callback(
+    [
+        Output(f"daily-{metric}-number", component_property="children")
+        for metric in metric_list
+    ],
+    [Input("filter", component_property="data-area"),
+    Input("filter", component_property="data-date"),]
+)
+def update_big_numbers(area_string,ordinal_date):
+    giorno = date.fromordinal(ordinal_date)
+    filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
+    if area_string:
+        area_list = area_string.split("|")
+        filter_ = df_regioni["denominazione_regione"].isin(area_list)
+        filtered_df = filtered_df[filter_]
+
     response_number = [f"{filtered_df[metric].sum():n}" for metric in metric_list]
-    return [figure] + response_number
-
-@app.callback(
-    Output("selected_data", component_property="children"),
-    [Input("main-map", component_property="selectedData"),]
-)
-def filter_location(selectedData):
-
-    if selectedData:
-       a = [point["customdata"][0] for point in selectedData["points"]]
-       return str(a)
-
-@app.callback(
-    Output("clicked_data", component_property="children"),
-    [Input("main-map", component_property="clickData"),]
-)
-def filter_location_click(selectedData):
-
-    if selectedData:
-       a = [point["customdata"][0] for point in selectedData["points"]]
-       return str(a)
 
     
+    return response_number
+
+
+@app.callback(
+    Output("tamponi-graph", component_property="figure"),
+    [Input("filter", component_property="data-area"),]
+)
+def update_area_graphs(area_string):
+    if area_string:
+        area_list = area_string.split("|")
+        filter_ = df_regioni["denominazione_regione"].isin(area_list)
+        filtered_data = df_regioni[filter_]
+        
+        return get_tamponi_graph(filtered_data)
+    else:
+        return get_tamponi_graph(df_regioni)
+
+@app.callback(
+    Output("filter", component_property="data-area"),
+    [Input("main-map", component_property="selectedData"),]
+)
+def set_filter_location(selectedData):
+
+    if selectedData:
+        a = [point["customdata"][0] for point in selectedData["points"]]
+        return "|".join(a)
+    else:
+        return ""
+
+@app.callback(
+    Output("filter", component_property="data-date"),
+    [Input("date-slider", "value"),]
+)
+def set_filter_data(selectedData):
+
+    return selectedData
 
 
 if __name__ == "__main__":
