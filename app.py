@@ -13,7 +13,7 @@ import pandas as pd
 import plotly.express as px
 from dash.dependencies import Input, Output
 
-from figures import get_regional_map
+from figures import get_regional_map, get_tamponi_graph
 from utils import (
     calcolo_giorni_da_min_positivi,
     calculate_line,
@@ -27,7 +27,7 @@ from utils import (
     viridis,
 )
 
-locale.setlocale(locale.LC_ALL, '')
+locale.setlocale(locale.LC_ALL, "")
 logger = logging.getLogger("dash_application")
 logger.setLevel(logging.DEBUG)
 
@@ -41,12 +41,14 @@ regions, provinces = get_areas(df)
 giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
 viridis_exp_scale = exp_viridis(giorni_da_min_positivi)
 
-metric_names = {"totale_casi":"Contagiati",
-                "deceduti": "Deceduti",
-                "tamponi":"Tamponi",
-                "terapia_intensiva":"Terapia Intensiva",
-                }
+metric_names = {
+    "totale_casi": "Contagiati",
+    "deceduti": "Deceduti",
+    "tamponi": "Tamponi",
+    "terapia_intensiva": "Terapia Intensiva",
+}
 metric_list = ["totale_casi", "deceduti", "tamponi", "terapia_intensiva"]
+
 
 def get_top_bar(metrics_list, area="IT", day=datetime.today):
 
@@ -62,7 +64,9 @@ def get_top_bar(metrics_list, area="IT", day=datetime.today):
                         className="big-metric-number",
                     ),
                     html.Div(
-                        metric_names[metric], id=f"daily-{metric}-label", className="big-metric-label"
+                        metric_names[metric],
+                        id=f"daily-{metric}-label",
+                        className="big-metric-label",
                     ),
                 ],
                 id=f"daily_{metric}",
@@ -76,22 +80,31 @@ app.layout = html.Div(
     [
         get_top_bar(metric_list),
         html.Div(
-            dcc.Graph(
-                id="main-map",
-                figure=get_regional_map(
-                    df_regioni,
-                    regions_map_json,
-                    viridis_exp_scale,
-                    "totale_casi",
-                    "Totale Casi",
-                    max_scale_value=math.ceil(df_regioni["totale_casi"].max() + 1),
+            [
+                dcc.Graph(
+                    id="main-map",
+                    figure=get_regional_map(
+                        df_regioni,
+                        regions_map_json,
+                        viridis_exp_scale,
+                        "totale_casi",
+                        "Totale Casi",
+                        max_scale_value=math.ceil(df_regioni["totale_casi"].max() + 1),
+                    ),
+                    # animate=True,
+                    # config={"displayModeBar": False}),
+                    className="dashboardContainer",
                 ),
-                # animate=True,
-                # config={"displayModeBar": False}),
+                html.Div(
+                    children=[
+                dcc.Graph(figure=get_tamponi_graph(df_regioni), id="tamponi-graph",className="dashboardContainer"),
+                ],
+                id="graphs-right",
                 className="dashboardContainer",
-            ),
+                )
+            ],
             id="center-row",
-            className="row"
+            className="row",
         ),
         html.Div(
             [

@@ -68,7 +68,6 @@ def exp_viridis(d:float, r:float=0.16):
         exp_viridis += ((exponential_growth(itup[0], d, r), itup[1]),)
     return exp_viridis
 
-@st.cache(show_spinner=False)
 def convert_datetime(string_from,format_to:str="%m/%d"):
     if type(string_from) == "str":
         date = datetime.strptime(string_from, "%Y-%m-%dT%H:%M:%S")
@@ -77,7 +76,6 @@ def convert_datetime(string_from,format_to:str="%m/%d"):
         dates = [datetime.strptime(x, "%Y-%m-%dT%H:%M:%S") for x in string_from]
         return np.array(dates)
 
-@st.cache(show_spinner=False)
 def calcolo_giorni_da_min_positivi(df_regioni, min_positivi=100):
     regione_piu_colpita = df_regioni[df_regioni["data"] == df_regioni["data"].max()][df_regioni["totale_casi"] == df_regioni["totale_casi"].max()]["denominazione_regione"].tolist()[0]
     temp = df_regioni[df_regioni["totale_casi"] > min_positivi]
@@ -86,7 +84,6 @@ def calcolo_giorni_da_min_positivi(df_regioni, min_positivi=100):
 
 
 
-@st.cache(suppress_st_warning=True,show_spinner=False)
 def get_map_json():
     #st.write("Cache miss: Getting the geoJSON")
     province_map_path = os.path.join("map","GeoJSON","limits_IT_provinces_simple.json")
@@ -144,11 +141,9 @@ def check_ds_istat():
             # Extract all the contents of zip file in current directory
             zipObj.extractall("ISTAT_DATA")
 
-@st.cache(show_spinner=False)
 def get_population_df():
     return import_ISTAT_dataset("DCIS_POPRES1_29032020143754329",sep=",")
 
-@st.cache(suppress_st_warning=True,show_spinner=False)
 def get_dataset(current_date: datetime.date):
     df = pd.read_csv("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-province/dpc-covid19-ita-province.csv", keep_default_na=False, na_values=[''])
     df_regioni = pd.read_csv("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv")
@@ -241,14 +236,12 @@ def get_dataset(current_date: datetime.date):
     return df, df_regioni, smokers, imprese
 
 
-@st.cache(suppress_st_warning=True,show_spinner=False)
 def read_conversion_tables():
     conversioni_province = pd.read_csv("codici_province.CSV",encoding = "ISO-8859-1",sep=";")
     conversioni_regioni = pd.read_csv("codici_regioni.CSV",encoding = "ISO-8859-1",sep=";")
     
     return conversioni_province, conversioni_regioni
 
-@st.cache(show_spinner=False)
 def get_areas(df):
     regions = df["denominazione_regione"].unique()
     provinces = df["denominazione_provincia"].unique()
@@ -266,7 +259,6 @@ def add_statistics(df):
     return df
 
 
-@st.cache(suppress_st_warning=True,show_spinner=False)
 def import_ISTAT_dataset(filename_without_extension:str,sep=","):
     df = pd.read_csv(os.path.join("ISTAT_DATA",f"{filename_without_extension}.csv"),sep=sep)
     path = os.path.join("ISTAT_DATA",f"{filename_without_extension}_metadata.json")
@@ -286,7 +278,6 @@ def group_labels(x,prefix,ranges):
             return f"{prefix}{group}"
     raise Exception(f"Problem in aggregating column {x}")
 
-@st.cache(suppress_st_warning=True,show_spinner=False)
 def ISTAT_return_filtered_series(df,selected_column:str,aggregate=None,selected_data_type=None):
     metadata = df.metadata
 
