@@ -1,0 +1,109 @@
+CODICE PROVINCIA,NUTS3_regione,denominazione_regione,NUTS3,COMUNI,PM10_max_giornisopralimite,PM10_max_media,PM2.5_max_media
+1,ITC1,Piemonte,ITC11,Torino,87,39,25
+2,ITC1,Piemonte,ITC12,Vercelli,29,30,18
+3,ITC1,Piemonte,ITC15,Novara,25,27,18
+96,ITC1,Piemonte,ITC13,Biella,25,25,13
+4,ITC1,Piemonte,ITC16,Cuneo,11,21,15
+103,ITC1,Piemonte,ITC14,Verbania,3,15,11
+5,ITC1,Piemonte,ITC17,Asti,55,36,0
+6,ITC1,Piemonte,ITC18,Alessandria,59,37,22
+7,ITC2,Valle d'Aosta,ITC20,Aosta,5,18,12
+8,ITC3,Liguria,ITC31,Imperia,0,18,13
+9,ITC3,Liguria,ITC32,Savona,3,21,15
+10,ITC3,Liguria,ITC33,Genova,5,25,16
+11,ITC3,Liguria,ITC34,La Spezia,0,22,14
+12,ITC4,Lombardia,ITC41,Varese,21,24,19
+13,ITC4,Lombardia,ITC42,Como,43,29,23
+97,ITC4,Lombardia,ITC43,Lecco,25,23,15
+14,ITC4,Lombardia,ITC44,Sondrio,14,23,18
+15,ITC4,Lombardia,ITC45,Milano,79,35,23
+108,ITC4,Lombardia,IT108,Monza,51,33,24
+16,ITC4,Lombardia,ITC46,Bergamo,42,30,21
+17,ITC4,Lombardia,ITC47,Brescia,48,33,25
+18,ITC4,Lombardia,ITC48,Pavia,53,35,23
+98,ITC4,Lombardia,ITC49,Lodi,78,38,24
+19,ITC4,Lombardia,ITC4A,Cremona,56,34,26
+20,ITC4,Lombardia,ITC4B,Mantova,34,30,22
+21,ITD1,P.A. Bolzano,ITD10,Bolzano - Bozen,4,20,14
+22,ITD2,P.A. Trento,ITD20,Trento,8,24,14
+23,ITD3,Veneto,ITD31,Verona,44,31,21
+24,ITD3,Veneto,ITD32,Vicenza,57,34,24
+25,ITD3,Veneto,ITD33,Belluno,5,22,14
+26,ITD3,Veneto,ITD34,Treviso,53,34,21
+27,ITD3,Veneto,ITD35,Venezia,63,37,26
+28,ITD3,Veneto,ITD36,Padova,63,37,27
+29,ITD3,Veneto,ITD37,Rovigo,49,32,25
+93,ITD4,Friuli Venezia Giulia,ITD41,Pordenone,13,23,16
+30,ITD4,Friuli Venezia Giulia,ITD42,Udine,8,21,16
+31,ITD4,Friuli Venezia Giulia,ITD43,Gorizia,3,18,13
+32,ITD4,Friuli Venezia Giulia,ITD44,Trieste,5,20,13
+33,ITD5,Emilia-Romagna,ITD51,Piacenza,42,33,24
+34,ITD5,Emilia-Romagna,ITD52,Parma,45,32,19
+35,ITD5,Emilia-Romagna,ITD53,Reggio nell'Emilia,56,35,20
+36,ITD5,Emilia-Romagna,ITD54,Modena,60,33,20
+37,ITD5,Emilia-Romagna,ITD55,Bologna,18,26,18
+38,ITD5,Emilia-Romagna,ITD56,Ferrara,41,31,22
+39,ITD5,Emilia-Romagna,ITD57,Ravenna,30,27,19
+40,ITD5,Emilia-Romagna,ITD58,Forl�,26,26,16
+99,ITD5,Emilia-Romagna,ITD59,Rimini,36,31,17
+45,ITE1,Toscana,ITE11,Massa,0,14,9
+46,ITE1,Toscana,ITE12,Lucca,19,25,0
+47,ITE1,Toscana,ITE13,Pistoia,8,19,0
+48,ITE1,Toscana,ITE14,Firenze,20,30,16
+100,ITE1,Toscana,ITE15,Prato,22,25,16
+49,ITE1,Toscana,ITE16,Livorno,0,23,13
+50,ITE1,Toscana,ITE17,Pisa,8,26,13
+51,ITE1,Toscana,ITE18,Arezzo,14,23,13
+52,ITE1,Toscana,ITE19,Siena,0,18,0
+53,ITE1,Toscana,ITE1A,Grosseto,10,27,10
+54,ITE2,Umbria,ITE21,Perugia,13,25,17
+55,ITE2,Umbria,ITE22,Terni,49,35,24
+41,ITE3,Marche,ITE31,Pesaro,20,26,16
+42,ITE3,Marche,ITE32,Ancona,18,25,13
+43,ITE3,Marche,ITE33,Macerata,0,17,10
+109,ITE3,Marche,IT109,Fermo,0,0,0
+44,ITE3,Marche,ITE34,Ascoli Piceno,2,20,12
+56,ITE4,Lazio,ITE41,Viterbo,0,18,12
+57,ITE4,Lazio,ITE42,Rieti,5,19,13
+58,ITE4,Lazio,ITE43,Roma,22,30,16
+59,ITE4,Lazio,ITE44,Latina,9,23,12
+60,ITE4,Lazio,ITE45,Frosinone,82,41,19
+66,ITF1,Abruzzo,ITF11,L'Aquila,2,17,12
+67,ITF1,Abruzzo,ITF12,Teramo,5,24,13
+68,ITF1,Abruzzo,ITF13,Pescara,32,28,16
+69,ITF1,Abruzzo,ITF14,Chieti,13,24,17
+94,ITF2,Molise,ITF21,Isernia,0,0,0
+70,ITF2,Molise,ITF22,Campobasso,0,17,0
+61,ITF3,Campania,ITF31,Caserta,6,30,10
+62,ITF3,Campania,ITF32,Benevento,20,10,9
+63,ITF3,Campania,ITF33,Napoli,37,35,19
+64,ITF3,Campania,ITF34,Avellino,46,35,16
+65,ITF3,Campania,ITF35,Salerno,32,31,6
+71,ITF4,Puglia,ITF41,Foggia,3,16,9
+110,ITF4,Puglia,IT110,Barletta-Andria-Trani,1.333333333,15,12
+72,ITF4,Puglia,ITF42,Bari,9,27,16
+73,ITF4,Puglia,ITF43,Taranto,5,28,16
+74,ITF4,Puglia,ITF44,Brindisi,2,25,13
+75,ITF4,Puglia,ITF45,Lecce,1,23,13
+76,ITF5,Basilicata,ITF51,Potenza,6,19,0
+77,ITF5,Basilicata,ITF52,Matera,0,0,0
+78,ITF6,Calabria,ITF61,Cosenza,6,23,14
+101,ITF6,Calabria,ITF62,Crotone,25,30,14
+79,ITF6,Calabria,ITF63,Catanzaro,11,26,10
+102,ITF6,Calabria,ITF64,Vibo Valentia,14,23,8
+80,ITF6,Calabria,ITF65,Reggio di Calabria,10,21,10
+81,ITG1,Sicilia,ITG11,Trapani,4,19,0
+82,ITG1,Sicilia,ITG12,Palermo,29,36,0
+83,ITG1,Sicilia,ITG13,Messina,12,23,0
+84,ITG1,Sicilia,ITG14,Agrigento,0,0,0
+85,ITG1,Sicilia,ITG15,Caltanissetta,17,26,0
+86,ITG1,Sicilia,ITG16,Enna,8,15,8
+87,ITG1,Sicilia,ITG17,Catania,13,27,0
+88,ITG1,Sicilia,ITG18,Ragusa,4,30,15
+89,ITG1,Sicilia,ITG19,Siracusa,32,35,13
+90,ITG2,Sardegna,ITG25,Sassari,11,25,6
+91,ITG2,Sardegna,ITG26,Nuoro,3,19,0
+95,ITG2,Sardegna,ITG28,Oristano,3,22,0
+92,ITG2,Sardegna,ITG27,Cagliari,45,36,11
+111,ITG2,Sardegna,ITG2A,Carbonia,3,13,0
+0,IT,Italia,IT,Italia,28,1,3
