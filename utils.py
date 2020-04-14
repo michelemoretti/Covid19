@@ -14,8 +14,12 @@ from typing import List,Dict
 
 viridis = ((0.0, '#440154'), (0.1111111111, '#482878'), (0.2222222222, '#3e4989'), (0.3333333333, '#31688e'), (0.4444444444, '#26828e'), (0.5555555555, '#1f9e89'), (0.6666666666, '#35b779'), (0.7777777777, '#6ece58'), (0.8888888888, '#b5de2b'), (1.0, '#fde725'))
 
-pretty_colors = ["#9E0031","#92B9BD","#5D2E8C","#0C6291","#F1E8B8","#FFF07C","#80FF72","#7EE8FA","#F7E2E5","#E58C8A",
-                "#FF6666","#506568","#977AB5","#A0E4DD","#F8F4DE","#8C8344","#468C3F","#457F89","#AE8C91","#A76665"]
+pretty_colors = ["#ff0000","#00ff00","#0000ff","#ffff00","#00ffff","#ffffff",
+                 "#000000","#ffff00","#ff0000","#009900","#0099ff","#00cc00",
+                 "#0000ff","#996600","#006600","#cc0033","#cc6600","#6600ff",
+                 "#00ccff","#00ff33","#00ffff","#3300ff","#336600","#663399",
+                 "#EF233C","#18FF6D","#916953","#FFF07C","#80FF72","#7EE8FA",
+                 "#285238","#977AB5","#A0E4DD","#8C8344","#468C3F","#457F89"]
 
 def format_df(df):
     df = df.fillna(0).replace(np.inf, 0).replace(-np.inf, 0)
@@ -34,9 +38,8 @@ def linear_reg(xi:np.array,y:list):
     slope, intercept, r_value, p_value, std_err = stats.linregress(xi,y)
     line = slope*xi+intercept
     mape = mean_absolute_percentage_error(y, line)
-    graph_x_metric = xi
-    line_x = np.arange(graph_x_metric.min(),graph_x_metric.max(),(graph_x_metric.max() - graph_x_metric.min())/30) 
-    line_y = calculate_line(line_x,slope,intercept)
+    line_x = np.arange(xi.min(),xi.max(),(xi.max() - xi.min())/30) if len(xi)>2 else []
+    line_y = calculate_line(line_x,slope,intercept) if line_x != [] else []
     return line_x, line_y, r_value, mape
 
 def exponential_growth(x:float, d:float, r:float=0.16):
