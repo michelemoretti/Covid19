@@ -44,7 +44,7 @@ CODICE PROVINCIA,NUTS3_regione,denominazione_regione,NUTS3,COMUNI,PM10_max_giorn
 37,ITD5,Emilia-Romagna,ITD55,Bologna,18,26,18
 38,ITD5,Emilia-Romagna,ITD56,Ferrara,41,31,22
 39,ITD5,Emilia-Romagna,ITD57,Ravenna,30,27,19
-40,ITD5,Emilia-Romagna,ITD58,Forl�,26,26,16
+40,ITD5,Emilia-Romagna,ITD58,Forli-Cesena,26,26,16
 99,ITD5,Emilia-Romagna,ITD59,Rimini,36,31,17
 45,ITE1,Toscana,ITE11,Massa,0,14,9
 46,ITE1,Toscana,ITE12,Lucca,19,25,0
@@ -105,5 +105,5 @@ CODICE PROVINCIA,NUTS3_regione,denominazione_regione,NUTS3,COMUNI,PM10_max_giorn
 91,ITG2,Sardegna,ITG26,Nuoro,3,19,0
 95,ITG2,Sardegna,ITG28,Oristano,3,22,0
 92,ITG2,Sardegna,ITG27,Cagliari,45,36,11
-111,ITG2,Sardegna,ITG2A,Carbonia,3,13,0
+111,IT11,Sardegna,IT111,Carbonia,3,13,0
 0,IT,Italia,IT,Italia,28,1,3
