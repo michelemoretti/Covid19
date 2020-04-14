@@ -12,9 +12,18 @@ import logging
 
 logger = logging.getLogger('__main__')
 
-
+temporal_graph_layout={
+        "margin":dict(l=10, r=10, t=40, b=10),
+        "title_text":'Totale Tamponi/Totale Casi Positivi',
+        "xaxis" : {"calendar":"gregorian",
+                "nticks":15},
+        "yaxis" : {"tickformat":",d"},
+        "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},
+        "title" :{"xanchor":"center", "x":0.5}        
+}
 
 def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selected_label,max_scale_value):
+
     fig = px.choropleth_mapbox(
         data_frame=df_regioni, 
         geojson=regions_map_json, 
@@ -23,10 +32,10 @@ def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selecte
         color=data_selected,
         color_continuous_scale=cmap,
         range_color=(0, max_scale_value),
-        hover_data=["increased_cases", "increased_tamponi",data_selected],
+        hover_data=[data_selected],
         custom_data=["denominazione_regione","codice_regione"],
         mapbox_style="carto-positron",
-        zoom=4, center = {"lat": 42.00107394, "lon": 10.3283498},
+        zoom=4.8, center = {"lat": 42.00107394, "lon": 10.3283498},
         #opacity=1,
         #animation_frame="giorno",
         labels={ data_selected:data_selected_label, 
@@ -36,11 +45,44 @@ def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selecte
                 "increased_tamponi":"Nuovi Tamponi Effettuati",
                 "denominazione_regione":"Regione",
                 "codice_regione":"Codice Regione"},
-        height=600,
+        #height=600,
+        )
+    
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=0, b=0),
+        clickmode="select+event",
+        autosize=True
+        #paper_bgcolor="LightSteelBlue",
+    )
+    return fig
+
+def get_provincial_map(df_province,province_map_json,cmap,max_scale_value):
+    fig = px.choropleth_mapbox(
+        data_frame=df_province, 
+        geojson=province_map_json, 
+        locations='sigla_provincia', 
+        featureidkey='properties.prov_acr',
+        color="totale_casi",
+        color_continuous_scale=cmap,
+        range_color=(0, max_scale_value),
+        hover_data=["denominazione_provincia"],
+        custom_data=["NUTS3"],
+        mapbox_style="carto-positron",
+        zoom=4.8, center = {"lat": 42.00107394, "lon": 10.3283498},
+        #opacity=1,
+        #animation_frame="giorno",
+        labels={"giorno":"Giorno",
+                "totale_casi":"Totale Casi",
+                'data': 'Data', "growth_rate": "Growth Rate", 
+                "increased_cases": "Nuovi Casi",
+                "denominazione_provincia":"Provincia",
+                "sigla_provincia":"Sigla Provincia"},
+        #height=600,
         )
     fig.update_layout(
         margin=dict(l=0, r=0, t=0, b=0),
-        clickmode="select+event"
+        clickmode="select+event",
+        autosize=True
         #paper_bgcolor="LightSteelBlue",
     )
     return fig
@@ -66,11 +108,5 @@ def get_tamponi_graph(filtered_data):
                             hovertemplate = "<b>%{x}</b><br>Totale tamponi effettuati: %{y}<br>Percentuale casi positivi: %{text:.2f}%<extra></extra>",
                             text=(summed_data_by_date["totale_casi"]/summed_data_by_date["tamponi"]) * 100
                             ))
-    fig.update_layout(
-        title_text='Totale Tamponi/Totale Casi Positivi',
-        xaxis = {"calendar":"gregorian",
-                "nticks":15},
-        yaxis = {"tickformat":",d"}
-        
-    )
+    fig.update_layout(temporal_graph_layout)
     return fig

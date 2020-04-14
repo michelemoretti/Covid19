@@ -1,16 +1,17 @@
 import difflib
 import json
+import math
 import os
+from datetime import date, datetime, timedelta
+from typing import Dict, List
 from zipfile import ZipFile
-from datetime import datetime, timedelta, date
 
 import numpy as np
-from scipy import stats
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from typing import List,Dict
+from scipy import stats
 
 viridis = ((0.0, '#440154'), (0.1111111111, '#482878'), (0.2222222222, '#3e4989'), (0.3333333333, '#31688e'), (0.4444444444, '#26828e'), (0.5555555555, '#1f9e89'), (0.6666666666, '#35b779'), (0.7777777777, '#6ece58'), (0.8888888888, '#b5de2b'), (1.0, '#fde725'))
 
@@ -322,3 +323,6 @@ def ISTAT_return_filtered_series(df,selected_column:str,aggregate=None,selected_
     
     #st.write(a)
     return a
+
+def filter_dates(dates,n):
+    return dates[::math.ceil(len(dates)/n)]
