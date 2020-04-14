@@ -227,7 +227,7 @@ def fig_punti_e_trend(x_data, y_data, idx, hovertemplate):
                         x=line_x,
                         y=line_y,
                         mode='lines',
-                        hovertemplate = f"<b>R^2</b> : {str(round((r_value**2)*100, 2))}% <br><b>MAPE</b> : {str(round(mape, 2))}%  <extra></extra>",
+                        hovertemplate = f"Trend:<br><b>R^2</b> : {str(round((r_value**2)*100, 2))}% <br><b>MAPE</b> : {str(round(mape, 2))}%  <extra></extra>",
                         legendgroup='group',
                         showlegend =False,
                         marker=go.scatter.Marker(color=pretty_colors[idx]))
@@ -427,7 +427,7 @@ if area_filter == "Nazione":
         if selected_cat == 'PM10':
             idx = 0
             df_regioni_today = df_regioni_today.drop(df_regioni_today[all_columns[idx]][df_regioni_today[all_columns[idx]] == 0].index)
-            fig = fig_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Deceduti per contagiati confermati: %{x:.2f}%<br>"+all_columns[idx].split("_")[-1]+": %{y:.2f}%<extra></extra>")
+            fig = fig_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Giorni sopra il limite consigliato %{y}<extra></extra>")
 
             fig.update_layout(
                 title = "Inquinamento Aria (giorni con PM10 superiore al limite consigliato) / COVID",
@@ -445,7 +445,7 @@ if area_filter == "Nazione":
 
             idx = 1
             df_regioni_today = df_regioni_today.drop(df_regioni_today[all_columns[idx]][df_regioni_today[all_columns[idx]] == 0].index)
-            fig = fig_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Deceduti per contagiati confermati: %{x:.2f}%<br>"+all_columns[idx].split("_")[-1]+": %{y:.2f}%<extra></extra>")
+            fig = fig_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Media Annuale PM10 %{y}<extra></extra>")
 
             fig.update_layout(
                 title = "Inquinamento Aria (valore annuale medio) / COVID",
@@ -464,7 +464,7 @@ if area_filter == "Nazione":
         else:
             idx = 0
             df_regioni_today = df_regioni_today.drop(df_regioni_today[all_columns[idx]][df_regioni_today[all_columns[idx]] == 0].index)
-            fig = fig_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Deceduti per contagiati confermati: %{x:.2f}%<br>"+all_columns[idx].split("_")[-1]+": %{y:.2f}%<extra></extra>")
+            fig = fig_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Media Annuale PM10 %{y}<extra></extra>")
 
             fig.update_layout(
                 title = "Analisi Correlazione Inquinamento Aria (valore annuale medio) / COVID",
