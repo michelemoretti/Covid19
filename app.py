@@ -13,9 +13,9 @@ import sd_material_ui as dui
 import numpy as np
 import pandas as pd
 import plotly.express as px
-from dash.dependencies import Input, Output,State
+from dash.dependencies import Input, Output, State
 
-from figures import get_regional_map,get_provincial_map, get_tamponi_graph
+from figures import get_regional_map, get_provincial_map, get_tamponi_graph
 from utils import (
     calcolo_giorni_da_min_positivi,
     calculate_line,
@@ -51,7 +51,7 @@ metric_names = {
     "terapia_intensiva": "Terapia Intensiva",
     "totale_positivi": "Attualmente Positivi",
     "dimessi_guariti": "Guariti",
-    "totale_ospedalizzati":"Ospedalizzati",
+    "totale_ospedalizzati": "Ospedalizzati",
 }
 metric_list = [
     "totale_casi",
@@ -168,7 +168,7 @@ app.layout = dfx.Grid(
                                 value="regioni",
                                 children=[
                                     dcc.Tab(label="Regioni", value="regioni"),
-                                    dcc.Tab(label="Provincie", value="province"),
+                                    dcc.Tab(label="Province", value="province"),
                                 ],
                             )
                         ),
@@ -176,10 +176,9 @@ app.layout = dfx.Grid(
                             dcc.Tabs(
                                 id="data-selected",
                                 value="totale_casi",
+                                # content_style={"padding":"7px"},
                                 children=[
-                                    dcc.Tab(
-                                        label="Casi Confermati", value="totale_casi"
-                                    ),
+                                    dcc.Tab(label="Confermati", value="totale_casi"),
                                     dcc.Tab(label="Tamponi", value="tamponi"),
                                     dcc.Tab(label="Deceduti", value="deceduti"),
                                     dcc.Tab(label="Guariti", value="dimessi_guariti"),
@@ -189,8 +188,7 @@ app.layout = dfx.Grid(
                                         value="totale_ospedalizzati",
                                     ),
                                     dcc.Tab(
-                                        label="Terapia Intensiva",
-                                        value="terapia_intensiva",
+                                        label="Terapia Int.", value="terapia_intensiva",
                                     ),
                                 ],
                             )
@@ -240,74 +238,7 @@ app.layout = dfx.Grid(
 )
 
 
-@app.callback(
-    Output("main-map", component_property="figure"),
-    [
-        Input("date-slider", "value"),
-        Input("data-selected", "value"),
-        Input("area-map", "value"),
-    ],
-)
-def update_map(ordinal_date, data_selected, area_map):
 
-    giorno = date.fromordinal(ordinal_date)
-    if area_map == "regioni":
-        filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
-        geojson = regions_map_json
-        figure = get_regional_map(
-            filtered_df,
-            geojson,
-            viridis_exp_scale,
-            data_selected,
-            metric_names[data_selected],
-            math.ceil(df_regioni[data_selected].max() + 1),
-        )
-    else:
-        filtered_df = df[df["data"].dt.date == giorno]
-        geojson = province_map_json
-        figure = get_provincial_map(
-            filtered_df,
-            geojson,
-            viridis_exp_scale,
-            math.ceil(df["totale_casi"].max() + 1),
-        )
-
-    # logger.debug()
-
-    return figure
-
-
-@app.callback(
-    [
-        Output(f"daily-{metric}-number", component_property="children")
-        for metric in metric_list
-    ],
-    [
-        Input("filter", component_property="data-area"),
-        Input("filter", component_property="data-date"),
-    ],
-    [
-        State('area-map', 'value'),
-    ]
-)
-def update_big_numbers(area_string, ordinal_date,area_type):
-    giorno = date.fromordinal(ordinal_date)
-    if area_type =="regioni":
-        filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
-        if area_string:
-            area_list = area_string.split("|")
-            filter_ = filtered_df["denominazione_regione"].isin(area_list)
-            filtered_df = filtered_df[filter_]
-    else:
-        filtered_df = df[df["data"].dt.date == giorno]
-        if area_string:
-            area_list = area_string.split("|")
-            filter_ = filtered_df["NUTS3"].isin(area_list)
-            filtered_df = filtered_df[filter_]
-
-    response_number = [f"{filtered_df[metric].sum():n}" for metric in metric_list]
-
-    return response_number
 
 
 @app.callback(
@@ -315,6 +246,11 @@ def update_big_numbers(area_string, ordinal_date,area_type):
     [Input("filter", component_property="data-area"),],
 )
 def update_area_graphs(area_string):
+    
+    ctx = dash.callback_context
+    triggerer = [x['prop_id'] for x in ctx.triggered]
+    logger.debug(f"update_area_graphs triggered by {triggerer}")
+
     if area_string:
         area_list = area_string.split("|")
         filter_ = df_regioni["denominazione_regione"].isin(area_list)
@@ -326,34 +262,178 @@ def update_area_graphs(area_string):
 
 
 @app.callback(
-    Output("filter", component_property="data-area"),
-    [Input("main-map", component_property="selectedData"),],
+    [
+        Output("filter", component_property="data-area"),
+        Output("filter", component_property="data-area-index"),
+        Output("filter", component_property="data-map-type"),
+    ],
+    [Input("main-map", component_property="selectedData"), Input("area-map", "value"),],
+    [State("main-map", component_property="figure")],
 )
-def set_filter_location(selectedData):
+def set_filter_location(selectedData, area_tab, figure):
 
-    if selectedData:
-        a = [point["customdata"][0] for point in selectedData["points"]]
-        return "|".join(a)
+    ctx = dash.callback_context
+    triggerer = [x['prop_id'] for x in ctx.triggered]
+    logger.debug(f"set_filter_location triggered by {triggerer}")
+
+    ctx = dash.callback_context
+
+    # If the callback was triggered by a tab click reset the selection
+    if ctx.triggered[0]["prop_id"] == "area-map.value":
+        return "", "", area_tab
+
     else:
-        return ""
+        if selectedData:
+            selected_indexes = figure["data"][0]["selectedpoints"]
+            area_list = [point["customdata"][0] for point in selectedData["points"]]
+            logger.debug(f"selected area in map = {area_list}")
+            logger.debug(f"selected area in map with indexes = {selected_indexes}")
+            return (
+                "|".join(area_list),
+                "|".join(str(x) for x in selected_indexes),
+                area_tab,
+            )
+        else:
+            return "", "", area_tab
 
 
 @app.callback(
-    Output("data-selected", component_property="style"), [Input("area-map", "value"),]
+    Output("data-selected", component_property="style"),
+    [Input("filter", component_property="data-map-type")],
 )
 def hide_data_type(area_value):
+    ctx = dash.callback_context
+    triggerer = [x['prop_id'] for x in ctx.triggered]
+    logger.debug(f"hide_data_type triggered by {triggerer}")
     if area_value == "province":
-        return {"display":"None"}
+        return {"display": "None"}
     else:
-        return {"display":"block"}
+        return {"display": "block"}
+
+
+@app.callback(
+    Output("filter", component_property="data-map-datatype-selected"),
+    [Input("data-selected", "value"),Input("filter", component_property="data-map-type")],
+)
+def set_map_datatype(selectedData,map_type):
+
+    ctx = dash.callback_context
+    triggerer = [x['prop_id'] for x in ctx.triggered]
+    logger.debug(f"set_map_datatype triggered by {triggerer}")
+    
+    if map_type =="province":
+        return "totale_casi"
+    else:
+        return selectedData
 
 
 @app.callback(
     Output("filter", component_property="data-date"), [Input("date-slider", "value"),]
 )
-def set_filter_data(selectedData):
-
+def set_filter_date(selectedData):
+    ctx = dash.callback_context
+    triggerer = [x['prop_id'] for x in ctx.triggered]
+    logger.debug(f"set_filter_date triggered by {triggerer}")
     return selectedData
+
+
+""" @app.callback(
+    Output("filter","data-area-type"),
+    [Input("area-map", "value"),]
+)
+def set_map_type_filter(area_type):
+    #Sets "regioni" or "province" in the DOM so it can be read by other callbacks
+    return area_type, None """
+
+@app.callback(
+    Output("main-map", component_property="figure"),
+    [
+        Input("filter", component_property="data-date"),
+        Input("filter", "data-map-datatype-selected"),
+        Input("filter", component_property="data-map-type"),
+    ],
+    [State("filter", "data-area-index")],
+)
+def update_map(ordinal_date, data_selected, area_map, preselection):
+
+    if not ordinal_date:
+        return None
+    ctx = dash.callback_context
+    triggerer = [x['prop_id'] for x in ctx.triggered]
+    logger.debug(f"update_map triggered by {triggerer}")
+
+    giorno = date.fromordinal(ordinal_date)
+
+    # check if region or province map was requested
+    if area_map == "regioni":
+        filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
+        figure = get_regional_map(
+            filtered_df,
+            regions_map_json,
+            viridis_exp_scale,
+            data_selected,
+            metric_names[data_selected],
+            math.ceil(df_regioni[data_selected].max() + 1),
+        )
+    else:
+        filtered_df = df[df["data"].dt.date == giorno]
+        figure = get_provincial_map(
+            filtered_df,
+            province_map_json,
+            viridis_exp_scale,
+            math.ceil(df["totale_casi"].max() + 1),
+        )
+
+    if preselection:# and (triggerer in ["filter.data-date", "filter.data-map-datatype-selected"]) :
+        preselection_list = [str(x) for x in preselection.split("|")]
+        figure.data[0].selectedpoints = preselection_list
+        logger.debug(f"new_selection ->{figure.data[0].selectedpoints}")
+
+    logger.debug("\n")
+    return figure
+
+
+@app.callback(
+    [
+        Output(f"daily-{metric}-number", component_property="children")
+        for metric in metric_list
+    ],
+    [
+        Input("filter", component_property="data-area"),
+        Input("filter", component_property="data-date"),
+        Input("filter", component_property="data-map-type"),
+    ],
+)
+def update_big_numbers(area_string, ordinal_date, area_type):
+    
+    if not ordinal_date:
+        return [None for metric in metric_list]
+
+    ctx = dash.callback_context
+    logger.debug(f"update_big_numbers triggered by {ctx.triggered[0]['prop_id']}")
+
+    giorno = date.fromordinal(ordinal_date)
+
+    if area_type == "regioni":
+        filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
+        if area_string:
+            area_list = area_string.split("|")
+            filter_ = filtered_df["denominazione_regione"].isin(area_list)
+            filtered_df = filtered_df[filter_]
+        response_number = [f"{filtered_df[metric].sum():n}" for metric in metric_list]
+
+    else:
+        filtered_df = df[df["data"].dt.date == giorno]
+        if area_string:
+            area_list = area_string.split("|")
+            filter_ = filtered_df["NUTS3"].isin(area_list)
+            filtered_df = filtered_df[filter_]
+        response_number = [
+            f"{filtered_df[metric].sum():n}" if metric in filtered_df.columns else "N/A"
+            for metric in metric_list
+        ]
+
+    return response_number
 
 
 if __name__ == "__main__":
