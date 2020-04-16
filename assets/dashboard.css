@@ -1,58 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Quattrocento+Sans:wght@400;700&display=swap');
-body {font-family: 'Quattrocento Sans', sans-serif;}
+body {
+    font-family: 'Quattrocento Sans', sans-serif;
+}
 
 body,
 html {
     margin: 0;
 }
 
-#menu-bar{
+#menu-bar {
     /* height:9vh;
     padding:1vh 0;
- */ text-align:center;
-    font-size:2rem;
+ */
+    text-align: center;
+    font-size: 2rem;
 }
-#logo img{
-    height:7vh;
+
+#logo img {
+    height: 7vh;
 }
-#main-content{
-    height:75vh;
+
+#main-content {
+    height: 75vh;
 }
-#map-column{
+
+#map-column {
     text-align: center;
 }
-#main-map{
+
+#main-map {
     min-width: 100%;
-    height:60vh;
+    height: 60vh;
 }
-#date-slider{
+
+#date-slider {
     min-width: 90%;
-    padding:0 !important;
+    padding: 0 !important;
     margin: 10px auto 0 auto;
 }
 
 #graphs-column .dash-graph {
-    height: 30vh;
+    height: 25vh;
 }
 
 .dashboardContainer {
     border: 1px solid #bbb
 }
+
 .dashboardColumn {
     border: 1px solid #f00
 }
 
 .big-metric {
     flex-grow: 1;
-    width:80%;
-    text-align:center;
-    padding:5px;
+    width: 80%;
+    text-align: center;
+    padding: 5px;
     margin: 0 20px 10px 20px;
-    border:1px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
 .big-metric-number {

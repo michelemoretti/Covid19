@@ -274,12 +274,17 @@ app.layout = dfx.Grid(
                         dcc.Graph(
                             figure=get_tamponi_graph(df_regioni),
                             id="tamponi-graph",
-                            className="dashboardContainer",
+                            className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
                             figure=get_tamponi_graph(df_regioni),
                             id="other-graph",
-                            className="dashboardContainer",
+                            className="dashboardContainer dash-graph",
+                        ),
+                        dcc.Graph(
+                            figure=get_tamponi_graph(df_regioni),
+                            id="tamponi-graph2",
+                            className="dashboardContainer dash-graph",
                         ),
                     ],
                 ),
