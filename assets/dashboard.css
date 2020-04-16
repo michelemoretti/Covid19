@@ -21,7 +21,11 @@ html {
 }
 
 #main-content {
-    height: 75vh;
+    /* height: 75vh; */
+}
+
+#footer {
+    height: 18vh;
 }
 
 #map-column {

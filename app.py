@@ -290,6 +290,24 @@ app.layout = dfx.Grid(
                 ),
             ],
         ),
+        dfx.Row(
+            id="footer",
+            center="xs",
+            children=[
+                dfx.Col(
+                    xs=12,
+                    lg=3,
+                    id="Notes",
+                    className="dashboardContainer",
+                ),
+                dfx.Col(
+                    xs=12,
+                    lg=9,
+                    id="License",
+                    className="dashboardContainer",
+                ),
+            ],
+        ),
         html.Div(id="filter", style={"display": "none"}),
     ],
 )
