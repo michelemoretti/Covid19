@@ -39,6 +39,7 @@ logger.setLevel(logging.DEBUG)
 app = dash.Dash(__name__)  # , external_stylesheets=external_stylesheets)
 
 df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
+notes = pd.read_csv("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/note/dpc-covid19-ita-note-it.csv")
 province_map_json, regions_map_json = get_map_json()
 regions, provinces = get_areas(df)
 giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
@@ -295,15 +296,23 @@ app.layout = dfx.Grid(
             center="xs",
             children=[
                 dfx.Col(
+                    [html.Div(
+
+                    )],
                     xs=12,
                     lg=3,
                     id="Notes",
                     className="dashboardContainer",
                 ),
                 dfx.Col(
+                    [html.Div(
+                        children=[],
+                        id="license"
+
+                    )],
                     xs=12,
                     lg=9,
-                    id="License",
+                    id="licenseColumn",
                     className="dashboardContainer",
                 ),
             ],
