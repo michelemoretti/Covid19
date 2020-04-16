@@ -7,9 +7,9 @@ html {
 }
 
 #menu-bar{
-    height:9vh;
+    /* height:9vh;
     padding:1vh 0;
-    text-align:center;
+ */ text-align:center;
     font-size:2rem;
 }
 #logo img{

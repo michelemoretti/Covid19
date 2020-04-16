@@ -166,32 +166,56 @@ app.layout = dfx.Grid(
                             dcc.Tabs(
                                 id="area-map",
                                 value="regioni",
+                                parent_className='bottom-tabs',
+                                className='bottom-tabs-container',
                                 children=[
-                                    dcc.Tab(label="Regioni", value="regioni"),
-                                    dcc.Tab(label="Province", value="province"),
+                                    dcc.Tab(label="Regioni", value="regioni",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
+                                    dcc.Tab(label="Province", value="province",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
                                 ],
-                            )
+                            ),
+                            center="xs",
                         ),
                         dfx.Row(
                             dcc.Tabs(
                                 id="data-selected",
                                 value="totale_casi",
+                                parent_className='bottom-tabs',
+                                className='bottom-tabs-container',
                                 # content_style={"padding":"7px"},
                                 children=[
-                                    dcc.Tab(label="Confermati", value="totale_casi"),
-                                    dcc.Tab(label="Tamponi", value="tamponi"),
-                                    dcc.Tab(label="Deceduti", value="deceduti"),
-                                    dcc.Tab(label="Guariti", value="dimessi_guariti"),
-                                    dcc.Tab(label="Positivi", value="totale_positivi"),
+                                    dcc.Tab(label="Confermati", value="totale_casi",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
+                                    dcc.Tab(label="Tamponi", value="tamponi",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
+                                    dcc.Tab(label="Deceduti", value="deceduti",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
+                                    dcc.Tab(label="Guariti", value="dimessi_guariti",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
+                                    dcc.Tab(label="Positivi", value="totale_positivi",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected'),
                                     dcc.Tab(
                                         label="Ospedalizzati",
                                         value="totale_ospedalizzati",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected',
                                     ),
                                     dcc.Tab(
                                         label="Terapia Int.", value="terapia_intensiva",
+                                        className='bottom-tab',
+                                        selected_className='bottom-tab--selected',
                                     ),
                                 ],
-                            )
+                            ),
+                            center="xs",
                         ),
                         dfx.Row(
                             dcc.Slider(
@@ -238,17 +262,14 @@ app.layout = dfx.Grid(
 )
 
 
-
-
-
 @app.callback(
     Output("tamponi-graph", component_property="figure"),
     [Input("filter", component_property="data-area"),],
 )
 def update_area_graphs(area_string):
-    
+
     ctx = dash.callback_context
-    triggerer = [x['prop_id'] for x in ctx.triggered]
+    triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"update_area_graphs triggered by {triggerer}")
 
     if area_string:
@@ -273,7 +294,7 @@ def update_area_graphs(area_string):
 def set_filter_location(selectedData, area_tab, figure):
 
     ctx = dash.callback_context
-    triggerer = [x['prop_id'] for x in ctx.triggered]
+    triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"set_filter_location triggered by {triggerer}")
 
     ctx = dash.callback_context
@@ -303,25 +324,28 @@ def set_filter_location(selectedData, area_tab, figure):
 )
 def hide_data_type(area_value):
     ctx = dash.callback_context
-    triggerer = [x['prop_id'] for x in ctx.triggered]
+    triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"hide_data_type triggered by {triggerer}")
     if area_value == "province":
         return {"display": "None"}
     else:
-        return {"display": "block"}
+        return {"display": ""}
 
 
 @app.callback(
     Output("filter", component_property="data-map-datatype-selected"),
-    [Input("data-selected", "value"),Input("filter", component_property="data-map-type")],
+    [
+        Input("data-selected", "value"),
+        Input("filter", component_property="data-map-type"),
+    ],
 )
-def set_map_datatype(selectedData,map_type):
+def set_map_datatype(selectedData, map_type):
 
     ctx = dash.callback_context
-    triggerer = [x['prop_id'] for x in ctx.triggered]
+    triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"set_map_datatype triggered by {triggerer}")
-    
-    if map_type =="province":
+
+    if map_type == "province":
         return "totale_casi"
     else:
         return selectedData
@@ -332,7 +356,7 @@ def set_map_datatype(selectedData,map_type):
 )
 def set_filter_date(selectedData):
     ctx = dash.callback_context
-    triggerer = [x['prop_id'] for x in ctx.triggered]
+    triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"set_filter_date triggered by {triggerer}")
     return selectedData
 
@@ -344,6 +368,7 @@ def set_filter_date(selectedData):
 def set_map_type_filter(area_type):
     #Sets "regioni" or "province" in the DOM so it can be read by other callbacks
     return area_type, None """
+
 
 @app.callback(
     Output("main-map", component_property="figure"),
@@ -359,7 +384,7 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
     if not ordinal_date:
         return None
     ctx = dash.callback_context
-    triggerer = [x['prop_id'] for x in ctx.triggered]
+    triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"update_map triggered by {triggerer}")
 
     giorno = date.fromordinal(ordinal_date)
@@ -384,7 +409,9 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
             math.ceil(df["totale_casi"].max() + 1),
         )
 
-    if preselection:# and (triggerer in ["filter.data-date", "filter.data-map-datatype-selected"]) :
+    if (
+        preselection
+    ):  # and (triggerer in ["filter.data-date", "filter.data-map-datatype-selected"]) :
         preselection_list = [str(x) for x in preselection.split("|")]
         figure.data[0].selectedpoints = preselection_list
         logger.debug(f"new_selection ->{figure.data[0].selectedpoints}")
@@ -405,7 +432,7 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
     ],
 )
 def update_big_numbers(area_string, ordinal_date, area_type):
-    
+
     if not ordinal_date:
         return [None for metric in metric_list]
 
