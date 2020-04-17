@@ -27,6 +27,7 @@ html {
 
 #footer {
     height: 18vh;
+    font-family: 'Fira Mono','Roboto Mono', sans-serif;
 }
 
 #map-column {
@@ -78,18 +79,24 @@ html {
     font-size: 2vh;
 }
 
+
 #notes{
-    font-size: 0.6rem; 
+    font-size: 0.7rem; 
     height: 18vh;
-    font-family: 'Fira Mono','Roboto Mono', sans-serif;
+    
     overflow-y: hidden;  
 }
-#notes h4{
+#footer h4{ 
     font-size: 1rem; 
     margin: 0.5rem 0; 
 }
 #notes-list{
-    text-align: justify;
+    text-align: left;
     overflow-y: scroll; 
     height: 13vh;
+}
+
+#license{
+    text-align:left;
+    font-size: 0.7rem;
 }

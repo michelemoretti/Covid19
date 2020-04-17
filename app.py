@@ -4,6 +4,7 @@ import math
 import os
 from datetime import date, datetime
 import locale
+import markdown
 
 import dash
 import dash_core_components as dcc
@@ -39,8 +40,9 @@ df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
 df_notes = pd.read_csv(
     "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/note/dpc-covid19-ita-note-it.csv"
 )
-df_notes["data"] = pd.to_datetime(df_notes["data"],)# format='%d%b%Y:%H:%M:%S.%f')
+df_notes["data"] = pd.to_datetime(df_notes["data"],)  # format='%d%b%Y:%H:%M:%S.%f')
 
+license_md = markdown.markdown(open("LICENSE.md").read())
 
 app = dash.Dash(__name__)  # , external_stylesheets=external_stylesheets)
 
@@ -301,14 +303,27 @@ app.layout = dfx.Grid(
             center="xs",
             children=[
                 dfx.Col(
-                    [html.Div([html.H4("Note"),html.Ul([], id="notes-list",)], id="notes",)],
+                    [
+                        html.Div(
+                            [html.H4("Note"), html.Ul([], id="notes-list",)],
+                            id="notes",
+                        )
+                    ],
                     xs=12,
                     lg=3,
                     id="notes-column",
                     className="dashboardContainer",
                 ),
                 dfx.Col(
-                    [html.Div(children=[], id="license")],
+                    [
+                        html.Div(
+                            children=[
+                                html.H4("Licenza d'uso"),
+                                dcc.Markdown([license_md], dangerously_allow_html=True)
+                            ],
+                            id="license",
+                        )
+                    ],
                     xs=12,
                     lg=9,
                     id="licenseColumn",
@@ -540,7 +555,9 @@ def set_notes(map_type):
     return [
         html.Li(f"{day} | {region} - {warning} ")
         for day, warning, region in zip(
-            filtered_notes["data"].dt.date, filtered_notes["avviso"], filtered_notes[filter_area]
+            filtered_notes["data"].dt.date,
+            filtered_notes["avviso"],
+            filtered_notes[filter_area],
         )
     ]
 
