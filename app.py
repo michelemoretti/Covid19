@@ -1,26 +1,28 @@
 import json
+import locale
 import logging
 import math
 import os
 from datetime import date, datetime
-import locale
-import markdown
 
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
-import dash_html_components as html
 import dash_flexbox_grid as dfx
-import sd_material_ui as dui
+import dash_html_components as html
+import markdown
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
 
-from figures import get_regional_map, get_provincial_map, get_tamponi_graph
+from figures import get_provincial_map, get_regional_map, get_tamponi_graph
 from utils import (
     calcolo_giorni_da_min_positivi,
     calculate_line,
     exp_viridis,
+    filter_dates,
     get_areas,
     get_dataset,
     get_map_json,
@@ -28,7 +30,6 @@ from utils import (
     mean_absolute_percentage_error,
     pretty_colors,
     viridis,
-    filter_dates,
 )
 
 locale.setlocale(locale.LC_ALL, "")
@@ -44,8 +45,9 @@ df_notes["data"] = pd.to_datetime(df_notes["data"],)  # format='%d%b%Y:%H:%M:%S.
 
 license_md = markdown.markdown(open("LICENSE.md").read())
 
-app = dash.Dash(__name__)  # , external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])  # , external_stylesheets=external_stylesheets)
 
+logger.error(dbc.themes.BOOTSTRAP)
 
 province_map_json, regions_map_json = get_map_json()
 regions, provinces = get_areas(df)
@@ -319,7 +321,7 @@ app.layout = dfx.Grid(
                         html.Div(
                             children=[
                                 html.H4("Licenza d'uso"),
-                                dcc.Markdown([license_md], dangerously_allow_html=True)
+                                dcc.Markdown([license_md], dangerously_allow_html=True),
                             ],
                             id="license",
                         )
@@ -332,6 +334,17 @@ app.layout = dfx.Grid(
             ],
         ),
         html.Div(id="filter", style={"display": "none"}),
+        html.Div(
+            [
+                dbc.Tooltip(
+                    f"Contiene anche i casi guariti o già deceduti",
+                    target=f"daily-totale_casi-number",
+                    placement="auto",
+                )
+            ],
+            id="tooltips-container",
+            style={"display": "none"},
+        ),
     ],
 )
 
@@ -542,10 +555,10 @@ def update_big_numbers(area_string, ordinal_date, area_type):
     [Input("filter", component_property="data-map-type")],
 )
 def set_notes(map_type):
-    
+
     if map_type == None:
-        #Page Loading
-        return[]
+        # Page Loading
+        return []
     if map_type == "regioni":
         filtered_notes = df_notes[df_notes["dataset"] == "dati-regioni"]
         filter_area = "regione"
