@@ -542,7 +542,10 @@ def update_big_numbers(area_string, ordinal_date, area_type):
     [Input("filter", component_property="data-map-type")],
 )
 def set_notes(map_type):
-
+    
+    if map_type == None:
+        #Page Loading
+        return[]
     if map_type == "regioni":
         filtered_notes = df_notes[df_notes["dataset"] == "dati-regioni"]
         filter_area = "regione"
