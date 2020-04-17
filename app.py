@@ -35,11 +35,16 @@ logger = logging.getLogger("dash_application")
 logger.setLevel(logging.DEBUG)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
+df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
+df_notes = pd.read_csv(
+    "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/note/dpc-covid19-ita-note-it.csv"
+)
+df_notes["data"] = pd.to_datetime(df_notes["data"],)# format='%d%b%Y:%H:%M:%S.%f')
+
 
 app = dash.Dash(__name__)  # , external_stylesheets=external_stylesheets)
 
-df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
-notes = pd.read_csv("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/note/dpc-covid19-ita-note-it.csv")
+
 province_map_json, regions_map_json = get_map_json()
 regions, provinces = get_areas(df)
 giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
@@ -296,20 +301,14 @@ app.layout = dfx.Grid(
             center="xs",
             children=[
                 dfx.Col(
-                    [html.Div(
-
-                    )],
+                    [html.Div([html.H4("Note"),html.Ul([], id="notes-list",)], id="notes",)],
                     xs=12,
                     lg=3,
-                    id="Notes",
+                    id="notes-column",
                     className="dashboardContainer",
                 ),
                 dfx.Col(
-                    [html.Div(
-                        children=[],
-                        id="license"
-
-                    )],
+                    [html.Div(children=[], id="license")],
                     xs=12,
                     lg=9,
                     id="licenseColumn",
@@ -521,6 +520,29 @@ def update_big_numbers(area_string, ordinal_date, area_type):
         ]
 
     return response_number
+
+
+@app.callback(
+    Output("notes-list", component_property="children"),
+    [Input("filter", component_property="data-map-type")],
+)
+def set_notes(map_type):
+
+    if map_type == "regioni":
+        filtered_notes = df_notes[df_notes["dataset"] == "dati-regioni"]
+        filter_area = "regione"
+    elif map_type == "province":
+        filtered_notes = df_notes[df_notes["dataset"] == "dati-province"]
+        filter_area = "provincia"
+    else:
+        raise Exception(f"maptype {map_type} not in ['regioni','province']")
+
+    return [
+        html.Li(f"{day} | {region} - {warning} ")
+        for day, warning, region in zip(
+            filtered_notes["data"].dt.date, filtered_notes["avviso"], filtered_notes[filter_area]
+        )
+    ]
 
 
 if __name__ == "__main__":
