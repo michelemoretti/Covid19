@@ -80,6 +80,11 @@ html {
 }
 
 
+#footer > div{
+    height: 18vh;
+    overflow-y:hidden;
+}
+
 #notes{
     font-size: 0.7rem; 
     height: 18vh;
@@ -97,6 +102,7 @@ html {
 }
 
 #license{
+    height: 18vh;
     text-align:left;
     font-size: 0.7rem;
 }
