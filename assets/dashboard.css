@@ -17,6 +17,10 @@ html {
     font-size: 2rem;
 }
 
+.toggle{
+    display:inline-block;
+}
+
 #logo img {
     height: 7vh;
 }

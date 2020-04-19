@@ -144,7 +144,14 @@ app.layout = dfx.Grid(
                                     label="Aggrega grafici",
                                     labelPosition="bottom",
                                     on=False,
-                                    style={"display":None}
+                                    className="toggle",
+                                ),
+                                daq.BooleanSwitch(
+                                    id="logarithmic-toggle",
+                                    label="Assey Logaritmico",
+                                    labelPosition="bottom",
+                                    on=False,
+                                    className="toggle",
                                 )
                             ],
                             id="info-tooltips",
@@ -373,9 +380,10 @@ app.layout = dfx.Grid(
     [
         Input("filter", component_property="data-area"),
         Input("filter", component_property="data-aggregation"),
+        Input("logarithmic-toggle",component_property="on")
     ],
 )
-def update_area_graphs(area_string,aggregation):
+def update_area_graphs(area_string,aggregation,logy):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
@@ -386,9 +394,9 @@ def update_area_graphs(area_string,aggregation):
         filter_ = df_regioni["denominazione_regione"].isin(area_list)
         filtered_data = df_regioni[filter_]
 
-        return get_tamponi_graph(filtered_data,aggregation),get_tamponi_graph(filtered_data,aggregation),get_tamponi_graph(filtered_data,aggregation)
+        return get_tamponi_graph(filtered_data,aggregation,logy),get_tamponi_graph(filtered_data,aggregation,logy),get_tamponi_graph(filtered_data,aggregation,logy)
     else:
-        return get_tamponi_graph(df_regioni,True),get_tamponi_graph(df_regioni,True),get_tamponi_graph(df_regioni,True)
+        return get_tamponi_graph(df_regioni,True,logy),get_tamponi_graph(df_regioni,True,logy),get_tamponi_graph(df_regioni,True,logy)
 
 
 @app.callback(
@@ -616,7 +624,7 @@ def enable_aggregation(areas_string):
     if areas_string:
         area_list = areas_string.split("|") 
         if len(area_list)>1:
-            return {"display":"block"}
+            return {"display":""}
     
     return {"display":"None"}
 

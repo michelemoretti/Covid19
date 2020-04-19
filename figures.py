@@ -87,7 +87,7 @@ def get_provincial_map(df_province,province_map_json,cmap,max_scale_value):
     )
     return fig
 
-def get_tamponi_graph(filtered_data,aggregate):
+def get_tamponi_graph(filtered_data,aggregate=True,logy=True):
     fig = go.Figure()
 
     if aggregate:
@@ -121,4 +121,9 @@ def get_tamponi_graph(filtered_data,aggregate):
                                 text=(regional_data["totale_casi"]/regional_data["tamponi"]) * 100
                                 ))
     fig.update_layout(temporal_graph_layout)
+    
+    if logy:
+        fig.update_layout({"yaxis":{"type":"log"}})
+    else:
+        fig.update_layout({"yaxis":{"type":"linear"}})
     return fig
