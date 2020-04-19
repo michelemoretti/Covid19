@@ -8,6 +8,7 @@ from datetime import date, datetime
 import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
+import dash_daq as daq
 import dash_flexbox_grid as dfx
 import dash_html_components as html
 import markdown
@@ -45,7 +46,9 @@ df_notes["data"] = pd.to_datetime(df_notes["data"],)  # format='%d%b%Y:%H:%M:%S.
 
 license_md = markdown.markdown(open("LICENSE.md").read())
 
-app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])  # , external_stylesheets=external_stylesheets)
+app = dash.Dash(
+    __name__, external_stylesheets=[dbc.themes.BOOTSTRAP]
+)  # , external_stylesheets=external_stylesheets)
 
 logger.error(dbc.themes.BOOTSTRAP)
 
@@ -71,7 +74,6 @@ metric_list = [
     "dimessi_guariti",
     "terapia_intensiva",
 ]
-
 
 def get_big_numbers(metrics_list, area="IT", day=datetime.today):
 
@@ -134,7 +136,19 @@ app.layout = dfx.Grid(
                 dfx.Col(
                     xs=12,
                     lg=3,
-                    children=[html.Div("info-tooltips", id="info-tooltips")],
+                    children=[
+                        html.Div(
+                            [
+                                daq.BooleanSwitch(
+                                    id="aggregation-toggle",
+                                    label="Aggrega grafici",
+                                    labelPosition="bottom",
+                                    on=False,
+                                )
+                            ],
+                            id="info-tooltips",
+                        )
+                    ],
                     className="menuItem",
                 ),
             ],
@@ -282,18 +296,18 @@ app.layout = dfx.Grid(
                     lg=3,
                     children=[
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni),
-                            id="tamponi-graph",
+                            figure=get_tamponi_graph(df_regioni,True),
+                            id="graph1",
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni),
-                            id="other-graph",
+                            figure=get_tamponi_graph(df_regioni,True),
+                            id="graph2",
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni),
-                            id="tamponi-graph2",
+                            figure=get_tamponi_graph(df_regioni,True),
+                            id="graph3",
                             className="dashboardContainer dash-graph",
                         ),
                     ],
@@ -350,10 +364,17 @@ app.layout = dfx.Grid(
 
 
 @app.callback(
-    Output("tamponi-graph", component_property="figure"),
-    [Input("filter", component_property="data-area"),],
+    [
+        Output("graph1", component_property="figure"),
+        Output("graph2", component_property="figure"),
+        Output("graph3", component_property="figure"),
+    ],
+    [
+        Input("filter", component_property="data-area"),
+        Input("filter", component_property="data-aggregation"),
+    ],
 )
-def update_area_graphs(area_string):
+def update_area_graphs(area_string,aggregation):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
@@ -364,9 +385,9 @@ def update_area_graphs(area_string):
         filter_ = df_regioni["denominazione_regione"].isin(area_list)
         filtered_data = df_regioni[filter_]
 
-        return get_tamponi_graph(filtered_data)
+        return get_tamponi_graph(filtered_data,aggregation),get_tamponi_graph(filtered_data,aggregation),get_tamponi_graph(filtered_data,aggregation)
     else:
-        return get_tamponi_graph(df_regioni)
+        return get_tamponi_graph(df_regioni,True),get_tamponi_graph(df_regioni,True),get_tamponi_graph(df_regioni,True)
 
 
 @app.callback(
@@ -576,6 +597,14 @@ def set_notes(map_type):
             filtered_notes[filter_area],
         )
     ]
+
+
+@app.callback(
+    Output("filter", component_property="data-aggregation"),
+    [Input("aggregation-toggle", component_property="on")],
+)
+def set_aggregation(value):
+    return value
 
 
 if __name__ == "__main__":

@@ -87,26 +87,38 @@ def get_provincial_map(df_province,province_map_json,cmap,max_scale_value):
     )
     return fig
 
-def get_tamponi_graph(filtered_data):
+def get_tamponi_graph(filtered_data,aggregate):
     fig = go.Figure()
 
-    summed_data_by_date = filtered_data.sort_values("data").groupby("data").sum()
-    
-    fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
-                            y=summed_data_by_date["totale_casi"], 
-                            fill='tozeroy',
-                            mode='lines+markers',
-                            name="Totale Casi Positivi",
-                            hovertemplate = "<b>%{x}</b><br>Totale casi positivi: %{y}<br>Percentuale casi positivi: %{text:.2f}%<extra></extra>",
-                            text=(summed_data_by_date["totale_casi"]/summed_data_by_date["tamponi"]) * 100
-                            ))
-    fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
-                            y=summed_data_by_date["tamponi"], 
-                            fill='tonexty',
-                            mode='lines+markers',
-                            name="Totale Tamponi",
-                            hovertemplate = "<b>%{x}</b><br>Totale tamponi effettuati: %{y}<br>Percentuale casi positivi: %{text:.2f}%<extra></extra>",
-                            text=(summed_data_by_date["totale_casi"]/summed_data_by_date["tamponi"]) * 100
-                            ))
+    if aggregate:
+        summed_data_by_date = filtered_data.sort_values("data").groupby("data").sum()
+        
+        fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=summed_data_by_date["totale_casi"], 
+                                fill='tozeroy',
+                                mode='lines+markers',
+                                name="Totale Casi Positivi",
+                                hovertemplate = "<b>%{x}</b><br>Totale casi positivi: %{y}<br>Percentuale casi positivi: %{text:.2f}%<extra></extra>",
+                                text=(summed_data_by_date["totale_casi"]/summed_data_by_date["tamponi"]) * 100
+                                ))
+        fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=summed_data_by_date["tamponi"], 
+                                fill='tonexty',
+                                mode='lines+markers',
+                                name="Totale Tamponi",
+                                hovertemplate = "<b>%{x}</b><br>Totale tamponi effettuati: %{y}<br>Percentuale casi positivi: %{text:.2f}%<extra></extra>",
+                                text=(summed_data_by_date["totale_casi"]/summed_data_by_date["tamponi"]) * 100
+                                ))
+    else:
+        for regione in filtered_data["denominazione_regione"].unique():
+            regional_data = filtered_data[filtered_data["denominazione_regione"] == regione]
+            fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=regional_data["tamponi"], 
+                                #fill='tonexty',
+                                mode='lines',
+                                name=regione,
+                                hovertemplate = "<b>"+regione+"</b><br><b>%{x}</b><br>Totale tamponi effettuati : %{y}<br>Percentuale casi positivi: %{text:.2f}%<extra></extra>",
+                                text=(regional_data["totale_casi"]/regional_data["tamponi"]) * 100
+                                ))
     fig.update_layout(temporal_graph_layout)
     return fig
