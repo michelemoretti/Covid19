@@ -144,6 +144,7 @@ app.layout = dfx.Grid(
                                     label="Aggrega grafici",
                                     labelPosition="bottom",
                                     on=False,
+                                    style={"display":None}
                                 )
                             ],
                             id="info-tooltips",
@@ -606,6 +607,18 @@ def set_notes(map_type):
 def set_aggregation(value):
     return value
 
+@app.callback(
+    Output("aggregation-toggle",component_property="style"),
+    [Input("filter","data-area")]
+)
+def enable_aggregation(areas_string):
+
+    if areas_string:
+        area_list = areas_string.split("|") 
+        if len(area_list)>1:
+            return {"display":"block"}
+    
+    return {"display":"None"}
 
 if __name__ == "__main__":
     app.run_server(debug=True)
