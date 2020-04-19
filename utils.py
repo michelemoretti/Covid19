@@ -325,4 +325,4 @@ def ISTAT_return_filtered_series(df,selected_column:str,aggregate=None,selected_
     return a
 
 def filter_dates(dates,n):
-    return dates[::math.ceil(len(dates)/n)]
+    return np.append(dates[:-math.ceil(len(dates)/n-1):math.ceil(len(dates)/n)],dates[-1])
