@@ -339,7 +339,7 @@ app.layout = dfx.Grid(
                 dbc.Tooltip(
                     f"Contiene anche i casi guariti o già deceduti",
                     target=f"daily-totale_casi-number",
-                    placement="auto",
+                    placement="right",
                 )
             ],
             id="tooltips-container",

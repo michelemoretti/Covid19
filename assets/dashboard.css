@@ -49,12 +49,10 @@ html {
     height: 25vh;
 }
 
-.dashboardContainer {
-    border: 1px solid #bbb
-}
+
 
 .dashboardColumn {
-    border: 1px solid #f00
+    /* border: 1px solid #f00 */
 }
 
 .big-metric {
@@ -73,6 +71,7 @@ html {
 .big-metric-number {
     font-weight: 800;
     font-size: 6vh;
+    line-height: normal !important;
 }
 
 .big-metric-label {
