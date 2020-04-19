@@ -170,7 +170,7 @@ app.layout = dfx.Grid(
                     id="map-column",
                     className="dashboardColumn",
                     xs=12,
-                    lg=7,
+                    lg=5,
                     children=[
                         dfx.Row(
                             dcc.Graph(
@@ -294,7 +294,7 @@ app.layout = dfx.Grid(
                     id="graphs-column",
                     className="dashboardColumn",
                     xs=12,
-                    lg=3,
+                    lg=5,
                     children=[
                         dcc.Graph(
                             figure=get_tamponi_graph(df_regioni,True),
