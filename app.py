@@ -1,3 +1,4 @@
+import importlib
 import json
 import locale
 import logging
@@ -72,13 +73,17 @@ metric_list = [
     "terapia_intensiva",
 ]
 
-#@TODO Caching
-cache = Cache(app.server, config={
-    # try 'filesystem' if you don't want to setup redis
-    'CACHE_TYPE': 'filesystem',
-    'CACHE_DIR': 'cache-directory',
-    #'CACHE_REDIS_URL': os.environ.get('REDIS_URL', '')
-})
+
+redis_found = importlib.util.find_spec("redis_connection")
+
+if redis_found:
+    from redis_connection import config as cache_config
+else:
+    cache_config = {
+        'CACHE_TYPE': 'filesystem',
+        'CACHE_DIR': 'cache-directory',
+    }
+cache = Cache(app.server, config=cache_config)
 
 def get_big_numbers(metrics_list, area="IT", day=datetime.today):
 
