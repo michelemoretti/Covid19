@@ -73,7 +73,7 @@ intro_text = """
 
 logo_html = "<p style='text-align: center;'><a target='_blank' href='https://www.neurality.it' target='_blank' rel='noopener noreferrer'><img width='100px'alt='Neurality Logo' src='http://neurality.it/images/logo_small_black.png'></a></p>"
 subtitle_html = "<h2 style='text-align: center;color: rgb(246, 51, 102);'><a target='_blank' href='https://github.com/pcm-dpc/COVID-19' target='_blank' rel='noopener noreferrer' style='color: rgb(246, 51, 102);'>Covid19 Data Analysis</a></h2>"
-#st.markdown(hide_menu_style, unsafe_allow_html=True)
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 st.markdown(styling, unsafe_allow_html=True)
 st.write('<style>div.Widget.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
