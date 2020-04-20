@@ -195,7 +195,7 @@ def get_variable_graph(filtered_data,aggregate,logy=False,datatype="totale_casi"
                 name=titles[datatype],
                 
                 fill='tozeroy',
-                hovertemplate = "<b>%{x}</b><br><b>"+titles[datatype]+": %{y}</b><br><b>Percentuale "+titles[datatype]+" sulla popolazione: %{text:.2f}%</b><extra></extra>",
+                hovertemplate = "<b>%{x}</b><br><b>"+titles[datatype]+": %{y}</b><br><b>Percentuale "+titles[datatype]+" sulla popolazione: %{text:.3f}%</b><extra></extra>",
                 text=100*aggregated_data[datatype]/aggregated_data["Popolazione_Sesso_totale"],
             )
         )
