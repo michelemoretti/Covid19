@@ -106,7 +106,7 @@ def get_big_numbers(metrics_list, area="IT", day=datetime.today):
                                 className="big-metric-label",
                             ),
                         ],
-                        id=f"daily_{metric}",
+                        id=f"daily-{metric}",
                         className="big-metric",
                     )
                 ],
@@ -178,6 +178,7 @@ app.layout = dfx.Grid(
         dfx.Row(
             id="main-content",
             center="xs",
+            middle="xs",
             children=[
                 dfx.Col(
                     id="numbers",
@@ -596,6 +597,18 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
     logger.debug("\n")
     return figure
 
+
+@app.callback(
+    [Output(f"daily-{metric}", component_property="hidden")
+        for metric in metric_list],
+    [Input("filter", component_property="data-map-type")],
+)
+def hide_numbers(data_map_type):
+
+    if data_map_type=="province":
+        return [True if metric not in ["totale_casi"] else False for metric in metric_list] 
+    else:
+        return [False for metric in metric_list] 
 
 @app.callback(
     [
