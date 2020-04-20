@@ -24,8 +24,14 @@ html {
 
 .toggle{
     display:inline-block;
+    margin-right:10px;
 }
 
+
+
+#info-tooltips{
+    text-align: center;
+}
 #logo img {
     height: 6vh;
     margin: 0.5vh;
@@ -114,4 +120,10 @@ html {
     height: 18vh;
     text-align:left;
     font-size: 0.7rem;
+}
+
+@media only screen and (min-width: 960px){
+    #info-tooltips{
+        text-align: end;
+    }
 }

@@ -15,10 +15,17 @@ import markdown
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
 
-from figures import get_provincial_map, get_regional_map, get_tamponi_graph
+from figures import (
+    get_positive_tests_ratio_graph,
+    get_provincial_map,
+    get_regional_map,
+    get_tamponi_graph,
+    get_growth_rate_graph,
+)
 from utils import (
     calcolo_giorni_da_min_positivi,
     calculate_line,
@@ -387,29 +394,60 @@ app.layout = dfx.Grid(
         Input("filter", component_property="data-aggregation"),
         Input("logarithmic-toggle", component_property="on"),
     ],
+    [State("filter", component_property="data-map-type")],
 )
-def update_area_graphs(area_string, aggregation, logy):
+def update_area_graphs(area_string, aggregation, logy, map_type):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"update_area_graphs triggered by {triggerer}")
 
-    if area_string:
-        area_list = area_string.split("|")
-        filter_ = df_regioni["denominazione_regione"].isin(area_list)
-        filtered_data = df_regioni[filter_]
+    if map_type == "regioni":
 
-        return (
-            get_tamponi_graph(filtered_data, aggregation, logy),
-            get_tamponi_graph(filtered_data, aggregation, logy),
-            get_tamponi_graph(filtered_data, aggregation, logy),
-        )
+        if area_string:
+
+            area_list = area_string.split("|")
+            filter_ = df_regioni["denominazione_regione"].isin(area_list)
+            filtered_data = df_regioni[filter_]
+
+            return (
+                get_tamponi_graph(filtered_data, aggregation, logy),
+                get_positive_tests_ratio_graph(filtered_data, aggregation),
+                get_growth_rate_graph(filtered_data, aggregation),
+            )
+
+        else:
+
+            return (
+                get_tamponi_graph(df_regioni, aggregate=True, logy=logy),
+                get_positive_tests_ratio_graph(df_regioni, aggregate=True),
+                get_growth_rate_graph(df_regioni, aggregate=True),
+            )
+
+    elif map_type == "province":
+        if area_string:
+
+            area_list = area_string.split("|")
+            filter_ = df["NUTS3"].isin(area_list)
+            filtered_data = df[filter_]
+
+            return (
+                get_growth_rate_graph(filtered_data, aggregation),
+                get_growth_rate_graph(filtered_data, aggregation),
+                get_growth_rate_graph(filtered_data, aggregation),
+            )
+
+        else:
+
+            return (
+                get_growth_rate_graph(df_regioni, aggregate=True),
+                get_growth_rate_graph(df_regioni, aggregate=True),
+                get_growth_rate_graph(df_regioni, aggregate=True),
+            )
+    elif map_type == None:
+        return go.Figure(), go.Figure(), go.Figure()
     else:
-        return (
-            get_tamponi_graph(df_regioni, True, logy),
-            get_tamponi_graph(df_regioni, True, logy),
-            get_tamponi_graph(df_regioni, True, logy),
-        )
+        raise Exception(f"incorrect map-type provided (received '{map_type}')")
 
 
 @app.callback(

@@ -23,10 +23,6 @@ def format_df(df):
     df = df[(df.T != 0).any()]
     return df
     
-def get_areas(df):
-    regions = df["denominazione_regione"].unique()
-    provinces = df["denominazione_provincia"].unique()
-    return regions,provinces
 
 def calculate_line(x,slope,intercept):
     y= x*slope + intercept

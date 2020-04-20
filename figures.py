@@ -14,10 +14,8 @@ logger = logging.getLogger('__main__')
 
 temporal_graph_layout={
         "margin":dict(l=10, r=10, t=40, b=10),
-        "title_text":'Totale Tamponi/Totale Casi Positivi',
         "xaxis" : {"calendar":"gregorian",
                 "nticks":15},
-        "yaxis" : {"tickformat":",d"},
         "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},
         "title" :{"xanchor":"center", "x":0.5}        
 }
@@ -121,9 +119,94 @@ def get_tamponi_graph(filtered_data,aggregate=True,logy=True):
                                 text=(regional_data["totale_casi"]/regional_data["tamponi"]) * 100
                                 ))
     fig.update_layout(temporal_graph_layout)
-    
+    fig.update_layout({"title_text":'Totale Tamponi/Totale Casi Positivi',"yaxis" : {"tickformat":",d"},})
     if logy:
         fig.update_layout({"yaxis":{"type":"log"}})
     else:
         fig.update_layout({"yaxis":{"type":"linear"}})
+    return fig
+
+def get_positive_tests_ratio_graph(filtered_data,aggregate=True):
+    fig = go.Figure()
+
+    if aggregate:
+
+        aggregated_data = filtered_data.sort_values("data").groupby("data").sum()
+        y = aggregated_data["totale_casi"]/aggregated_data["tamponi"]
+        
+        fig.add_trace(go.Scatter(x=aggregated_data.index.date, 
+                                y=y,
+                                mode='lines',
+                                name="\% Tamponi Positivi",
+                                
+                                fill='tozeroy',
+                                hovertemplate = "<b>%{x}</b><br><b>Percentuale tamponi positivi: %{text:.2f}%</b><extra></extra>",
+                                text=y*100))
+
+    else:
+
+        for region_name in filtered_data['denominazione_regione'].unique():
+            region = filtered_data[filtered_data["denominazione_regione"] == region_name]
+            fig.add_trace(go.Scatter(x=region["data"].dt.date, 
+                                    y=region["totale_casi/tamponi"],
+                                    mode='lines',
+                                    name=region_name,
+                                    
+                                    #fill='tozeroy',
+                                    hovertemplate = "<b>"+region_name+"</b><br>"+"%{x}</b><br><b>Percentuale tamponi positivi: %{text:.2f}%<extra></extra>",
+                                    text=region["totale_casi/tamponi"]*100))
+    
+    fig.update_layout(temporal_graph_layout)
+    fig.update_layout(
+        title_text='Rapporto del Totale Casi Positivi sul Totale Tamponi',
+        yaxis={
+            "tickformat": '%',}
+    )
+    return fig
+
+def get_growth_rate_graph(filtered_data,aggregate):
+
+    fig = go.Figure()
+
+    comparison_column = "denominazione_provincia" if "codice_provincia" in filtered_data.columns else "denominazione_regione"
+    y_range = [0,2] if "codice_provincia" in filtered_data.columns else [0,4]
+
+    if aggregate:
+
+        aggregated_data = filtered_data.groupby("data").sum()
+        aggregated_data['growth_rate'] = aggregated_data["increased_cases"] / aggregated_data["increased_cases"].shift(1)
+        aggregated_data['smooth_growth_rate'] = aggregated_data['growth_rate'].rolling(min_periods=1,window=3).mean()
+        aggregated_data = aggregated_data.reset_index()
+
+        fig.add_trace(go.Scatter(
+            x=aggregated_data["data"].dt.date, 
+            y=aggregated_data["smooth_growth_rate"],
+            mode='lines+markers',
+            name="Fattore di Crescita",
+            
+            #fill='tozeroy',
+            hovertemplate = "<b>Fattore di crescita: %{text:.2f}</b><extra></extra>",
+            text=aggregated_data["smooth_growth_rate"]
+            )
+        )
+
+    else:
+
+        fig = px.line(data_frame=filtered_data,#filtered_data[filtered_data["data"] > datetime(2020,3,4)],
+                    x="data",
+                    y="smooth_growth_rate",
+                    hover_data=["increased_cases","denominazione_regione"],
+                    log_y=False,
+                    color=comparison_column,
+                    title="Fattore di Crescita medio ultimi 3gg", 
+                    labels={'increased_cases':'Nuovi casi positivi', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Fattore di Crescita"})
+
+        fig.update_traces(mode='lines+markers',hovertemplate = "<b>Fattore di crescita: %{y:.2f}</b><extra></extra>")
+    
+    fig.update_layout(temporal_graph_layout)
+    fig.update_layout(
+        title_text='Fattore di Crescita medio ultimi 3gg',
+        yaxis={"title":None},
+        xaxis={"title":None},
+    )
     return fig
