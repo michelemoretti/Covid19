@@ -18,28 +18,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
+from flask_caching import Cache
 
-from figures import (
-    get_positive_tests_ratio_graph,
-    get_provincial_map,
-    get_regional_map,
-    get_tamponi_graph,
-    get_growth_rate_graph,
-    get_variable_graph,
-)
+from figures import (get_growth_rate_graph, get_positive_tests_ratio_graph,
+                     get_provincial_map, get_regional_map, get_tamponi_graph,
+                     get_variable_graph)
 from utils import (
-    calcolo_giorni_da_min_positivi,
-    calculate_line,
-    exp_viridis,
-    filter_dates,
-    get_areas,
-    get_dataset,
-    get_map_json,
-    linear_reg,
-    mean_absolute_percentage_error,
-    pretty_colors,
-    viridis,
-)
+    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
+    get_areas, get_dataset, get_map_json, linear_reg,
+    mean_absolute_percentage_error, pretty_colors, viridis)
 
 locale.setlocale(locale.LC_ALL, "")
 logger = logging.getLogger("dash_application")
@@ -65,6 +52,8 @@ regions, provinces = get_areas(df)
 giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
 viridis_exp_scale = exp_viridis(giorni_da_min_positivi)
 
+TIMEOUT= 6*60*60
+
 metric_names = {
     "totale_casi": "Contagiati",
     "deceduti": "Deceduti",
@@ -84,6 +73,12 @@ metric_list = [
 ]
 
 #@TODO Caching
+cache = Cache(app.server, config={
+    # try 'filesystem' if you don't want to setup redis
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache-directory',
+    #'CACHE_REDIS_URL': os.environ.get('REDIS_URL', '')
+})
 
 def get_big_numbers(metrics_list, area="IT", day=datetime.today):
 
@@ -408,6 +403,7 @@ app.layout = dfx.Grid(
     ],
     [State("filter", component_property="data-map-type"),],
 )
+@cache.memoize(timeout=TIMEOUT)
 def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, istat_flag, map_type):
 
     ctx = dash.callback_context
@@ -529,6 +525,7 @@ def hide_data_type(area_value):
         Input("filter", component_property="data-map-type"),
     ],
 )
+@cache.memoize(timeout=TIMEOUT)
 def set_map_datatype(selectedData, map_type):
 
     ctx = dash.callback_context
@@ -569,6 +566,7 @@ def set_map_type_filter(area_type):
     ],
     [State("filter", "data-area-index")],
 )
+@cache.memoize(timeout=TIMEOUT)
 def update_map(ordinal_date, data_selected, area_map, preselection):
 
     if not ordinal_date:
@@ -633,6 +631,7 @@ def hide_numbers(data_map_type):
         Input("filter", component_property="data-map-type"),
     ],
 )
+@cache.memoize(timeout=TIMEOUT)
 def update_big_numbers(area_string, ordinal_date, area_type):
 
     if not ordinal_date:
