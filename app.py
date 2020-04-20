@@ -66,7 +66,7 @@ giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
 viridis_exp_scale = exp_viridis(giorni_da_min_positivi)
 
 metric_names = {
-    "totale_casi": "Totale Contagiati",
+    "totale_casi": "Contagiati",
     "deceduti": "Deceduti",
     "tamponi": "Tamponi",
     "terapia_intensiva": "Terapia Intensiva",
@@ -317,17 +317,17 @@ app.layout = dfx.Grid(
                     lg=5,
                     children=[
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni, True),
+                            figure=get_variable_graph(df_regioni, True, False, "totale_casi"),
                             id="graph1",
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni, True),
+                            figure=get_positive_tests_ratio_graph(df_regioni, True),
                             id="graph2",
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni, True),
+                            figure=get_growth_rate_graph(df_regioni, True),
                             id="graph3",
                             className="dashboardContainer dash-graph",
                         ),
