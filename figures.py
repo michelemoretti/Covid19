@@ -213,9 +213,10 @@ def get_variable_graph(filtered_data,aggregate,logy=False,datatype="totale_casi"
             labels=titles
         )
     
+    log_type = "log" if logy else "linear"
     fig.update_layout(temporal_graph_layout)
     fig.update_layout(
-        yaxis={"title":None},
+        yaxis={"title":None,"type":log_type},
         xaxis={"title":None},
     )
 

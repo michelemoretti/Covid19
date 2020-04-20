@@ -83,6 +83,7 @@ metric_list = [
     "terapia_intensiva",
 ]
 
+#@TODO Caching
 
 def get_big_numbers(metrics_list, area="IT", day=datetime.today):
 
@@ -442,16 +443,16 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, ma
             filtered_data = df[filter_]
 
             return (
-                get_variable_graph(filtered_data, aggregation),
-                get_variable_graph(filtered_data, aggregation, logy=False,datatype="increased_cases"),
+                get_variable_graph(filtered_data, aggregation, logy=logy),
+                get_variable_graph(filtered_data, aggregation, logy=logy,datatype="increased_cases"),
                 get_growth_rate_graph(filtered_data, aggregation),
             )
 
         else:
 
             return (
-                get_variable_graph(df_regioni, aggregate=True),
-                get_variable_graph(df_regioni, aggregate=True, logy=False,datatype="increased_cases"),
+                get_variable_graph(df_regioni, aggregate=True, logy=logy),
+                get_variable_graph(df_regioni, aggregate=True, logy=logy,datatype="increased_cases"),
                 get_growth_rate_graph(df_regioni, aggregate=True),
             )
     elif map_type == None:
