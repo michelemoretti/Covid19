@@ -154,6 +154,13 @@ app.layout = dfx.Grid(
                         html.Div(
                             [
                                 daq.BooleanSwitch(
+                                    id='istat-button',
+                                    on=False,
+                                    label='ISTAT Data',
+                                    labelPosition='bottom',
+                                    className="toggle",
+                                ),
+                                daq.BooleanSwitch(
                                     id="aggregation-toggle",
                                     label="Aggrega grafici",
                                     labelPosition="bottom",
@@ -397,14 +404,18 @@ app.layout = dfx.Grid(
         Input("filter", component_property="data-aggregation"),
         Input("logarithmic-toggle", component_property="on"),
         Input("filter", component_property="data-map-datatype-selected"),
+        Input("istat-button",component_property="on"),
     ],
     [State("filter", component_property="data-map-type"),],
 )
-def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, map_type):
+def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, istat_flag, map_type):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"update_area_graphs triggered by {triggerer}")
+
+    if istat_flag:
+        pass
 
     if map_type == "regioni":
 
