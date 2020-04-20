@@ -122,6 +122,11 @@ html {
     font-size: 0.7rem;
 }
 
+#license p{
+    margin-bottom:0;
+}
+
+
 @media only screen and (min-width: 960px){
     #info-tooltips{
         text-align: end;
