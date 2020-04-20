@@ -284,8 +284,8 @@ if area_filter == "Nazione":
     })
 
 
-    cmap = st.sidebar.radio("Scelta Color Map", ("Lineare", "Esponenziale"),index=1)
-    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale esponenziali per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+    cmap = st.sidebar.radio("Scelta Color Map", ("Lineare", "Logaritmica"),index=1)
+    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale logaritmiche per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
 
     if cmap == "Lineare":
         cmap = viridis
@@ -592,9 +592,9 @@ elif area_filter == "Regione":
     #region_name = st.sidebar.selectbox("Seleziona la regione di interesse",sorted(regions))
     region_name = st.sidebar.multiselect("Seleziona una o più regioni di interesse",sorted(regions),default=["Emilia-Romagna","Lombardia"])
 
-    cmap_radio = st.sidebar.radio("Scelta Color Map ed andamento asse y", ("Lineare", "Esponenziale"),index=1)
+    cmap_radio = st.sidebar.radio("Scelta Color Map ed andamento asse y", ("Lineare", "Logaritmica"),index=1)
 
-    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale esponenziali per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale logaritmiche per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
     
     st.sidebar.markdown("---")
     st.sidebar.markdown("**Incrocia i Dati ISTAT con i dati del Ministero della Salute**")
@@ -703,7 +703,7 @@ elif area_filter == "Regione":
         
         else:
             
-            fig = fig_totale_casi_regione(filtered_data,cmap_radio=="Esponenziale")
+            fig = fig_totale_casi_regione(filtered_data,cmap_radio=="Logaritmica")
 
             st.plotly_chart(fig,use_container_width=True)
             st.markdown("---")
@@ -857,8 +857,8 @@ elif area_filter == "Provincia":
 
     filtered_data = df[_filter]
     if not filtered_data.empty:
-        log_y = st.sidebar.radio("Scegli andamento asse y", (False, True), format_func=lambda x:"Esponenziale" if x else "Lineare",index=1)
-        st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale esponenziali per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+        log_y = st.sidebar.radio("Scegli andamento asse y", (False, True), format_func=lambda x:"Logaritmica" if x else "Lineare",index=1)
+        st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale logaritmiche per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
         
         fig = fig_totale_casi_provincia(filtered_data,log_y)
         st.plotly_chart(fig,use_container_width=True)
