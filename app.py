@@ -25,6 +25,7 @@ from figures import (
     get_regional_map,
     get_tamponi_graph,
     get_growth_rate_graph,
+    get_variable_graph,
 )
 from utils import (
     calcolo_giorni_da_min_positivi,
@@ -142,7 +143,7 @@ app.layout = dfx.Grid(
                 dfx.Col(
                     xs=12,
                     lg=8,
-                    children=[html.Div("Menu", id="menu")],
+                    children=[html.Div("Dashboard COVID-19", id="menu")],
                     className="menuItem",
                 ),
                 dfx.Col(
@@ -393,10 +394,11 @@ app.layout = dfx.Grid(
         Input("filter", component_property="data-area"),
         Input("filter", component_property="data-aggregation"),
         Input("logarithmic-toggle", component_property="on"),
+        Input("filter", component_property="data-map-datatype-selected"),
     ],
-    [State("filter", component_property="data-map-type")],
+    [State("filter", component_property="data-map-type"),],
 )
-def update_area_graphs(area_string, aggregation, logy, map_type):
+def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, map_type):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
@@ -411,7 +413,9 @@ def update_area_graphs(area_string, aggregation, logy, map_type):
             filtered_data = df_regioni[filter_]
 
             return (
-                get_tamponi_graph(filtered_data, aggregation, logy),
+                get_variable_graph(
+                    filtered_data, aggregation, logy, map_datatype_selected
+                ),
                 get_positive_tests_ratio_graph(filtered_data, aggregation),
                 get_growth_rate_graph(filtered_data, aggregation),
             )
@@ -419,7 +423,12 @@ def update_area_graphs(area_string, aggregation, logy, map_type):
         else:
 
             return (
-                get_tamponi_graph(df_regioni, aggregate=True, logy=logy),
+                get_variable_graph(
+                    df_regioni,
+                    aggregate=True,
+                    logy=logy,
+                    datatype=map_datatype_selected,
+                ),
                 get_positive_tests_ratio_graph(df_regioni, aggregate=True),
                 get_growth_rate_graph(df_regioni, aggregate=True),
             )
@@ -432,16 +441,16 @@ def update_area_graphs(area_string, aggregation, logy, map_type):
             filtered_data = df[filter_]
 
             return (
-                get_growth_rate_graph(filtered_data, aggregation),
-                get_growth_rate_graph(filtered_data, aggregation),
+                get_variable_graph(filtered_data, aggregation),
+                get_variable_graph(filtered_data, aggregation, logy=False,datatype="increased_cases"),
                 get_growth_rate_graph(filtered_data, aggregation),
             )
 
         else:
 
             return (
-                get_growth_rate_graph(df_regioni, aggregate=True),
-                get_growth_rate_graph(df_regioni, aggregate=True),
+                get_variable_graph(df_regioni, aggregate=True),
+                get_variable_graph(df_regioni, aggregate=True, logy=False,datatype="increased_cases"),
                 get_growth_rate_graph(df_regioni, aggregate=True),
             )
     elif map_type == None:

@@ -164,12 +164,68 @@ def get_positive_tests_ratio_graph(filtered_data,aggregate=True):
     )
     return fig
 
+def get_variable_graph(filtered_data,aggregate,logy=False,datatype="totale_casi"):
+
+    fig = go.Figure()
+    comparison_column = "denominazione_provincia" if "codice_provincia" in filtered_data.columns else "denominazione_regione"
+
+    titles = {
+    "totale_casi": "Totale Casi Confermati",
+    "deceduti": "Deceduti",
+    "tamponi": "Tamponi effettuati",
+    "terapia_intensiva": "Terapia Intensiva",
+    "totale_positivi": "Attualmente Positivi",
+    "dimessi_guariti": "Guariti",
+    "totale_ospedalizzati": "Ospedalizzati",
+    'data': 'Data',
+    'denominazione_provincia': 'Provincia',
+    'denominazione_regione': 'Regione',
+    "increased_cases" : "Nuovi Casi Giornalieri",
+    }
+
+    if aggregate:
+        aggregated_data = filtered_data.sort_values("data").groupby("data").sum()
+
+
+        fig.add_trace(
+            go.Scatter(
+                x=aggregated_data.index.date, 
+                y=aggregated_data[datatype],
+                mode='lines',
+                name=titles[datatype],
+                
+                fill='tozeroy',
+                hovertemplate = "<b>%{x}</b><br><b>"+titles[datatype]+": %{y}</b><br><b>Percentuale "+titles[datatype]+" sulla popolazione: %{text:.2f}%</b><extra></extra>",
+                text=100*aggregated_data[datatype]/aggregated_data["Popolazione_Sesso_totale"],
+            )
+        )
+        fig.update_layout(title=titles[datatype])
+
+    else:
+        fig = px.line(  
+            data_frame=filtered_data,
+            x="data",
+            y=datatype,
+            log_y=logy,
+            #hover_data=[datatype],
+            color=comparison_column,
+            title=titles[datatype], 
+            labels=titles
+        )
+    
+    fig.update_layout(temporal_graph_layout)
+    fig.update_layout(
+        yaxis={"title":None},
+        xaxis={"title":None},
+    )
+
+    return fig
+
 def get_growth_rate_graph(filtered_data,aggregate):
 
     fig = go.Figure()
 
     comparison_column = "denominazione_provincia" if "codice_provincia" in filtered_data.columns else "denominazione_regione"
-    y_range = [0,2] if "codice_provincia" in filtered_data.columns else [0,4]
 
     if aggregate:
 
