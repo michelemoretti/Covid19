@@ -75,6 +75,7 @@ metric_list = [
     "terapia_intensiva",
 ]
 
+
 def get_big_numbers(metrics_list, area="IT", day=datetime.today):
 
     top_metrics = []
@@ -119,11 +120,15 @@ app.layout = dfx.Grid(
                     lg=1,
                     children=[
                         html.Div(
-                            html.Img(
-                                src="http://neurality.it/images/logo_small_black.png"
+                            html.A(
+                                html.Img(
+                                    src="http://neurality.it/images/logo_small_black.png"
+                                ),
+                                id="logo",
+                                href="https://neurality.it",
+                                target="_blank",
                             ),
-                            id="logo",
-                        )
+                        ),
                     ],
                     className="menuItem",
                 ),
@@ -152,7 +157,7 @@ app.layout = dfx.Grid(
                                     labelPosition="bottom",
                                     on=False,
                                     className="toggle",
-                                )
+                                ),
                             ],
                             id="info-tooltips",
                         )
@@ -304,17 +309,17 @@ app.layout = dfx.Grid(
                     lg=5,
                     children=[
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni,True),
+                            figure=get_tamponi_graph(df_regioni, True),
                             id="graph1",
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni,True),
+                            figure=get_tamponi_graph(df_regioni, True),
                             id="graph2",
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_tamponi_graph(df_regioni,True),
+                            figure=get_tamponi_graph(df_regioni, True),
                             id="graph3",
                             className="dashboardContainer dash-graph",
                         ),
@@ -380,10 +385,10 @@ app.layout = dfx.Grid(
     [
         Input("filter", component_property="data-area"),
         Input("filter", component_property="data-aggregation"),
-        Input("logarithmic-toggle",component_property="on")
+        Input("logarithmic-toggle", component_property="on"),
     ],
 )
-def update_area_graphs(area_string,aggregation,logy):
+def update_area_graphs(area_string, aggregation, logy):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
@@ -394,9 +399,17 @@ def update_area_graphs(area_string,aggregation,logy):
         filter_ = df_regioni["denominazione_regione"].isin(area_list)
         filtered_data = df_regioni[filter_]
 
-        return get_tamponi_graph(filtered_data,aggregation,logy),get_tamponi_graph(filtered_data,aggregation,logy),get_tamponi_graph(filtered_data,aggregation,logy)
+        return (
+            get_tamponi_graph(filtered_data, aggregation, logy),
+            get_tamponi_graph(filtered_data, aggregation, logy),
+            get_tamponi_graph(filtered_data, aggregation, logy),
+        )
     else:
-        return get_tamponi_graph(df_regioni,True,logy),get_tamponi_graph(df_regioni,True,logy),get_tamponi_graph(df_regioni,True,logy)
+        return (
+            get_tamponi_graph(df_regioni, True, logy),
+            get_tamponi_graph(df_regioni, True, logy),
+            get_tamponi_graph(df_regioni, True, logy),
+        )
 
 
 @app.callback(
@@ -615,18 +628,20 @@ def set_notes(map_type):
 def set_aggregation(value):
     return value
 
+
 @app.callback(
-    Output("aggregation-toggle",component_property="style"),
-    [Input("filter","data-area")]
+    Output("aggregation-toggle", component_property="style"),
+    [Input("filter", "data-area")],
 )
 def enable_aggregation(areas_string):
 
     if areas_string:
-        area_list = areas_string.split("|") 
-        if len(area_list)>1:
-            return {"display":""}
-    
-    return {"display":"None"}
+        area_list = areas_string.split("|")
+        if len(area_list) > 1:
+            return {"display": ""}
+
+    return {"display": "None"}
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)

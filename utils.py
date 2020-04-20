@@ -28,12 +28,6 @@ def get_areas(df):
     provinces = df["denominazione_provincia"].unique()
     return regions,provinces
 
-def calcolo_giorni_da_min_positivi(df_regioni, min_positivi=100):
-    regione_piu_colpita = df_regioni[df_regioni["data"] == df_regioni["data"].max()][df_regioni["totale_casi"] == df_regioni["totale_casi"].max()]["denominazione_regione"].tolist()[0]
-    temp = df_regioni[df_regioni["totale_casi"] > min_positivi]
-    temp = temp[temp["denominazione_regione"] == regione_piu_colpita]
-    return len(temp['data'].tolist())
-
 def calculate_line(x,slope,intercept):
     y= x*slope + intercept
     return y
