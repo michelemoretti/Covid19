@@ -23,7 +23,8 @@ from flask_caching import Cache
 
 from figures import (get_growth_rate_graph, get_positive_tests_ratio_graph,
                      get_provincial_map, get_regional_map, get_tamponi_graph,
-                     get_variable_graph, get_respiratory_deaths_graph)
+                     get_variable_graph, get_respiratory_deaths_graph,
+                     get_removed_graph)
 
 from utils import (
     calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
@@ -339,7 +340,7 @@ app.layout = dfx.Grid(
                             className="dashboardContainer dash-graph",
                         ),
                         dcc.Graph(
-                            figure=get_positive_tests_ratio_graph(df_regioni, True),
+                            figure=get_removed_graph(df_regioni, True),
                             id="graph2",
                             className="dashboardContainer dash-graph",
                         ),
@@ -442,7 +443,7 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, is
                 get_variable_graph(
                     filtered_data, aggregation, logy, map_datatype_selected
                 ),
-                get_positive_tests_ratio_graph(filtered_data, aggregation),
+                get_removed_graph(filtered_data, aggregation),
                 get_growth_rate_graph(filtered_data, aggregation),
             )
 
@@ -455,7 +456,7 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, is
                     logy=logy,
                     datatype=map_datatype_selected,
                 ),
-                get_positive_tests_ratio_graph(df_regioni, aggregate=True),
+                get_removed_graph(df_regioni, aggregate=True),
                 get_growth_rate_graph(df_regioni, aggregate=True),
             )
 

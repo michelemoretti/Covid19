@@ -238,7 +238,7 @@ def get_growth_rate_graph(filtered_data,aggregate):
         fig.add_trace(go.Scatter(
             x=aggregated_data["data"].dt.date, 
             y=aggregated_data["smooth_growth_rate"],
-            mode='lines+markers',
+            mode='lines',
             name="Fattore di Crescita",
             
             #fill='tozeroy',
@@ -258,7 +258,7 @@ def get_growth_rate_graph(filtered_data,aggregate):
                     title="Fattore di Crescita medio ultimi 3gg", 
                     labels={'increased_cases':'Nuovi casi positivi', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Fattore di Crescita"})
 
-        fig.update_traces(mode='lines+markers',hovertemplate = "<b>Fattore di crescita: %{y:.2f}</b><extra></extra>")
+        fig.update_traces(mode='lines',hovertemplate = "<b>Fattore di crescita: %{y:.2f}</b><extra></extra>")
     
     fig.update_layout(temporal_graph_layout)
     fig.update_layout(
@@ -276,4 +276,59 @@ def get_respiratory_deaths_graph(morti_resp):
     ])
     fig.update_layout(temporal_graph_layout)
     fig.update_layout(barmode='stack', legend={"xanchor":"left","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},)
+    return fig
+
+def get_removed_graph(filtered_data,aggregate=True,logy=True):
+    
+    fig = go.Figure()
+
+    if aggregate:
+        summed_data_by_date = filtered_data.sort_values("data").groupby("data").sum()
+        
+        fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=summed_data_by_date["dimessi_guariti"]/summed_data_by_date["totale_casi"], 
+                                fill='tozeroy',
+                                mode='lines',
+                                name="Guariti/Contagi",
+                                hovertemplate = "<b>%{x}</b><br>Guariti: %{y}<extra></extra>",
+                                #text=,
+                                ))
+        fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=summed_data_by_date["deceduti"]/summed_data_by_date["totale_casi"], 
+                                fill='tozeroy',
+                                mode='lines',
+                                name="Deceduti/Contagi",
+                                hovertemplate = "<b>%{x}</b><br>Deceduti: %{y}<extra></extra>",
+                                #text=,
+                                line = dict(dash='dot'),
+                                ))
+    else:
+        colors = px.colors.qualitative.Plotly
+
+        for idx,regione in enumerate(filtered_data["denominazione_regione"].unique()):
+            regional_data = filtered_data[filtered_data["denominazione_regione"] == regione]
+            fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=regional_data["dimessi_guariti"]/regional_data["totale_casi"], 
+                                #fill='tonexty',
+                                mode='lines',
+                                name=regione,
+                                hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Guariti: %{y}<extra></extra>",
+                                #text=,
+                                legendgroup=regione,
+                                marker=go.scatter.Marker(color=colors[idx]),
+                                ))
+            fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=regional_data["deceduti"]/regional_data["totale_casi"], 
+                                #fill='tonexty',
+                                mode='lines',
+                                name=regione,
+                                hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Guariti: %{y}<extra></extra>",
+                                #text=,
+                                legendgroup=regione,
+                                line = dict(dash='dot'),
+                                marker=go.scatter.Marker(color=colors[idx]),
+                                ))
+    fig.update_layout(temporal_graph_layout)
+    fig.update_layout({"title_text":'Guariti/Deceduti per contagiato',"yaxis" : {"tickformat":"%"},})
+   
     return fig
