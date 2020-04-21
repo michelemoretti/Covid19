@@ -132,9 +132,33 @@ html {
     margin-bottom:0;
 }
 
+#graphs-column > div{
+    position:relative;
+}
+
+button.floating-button {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 3%;
+}
+
+.modal-xl{
+    width:80% !important;
+    height:80% !important;
+    max-width: 100% !important;
+}
+
+button.floating-button {
+    display: none;
+}
 
 @media only screen and (min-width: 960px){
     #info-tooltips{
         text-align: end;
     }
+    button.floating-button {
+        display: block;
+    }
+    
 }

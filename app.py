@@ -21,15 +21,30 @@ import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
 from flask_caching import Cache
 
-from figures import (get_growth_rate_graph, get_positive_tests_ratio_graph,
-                     get_provincial_map, get_regional_map, get_tamponi_graph,
-                     get_variable_graph, get_respiratory_deaths_graph,
-                     get_removed_graph)
+from figures import (
+    get_growth_rate_graph,
+    get_positive_tests_ratio_graph,
+    get_provincial_map,
+    get_regional_map,
+    get_tamponi_graph,
+    get_variable_graph,
+    get_respiratory_deaths_graph,
+    get_removed_graph,
+)
 
 from utils import (
-    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
-    get_areas, get_dataset, get_map_json, linear_reg,
-    mean_absolute_percentage_error, pretty_colors, viridis)
+    calcolo_giorni_da_min_positivi,
+    calculate_line,
+    exp_viridis,
+    filter_dates,
+    get_areas,
+    get_dataset,
+    get_map_json,
+    linear_reg,
+    mean_absolute_percentage_error,
+    pretty_colors,
+    viridis,
+)
 
 locale.setlocale(locale.LC_ALL, "")
 logger = logging.getLogger("dash_application")
@@ -45,10 +60,14 @@ df_notes["data"] = pd.to_datetime(df_notes["data"],)  # format='%d%b%Y:%H:%M:%S.
 license_md = markdown.markdown(open("LICENSE.md").read())
 
 df_regioni_today = df_regioni.set_index("NUTS3")
-df_regioni_today = df_regioni_today[df_regioni_today["data"] == df_regioni_today["data"].max()]
-morti_resp_path = os.path.join("ISTAT_DATA", "Deaths(#), Diseases of the respiratory system, Total.csv")
+df_regioni_today = df_regioni_today[
+    df_regioni_today["data"] == df_regioni_today["data"].max()
+]
+morti_resp_path = os.path.join(
+    "ISTAT_DATA", "Deaths(#), Diseases of the respiratory system, Total.csv"
+)
 morti_resp = pd.read_csv(morti_resp_path).set_index("index")
-morti_resp.at[0,'Covid'] = df_regioni_today['deceduti'].sum()
+morti_resp.at[0, "Covid"] = df_regioni_today["deceduti"].sum()
 
 
 app = dash.Dash(
@@ -163,10 +182,10 @@ app.layout = dfx.Grid(
                         html.Div(
                             [
                                 daq.BooleanSwitch(
-                                    id='istat-button',
+                                    id="istat-button",
                                     on=False,
-                                    label='ISTAT Data',
-                                    labelPosition='bottom',
+                                    label="ISTAT Data",
+                                    labelPosition="bottom",
                                     className="toggle",
                                 ),
                                 daq.BooleanSwitch(
@@ -334,20 +353,58 @@ app.layout = dfx.Grid(
                     xs=12,
                     lg=5,
                     children=[
-                        dcc.Graph(
-                            figure=get_variable_graph(df_regioni, True, False, "totale_casi"),
-                            id="graph1",
-                            className="dashboardContainer dash-graph",
+                        html.Div(
+                            [
+                                dcc.Graph(
+                                    figure=get_variable_graph(
+                                        df_regioni, True, False, "totale_casi"
+                                    ),
+                                    id="graph1",
+                                    className="dashboardContainer dash-graph",
+                                ),
+                                dbc.Button(
+                                    "FULLSCREEN",
+                                    id="graph1-fullscreen-button",
+                                    n_clicks=0,
+                                    className="floating-button",
+                                    size="sm",
+                                    outline=True,
+                                ),
+                            ]
                         ),
-                        dcc.Graph(
-                            figure=get_removed_graph(df_regioni, True),
-                            id="graph2",
-                            className="dashboardContainer dash-graph",
+                        html.Div(
+                            [
+                                dcc.Graph(
+                                    figure=get_removed_graph(df_regioni, True),
+                                    id="graph2",
+                                    className="dashboardContainer dash-graph",
+                                ),
+                                dbc.Button(
+                                    "FULLSCREEN",
+                                    id="graph2-fullscreen-button",
+                                    n_clicks=0,
+                                    className="floating-button",
+                                    size="sm",
+                                    outline=True,
+                                ),
+                            ]
                         ),
-                        dcc.Graph(
-                            figure=get_growth_rate_graph(df_regioni, True),
-                            id="graph3",
-                            className="dashboardContainer dash-graph",
+                        html.Div(
+                            [
+                                dcc.Graph(
+                                    figure=get_growth_rate_graph(df_regioni, True),
+                                    id="graph3",
+                                    className="dashboardContainer dash-graph",
+                                ),
+                                dbc.Button(
+                                    "FULLSCREEN",
+                                    id="graph3-fullscreen-button",
+                                    n_clicks=0,
+                                    className="floating-button",
+                                    size="sm",
+                                    outline=True,
+                                ),
+                            ]
                         ),
                     ],
                 ),
@@ -398,8 +455,24 @@ app.layout = dfx.Grid(
             id="tooltips-container",
             style={"display": "none"},
         ),
+        dbc.Modal(
+            [
+                dbc.ModalBody(dcc.Graph(id="modal-graph")),
+                dbc.ModalFooter(
+                    dbc.Button("Chiudi", id="modal-close", className="ml-auto")
+                ),
+            ],
+            id="fullscreen-modal",
+            is_open=False,
+            size="xl",
+        ),
     ],
 )
+
+
+#######################################################################################
+##################################CALLBACKS############################################
+#######################################################################################
 
 
 @app.callback(
@@ -413,12 +486,14 @@ app.layout = dfx.Grid(
         Input("filter", component_property="data-aggregation"),
         Input("logarithmic-toggle", component_property="on"),
         Input("filter", component_property="data-map-datatype-selected"),
-        Input("istat-button",component_property="on"),
+        Input("istat-button", component_property="on"),
     ],
     [State("filter", component_property="data-map-type"),],
 )
 @cache.memoize(timeout=TIMEOUT)
-def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, istat_flag, map_type):
+def update_area_graphs(
+    area_string, aggregation, logy, map_datatype_selected, istat_flag, map_type
+):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
@@ -426,10 +501,10 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, is
 
     if istat_flag:
         return (
-                get_respiratory_deaths_graph(morti_resp),
-                get_respiratory_deaths_graph(morti_resp),
-                get_respiratory_deaths_graph(morti_resp),
-            )
+            get_respiratory_deaths_graph(morti_resp),
+            get_respiratory_deaths_graph(morti_resp),
+            get_respiratory_deaths_graph(morti_resp),
+        )
 
     if map_type == "regioni":
 
@@ -469,7 +544,9 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, is
 
             return (
                 get_variable_graph(filtered_data, aggregation, logy=logy),
-                get_variable_graph(filtered_data, aggregation, logy=logy,datatype="increased_cases"),
+                get_variable_graph(
+                    filtered_data, aggregation, logy=logy, datatype="increased_cases"
+                ),
                 get_growth_rate_graph(filtered_data, aggregation),
             )
 
@@ -477,7 +554,9 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, is
 
             return (
                 get_variable_graph(df_regioni, aggregate=True, logy=logy),
-                get_variable_graph(df_regioni, aggregate=True, logy=logy,datatype="increased_cases"),
+                get_variable_graph(
+                    df_regioni, aggregate=True, logy=logy, datatype="increased_cases"
+                ),
                 get_growth_rate_graph(df_regioni, aggregate=True),
             )
     elif map_type == None:
@@ -632,16 +711,18 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
 
 
 @app.callback(
-    [Output(f"daily-{metric}", component_property="hidden")
-        for metric in metric_list],
+    [Output(f"daily-{metric}", component_property="hidden") for metric in metric_list],
     [Input("filter", component_property="data-map-type")],
 )
 def hide_numbers(data_map_type):
 
-    if data_map_type=="province":
-        return [True if metric not in ["totale_casi"] else False for metric in metric_list] 
+    if data_map_type == "province":
+        return [
+            True if metric not in ["totale_casi"] else False for metric in metric_list
+        ]
     else:
-        return [False for metric in metric_list] 
+        return [False for metric in metric_list]
+
 
 @app.callback(
     [
@@ -724,9 +805,10 @@ def set_aggregation(value):
 
 
 @app.callback(
-    [Output("aggregation-toggle", component_property="style"),
-    Output("aggregation-toggle", component_property="on"),
-    Output("aggregation-toggle", component_property="disabled"),
+    [
+        Output("aggregation-toggle", component_property="style"),
+        Output("aggregation-toggle", component_property="on"),
+        Output("aggregation-toggle", component_property="disabled"),
     ],
     [Input("filter", "data-area")],
 )
@@ -736,7 +818,7 @@ def enable_aggregation(areas_string):
         area_list = areas_string.split("|")
         if len(area_list) > 1:
 
-            if len(area_list)> 3:
+            if len(area_list) > 3:
                 print("IT SHOULD WORK")
                 return {"display": ""}, True, True
 
@@ -746,6 +828,36 @@ def enable_aggregation(areas_string):
     return {"display": "None"}, False, False
 
 
+@app.callback(
+    [
+        Output("modal-graph", component_property="figure"),
+        Output("fullscreen-modal", component_property="is_open"),
+    ],
+    [
+        Input("graph1-fullscreen-button", "n_clicks"),
+        Input("graph2-fullscreen-button", "n_clicks"),
+        Input("graph3-fullscreen-button", "n_clicks"),
+        Input("modal-close", "n_clicks"),
+    ],
+    [State("graph1", "figure"), State("graph2", "figure"), State("graph3", "figure")],
+)
+def open_fullscreen_graph(btn1, btn2, btn3, close_btn, fig1, fig2, fig3):
+
+    changed_id = [p["prop_id"] for p in dash.callback_context.triggered][
+        0
+    ]  # returns the id of the clicked button
+
+    if not btn1 and not btn2 and not btn3:
+        return go.Figure(), False
+
+    if "1" in changed_id:
+        return fig1, True
+    if "2" in changed_id:
+        return fig2, True
+    if "3" in changed_id:
+        return fig3, True
+
+    return go.Figure(), False
 
 
 if __name__ == "__main__":

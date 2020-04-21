@@ -17,7 +17,7 @@ temporal_graph_layout={
         "xaxis" : {"calendar":"gregorian",
                 "nticks":15},
         "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},
-        "title" :{"xanchor":"center", "x":0.5}        
+        "title" :{"xanchor":"center", "x":0.5},
 }
 
 def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selected_label,max_scale_value):
