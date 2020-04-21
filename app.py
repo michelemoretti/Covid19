@@ -724,7 +724,10 @@ def set_aggregation(value):
 
 
 @app.callback(
-    Output("aggregation-toggle", component_property="style"),
+    [Output("aggregation-toggle", component_property="style"),
+    Output("aggregation-toggle", component_property="on"),
+    Output("aggregation-toggle", component_property="disabled"),
+    ],
     [Input("filter", "data-area")],
 )
 def enable_aggregation(areas_string):
@@ -732,9 +735,17 @@ def enable_aggregation(areas_string):
     if areas_string:
         area_list = areas_string.split("|")
         if len(area_list) > 1:
-            return {"display": ""}
 
-    return {"display": "None"}
+            if len(area_list)> 3:
+                print("IT SHOULD WORK")
+                return {"display": ""}, True, True
+
+            else:
+                return {"display": ""}, False, False
+
+    return {"display": "None"}, False, False
+
+
 
 
 if __name__ == "__main__":

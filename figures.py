@@ -275,7 +275,7 @@ def get_respiratory_deaths_graph(morti_resp):
         go.Bar(name='COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'])
     ])
     fig.update_layout(temporal_graph_layout)
-    fig.update_layout(barmode='stack', legend={"xanchor":"left","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},)
+    fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},)
     return fig
 
 def get_removed_graph(filtered_data,aggregate=True,logy=True):
