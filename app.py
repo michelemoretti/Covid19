@@ -507,6 +507,11 @@ def set_filter_location(selectedData, area_tab, figure):
     if ctx.triggered[0]["prop_id"] == "area-map.value":
         return "", "", area_tab
 
+    if (area_tab == "regioni") and (len(selectedData["points"]) == 20):
+        return "", "", area_tab
+    if (area_tab == "province") and (len(selectedData["points"]) == 107):
+        return "", "", area_tab
+
     else:
         if selectedData:
             selected_indexes = figure["data"][0]["selectedpoints"]
