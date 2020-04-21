@@ -43,6 +43,13 @@ df_notes["data"] = pd.to_datetime(df_notes["data"],)  # format='%d%b%Y:%H:%M:%S.
 
 license_md = markdown.markdown(open("LICENSE.md").read())
 
+df_regioni_today = df_regioni.set_index("NUTS3")
+df_regioni_today = df_regioni_today[df_regioni_today["data"] == df_regioni_today["data"].max()]
+morti_resp_path = os.path.join("ISTAT_DATA", "Deaths(#), Diseases of the respiratory system, Total.csv")
+morti_resp = pd.read_csv(morti_resp_path).set_index("index")
+morti_resp.at[0,'Covid'] = df_regioni_today['deceduti'].sum()
+
+
 app = dash.Dash(
     __name__, external_stylesheets=[dbc.themes.BOOTSTRAP]
 )  # , external_stylesheets=external_stylesheets)
