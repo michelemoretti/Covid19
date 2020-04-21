@@ -23,7 +23,8 @@ from flask_caching import Cache
 
 from figures import (get_growth_rate_graph, get_positive_tests_ratio_graph,
                      get_provincial_map, get_regional_map, get_tamponi_graph,
-                     get_variable_graph)
+                     get_variable_graph, get_respiratory_deaths_graph)
+
 from utils import (
     calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
     get_areas, get_dataset, get_map_json, linear_reg,
@@ -108,7 +109,7 @@ def get_big_numbers(metrics_list, area="IT", day=datetime.today):
                             ),
                         ],
                         id=f"daily-{metric}",
-                        className="big-metric",
+                        className="big-metric rounded_boxes",
                     )
                 ],
             )
@@ -416,7 +417,11 @@ def update_area_graphs(area_string, aggregation, logy, map_datatype_selected, is
     logger.debug(f"update_area_graphs triggered by {triggerer}")
 
     if istat_flag:
-        pass
+        return (
+                get_respiratory_deaths_graph(morti_resp),
+                get_respiratory_deaths_graph(morti_resp),
+                get_respiratory_deaths_graph(morti_resp),
+            )
 
     if map_type == "regioni":
 
