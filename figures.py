@@ -19,7 +19,7 @@ temporal_graph_layout={
         "margin":dict(l=10, r=10, t=40, b=10),
         "xaxis" : {"calendar":"gregorian",
                 "nticks":15},
-        "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},
+        "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)","title":None},
         "title" :{"xanchor":"center", "x":0.5},
 }
 
@@ -392,8 +392,6 @@ def get_PM10_graph(df_province, air_series):
     filtered_province_today = df_province[df_province["data"] == df_province["data"].max()].set_index('NUTS3')
     filtered_province_today = filtered_province_today.drop(columns=[x for x in filtered_province_today.columns if not x in ["totale_casi", "Popolazione_ETA1_Total", "denominazione_provincia"]]).join(air_series, rsuffix='_other').drop(columns=['denominazione_regione', "COMUNI", "NUTS3_regione", "CODICE PROVINCIA"])
     all_columns = [x for x in filtered_province_today.columns if "PM10" in x ]
-    filtered_province_today
-    print(filtered_province_today[filtered_province_today["Popolazione_ETA1_Total"]==0])
     prov_data = (filtered_province_today["totale_casi"]/filtered_province_today["Popolazione_ETA1_Total"]).rename('totale_casi_procapite')*100
 
     prov_data = pd.concat([filtered_province_today.denominazione_provincia, prov_data, filtered_province_today[all_columns[0]], filtered_province_today[all_columns[1]]], axis=1)

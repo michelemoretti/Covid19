@@ -80,7 +80,6 @@ app = dash.Dash(
 )  # , external_stylesheets=external_stylesheets)
 
 server = app.server
-logger.error(dbc.themes.BOOTSTRAP)
 
 province_map_json, regions_map_json = get_map_json()
 regions, provinces = get_areas(df)
