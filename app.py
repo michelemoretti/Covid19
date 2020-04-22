@@ -31,6 +31,8 @@ from figures import (
     get_respiratory_deaths_graph,
     get_tamponi_graph,
     get_variable_graph,
+    get_PM10_graph,
+    get_smokers_graph,
 )
 from utils import (
     calcolo_giorni_da_min_positivi,
@@ -52,6 +54,9 @@ logger.setLevel(logging.DEBUG)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
 df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
+
+air_series = pd.read_csv(os.path.join("ISTAT_DATA","air_pollution_2018.csv"), encoding="utf-8").set_index("NUTS3")
+
 df_notes = pd.read_csv(
     "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/note/dpc-covid19-ita-note-it.csv"
 )
@@ -549,8 +554,8 @@ def update_area_graphs(
     if istat_flag:
         return (
             get_respiratory_deaths_graph(morti_resp),
-            get_respiratory_deaths_graph(morti_resp),
-            get_respiratory_deaths_graph(morti_resp),
+            get_PM10_graph(df,air_series),
+            get_smokers_graph(df_regioni),
         )
 
     if map_type == "regioni":

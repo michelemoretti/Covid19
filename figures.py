@@ -1,4 +1,7 @@
 
+import importlib
+import logging
+import math
 import os
 from datetime import date, datetime, timedelta
 
@@ -7,8 +10,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from scipy import stats
-import math
-import logging
+
+from utils import linear_reg
 
 logger = logging.getLogger('__main__')
 
@@ -349,4 +352,92 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
     fig.update_layout(temporal_graph_layout)
     fig.update_layout({"title_text":'Guariti/Deceduti per contagiato',"yaxis" : {"tickformat":"%"},})
    
+    return fig
+
+def traces_punti_e_trend(x_data, y_data, idx, hovertemplate, text, name='data'):
+
+    line_x, line_y, r_value, mape = linear_reg(x_data, y_data)
+
+    trace_line = go.Scatter(
+                        x=line_x,
+                        y=line_y,
+                        mode='lines',
+                        hovertemplate = f"Trend:<br><b>R^2</b> : {str(round((r_value**2)*100, 2))}% <br><b>MAPE</b> : {str(round(mape, 2))}%  <extra></extra>",
+                        legendgroup='group'+str(idx),
+                        showlegend =False,
+                        marker=go.scatter.Marker(color=colors[idx]))
+
+    trace_markers = go.Scatter(
+                        x=x_data, 
+                        y=y_data,
+                        mode='markers',
+                        hovertemplate = hovertemplate,
+                        text=text,
+                        name=name,
+                        showlegend =False,
+                        legendgroup='group'+str(idx),
+                        marker=go.scatter.Marker(color=colors[idx]))
+    return trace_line, trace_markers
+
+def get_PM10_graph(df_province, air_series):
+
+    fig = go.Figure()
+    filtered_province_today = df_province[df_province["data"] == df_province["data"].max()].set_index('NUTS3')
+    filtered_province_today = filtered_province_today.drop(columns=[x for x in filtered_province_today.columns if not x in ["totale_casi", "Popolazione_ETA1_Total", "denominazione_provincia"]]).join(air_series, rsuffix='_other').drop(columns=['denominazione_regione', "COMUNI", "NUTS3_regione", "CODICE PROVINCIA"])
+    all_columns = [x for x in filtered_province_today.columns if "PM10" in x ]
+    filtered_province_today
+    print(filtered_province_today[filtered_province_today["Popolazione_ETA1_Total"]==0])
+    prov_data = (filtered_province_today["totale_casi"]/filtered_province_today["Popolazione_ETA1_Total"]).rename('totale_casi_procapite')*100
+
+    prov_data = pd.concat([filtered_province_today.denominazione_provincia, prov_data, filtered_province_today[all_columns[0]], filtered_province_today[all_columns[1]]], axis=1)
+
+    prov_data_zero = prov_data.drop(prov_data[all_columns[0]][prov_data[all_columns[0]] == 0].index)
+
+    line, markers = traces_punti_e_trend(prov_data_zero.totale_casi_procapite, prov_data_zero[all_columns[0]], 0, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Giorni sopra il limite consigliato: %{y}<extra></extra>", prov_data_zero.denominazione_provincia)
+    fig.add_trace(line)
+    fig.add_trace(markers)
+
+    fig.add_trace(go.Scatter(
+                x=np.arange(start=0, stop=2, step=0.1),
+                y=[35,]*20,
+                mode='lines',
+                line = dict(dash='dot'),
+                showlegend =False,
+                hovertemplate='Limite di giorni sopra limite consigliati<extra></extra>')
+    )
+    fig.update_layout(
+        title = "Inquinamento Aria (Giorni PM10 > limite consigliato) / Casi positivi",
+        )
+    fig.update_layout({
+        "margin":dict(l=10, r=10, t=40, b=10),
+        "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},
+        "title" :{"xanchor":"center", "x":0.5},
+    })
+    return fig
+
+def get_smokers_graph(df_regioni):
+    
+    fig = go.Figure()
+    filtered_regioni_today = df_regioni[df_regioni["data"] == df_regioni["data"].max()].set_index('NUTS3')
+
+    filtered_regioni_today['Popolazione_ETA1_61-100+'] = filtered_regioni_today['Popolazione_ETA1_61-70']  + filtered_regioni_today['Popolazione_ETA1_71-80'] + filtered_regioni_today['Popolazione_ETA1_81-90'] + filtered_regioni_today['Popolazione_ETA1_91-100+']
+    filtered_regioni_today = filtered_regioni_today.drop(columns=[x for x in filtered_regioni_today.columns if not x in ["deceduti", "totale_casi", "Popolazione_ETA1_61-100+", "Popolazione_ETA1_Total", "denominazione_regione"]])
+    prov_data = (filtered_regioni_today["deceduti"]/filtered_regioni_today["totale_casi"]).rename('decessi_su_totale_casi')*100
+
+    prov_data = pd.concat([filtered_regioni_today.denominazione_regione, prov_data, filtered_regioni_today["Popolazione_ETA1_61-100+"].div(filtered_regioni_today["Popolazione_ETA1_Total"],axis=0).rename("pop_rischio")*100], axis=1)
+
+    line, markers = traces_punti_e_trend(prov_data.decessi_su_totale_casi, prov_data["pop_rischio"], 0, "<b>%{text}</b><br>Decessi su casi positivi confermati: %{x:.2f}%<br>Percentuale popolazione a rischio: %{y:.2f}%<extra></extra>", prov_data.denominazione_regione)
+    fig.add_trace(line)
+    fig.add_trace(markers)
+
+    fig.update_layout(
+        title = "Correlazione tra Tasso di letalità e popolazione in età avanzata",
+        )
+
+    fig.update_layout({
+        "margin":dict(l=10, r=10, t=40, b=10),
+        "legend" : {"xanchor":"left","yanchor":"top","x":0,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},
+        "title" :{"xanchor":"center", "x":0.5},
+    }
+    )
     return fig

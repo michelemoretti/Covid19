@@ -36,9 +36,8 @@ def linear_reg(xi:np.array,y:list):
     slope, intercept, r_value, p_value, std_err = stats.linregress(xi,y)
     line = slope*xi+intercept
     mape = mean_absolute_percentage_error(y, line)
-    graph_x_metric = xi
-    line_x = np.arange(graph_x_metric.min(),graph_x_metric.max(),(graph_x_metric.max() - graph_x_metric.min())/30) 
-    line_y = calculate_line(line_x,slope,intercept)
+    line_x = np.arange(xi.min(),xi.max(),(xi.max() - xi.min())/30) if len(xi)>2 else []
+    line_y = calculate_line(line_x,slope,intercept) if line_x != [] else []
     return line_x, line_y, r_value, mape
 
 def exponential_growth(x:float, d:float, r:float=0.16):
