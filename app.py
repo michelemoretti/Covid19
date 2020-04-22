@@ -238,23 +238,32 @@ app.layout = dfx.Grid(
                     lg=5,
                     children=[
                         dfx.Row(
-                            dcc.Graph(
-                                id="main-map",
-                                figure=get_regional_map(
-                                    df_regioni,
-                                    regions_map_json,
-                                    viridis_exp_scale,
-                                    "totale_casi",
-                                    "Totale Casi",
-                                    max_scale_value=math.ceil(
-                                        df_regioni["totale_casi"].max() + 1
+                            [
+                                dcc.Graph(
+                                    id="main-map",
+                                    figure=get_regional_map(
+                                        df_regioni,
+                                        regions_map_json,
+                                        viridis_exp_scale,
+                                        "totale_casi",
+                                        "Totale Casi",
+                                        max_scale_value=math.ceil(
+                                            df_regioni["totale_casi"].max() + 1
+                                        ),
                                     ),
+                                    # animate=True,
+                                    # config={"displayModeBar": False}),
+                                    className="dashboardContainer",
+                                    # style={"min-width": "100%"}
                                 ),
-                                # animate=True,
-                                # config={"displayModeBar": False}),
-                                className="dashboardContainer",
-                                # style={"min-width": "100%"}
-                            ),
+                                dbc.Button(
+                                    " ? ",
+                                    id="map-info-button",
+                                    className="floating-button mapButton",
+                                    size="sm",
+                                    color="info",
+                                ),
+                            ],
                             center="xs",
                         ),
                         dfx.Row(
@@ -350,6 +359,7 @@ app.layout = dfx.Grid(
                                     for giorno in filter_dates(df["data"].unique(), 12)
                                 },
                                 id="date-slider",
+                                # tooltip={"always_visible": True, "placement": "bottom"},
                             ),
                             center="xs",
                         ),
@@ -479,6 +489,15 @@ app.layout = dfx.Grid(
                     target=f"aggregation-toggle",
                     placement="bottom",
                 ),
+                dbc.Tooltip(
+                    [html.P("Click per selezionare una regione"),
+                     html.P("Shift+Click per selezionare regioni multiple"),
+                     html.P("Doppio click su una regione per deselezionare tutto"),
+                    ],
+                    target=f"map-info-button",
+                    placement="top",
+                ),
+                
             ],
             id="tooltips-container",
             style={"display": "none"},
