@@ -225,27 +225,40 @@ def get_variable_graph(filtered_data,aggregate,logy=False,datatype="totale_casi"
 def get_growth_rate_graph(filtered_data,aggregate):
 
     fig = go.Figure()
-
+    colors = px.colors.qualitative.Plotly
     comparison_column = "denominazione_provincia" if "codice_provincia" in filtered_data.columns else "denominazione_regione"
 
     if aggregate:
-
+        
+        filtered_data = filtered_data[filtered_data["data"] > datetime(2020,2,29)]
         aggregated_data = filtered_data.groupby("data").sum()
         aggregated_data['growth_rate'] = aggregated_data["increased_cases"] / aggregated_data["increased_cases"].shift(1)
         aggregated_data['smooth_growth_rate'] = aggregated_data['growth_rate'].rolling(min_periods=1,window=3).mean()
         aggregated_data = aggregated_data.reset_index()
 
         fig.add_trace(go.Scatter(
+            x=filtered_data["data"].dt.date.unique(), 
+            y=[1 for x in filtered_data["data"].unique()],
+            mode='lines',
+            name="Limite crescita esponenziale",
+            #fill='tozeroy',
+            line = dict(dash='dot'),
+            hovertemplate = "Limite Crescita Esponenziale (Fattore di Crescita = 1)</b><extra></extra>",
+            marker=go.scatter.Marker(color=colors[1]),
+            )
+        )
+        fig.add_trace(go.Scatter(
             x=aggregated_data["data"].dt.date, 
             y=aggregated_data["smooth_growth_rate"],
             mode='lines',
             name="Fattore di Crescita",
-            
-            #fill='tozeroy',
+            fill='tonexty',
             hovertemplate = "<b>Fattore di crescita: %{text:.2f}</b><extra></extra>",
-            text=aggregated_data["smooth_growth_rate"]
+            text=aggregated_data["smooth_growth_rate"],
+            marker=go.scatter.Marker(color=colors[0]),
             )
         )
+        
 
     else:
 
@@ -259,6 +272,8 @@ def get_growth_rate_graph(filtered_data,aggregate):
                     labels={'increased_cases':'Nuovi casi positivi', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Fattore di Crescita"})
 
         fig.update_traces(mode='lines',hovertemplate = "<b>Fattore di crescita: %{y:.2f}</b><extra></extra>")
+    
+    
     
     fig.update_layout(temporal_graph_layout)
     fig.update_layout(
