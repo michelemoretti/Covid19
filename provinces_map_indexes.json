@@ -1,0 +1,1072 @@
+[
+    {
+        "curveNumber": 0,
+        "pointNumber": 0,
+        "pointIndex": 0,
+        "location": "CH",
+        "customdata": [
+            "ITF14",
+            "Chieti"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 1,
+        "pointIndex": 1,
+        "location": "AQ",
+        "customdata": [
+            "ITF11",
+            "L'Aquila"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 2,
+        "pointIndex": 2,
+        "location": "PE",
+        "customdata": [
+            "ITF13",
+            "Pescara"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 3,
+        "pointIndex": 3,
+        "location": "TE",
+        "customdata": [
+            "ITF12",
+            "Teramo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 4,
+        "pointIndex": 4,
+        "location": "MT",
+        "customdata": [
+            "ITF52",
+            "Matera"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 5,
+        "pointIndex": 5,
+        "location": "PZ",
+        "customdata": [
+            "ITF51",
+            "Potenza"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 6,
+        "pointIndex": 6,
+        "location": "BZ",
+        "customdata": [
+            "ITD10",
+            "Bolzano"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 7,
+        "pointIndex": 7,
+        "location": "CZ",
+        "customdata": [
+            "ITF63",
+            "Catanzaro"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 8,
+        "pointIndex": 8,
+        "location": "CS",
+        "customdata": [
+            "ITF61",
+            "Cosenza"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 9,
+        "pointIndex": 9,
+        "location": "KR",
+        "customdata": [
+            "ITF62",
+            "Crotone"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 10,
+        "pointIndex": 10,
+        "location": "RC",
+        "customdata": [
+            "ITF65",
+            "Reggio di Calabria"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 11,
+        "pointIndex": 11,
+        "location": "VV",
+        "customdata": [
+            "ITF64",
+            "Vibo Valentia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 12,
+        "pointIndex": 12,
+        "location": "AV",
+        "customdata": [
+            "ITF34",
+            "Avellino"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 13,
+        "pointIndex": 13,
+        "location": "BN",
+        "customdata": [
+            "ITF32",
+            "Benevento"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 14,
+        "pointIndex": 14,
+        "location": "CE",
+        "customdata": [
+            "ITF31",
+            "Caserta"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 15,
+        "pointIndex": 15,
+        "location": "NA",
+        "customdata": [
+            "ITF33",
+            "Napoli"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 16,
+        "pointIndex": 16,
+        "location": "SA",
+        "customdata": [
+            "ITF35",
+            "Salerno"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 17,
+        "pointIndex": 17,
+        "location": "BO",
+        "customdata": [
+            "ITD55",
+            "Bologna"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 18,
+        "pointIndex": 18,
+        "location": "FE",
+        "customdata": [
+            "ITD56",
+            "Ferrara"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 19,
+        "pointIndex": 19,
+        "location": "FC",
+        "customdata": [
+            "ITD58",
+            "Forlì-Cesena"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 20,
+        "pointIndex": 20,
+        "location": "MO",
+        "customdata": [
+            "ITD54",
+            "Modena"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 21,
+        "pointIndex": 21,
+        "location": "PR",
+        "customdata": [
+            "ITD52",
+            "Parma"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 22,
+        "pointIndex": 22,
+        "location": "PC",
+        "customdata": [
+            "ITD51",
+            "Piacenza"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 23,
+        "pointIndex": 23,
+        "location": "RA",
+        "customdata": [
+            "ITD57",
+            "Ravenna"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 24,
+        "pointIndex": 24,
+        "location": "RE",
+        "customdata": [
+            "ITD53",
+            "Reggio nell'Emilia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 25,
+        "pointIndex": 25,
+        "location": "RN",
+        "customdata": [
+            "ITD59",
+            "Rimini"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 26,
+        "pointIndex": 26,
+        "location": "GO",
+        "customdata": [
+            "ITD43",
+            "Gorizia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 27,
+        "pointIndex": 27,
+        "location": "PN",
+        "customdata": [
+            "ITD41",
+            "Pordenone"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 28,
+        "pointIndex": 28,
+        "location": "TS",
+        "customdata": [
+            "ITD44",
+            "Trieste"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 29,
+        "pointIndex": 29,
+        "location": "UD",
+        "customdata": [
+            "ITD42",
+            "Udine"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 30,
+        "pointIndex": 30,
+        "location": "FR",
+        "customdata": [
+            "ITE45",
+            "Frosinone"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 31,
+        "pointIndex": 31,
+        "location": "LT",
+        "customdata": [
+            "ITE44",
+            "Latina"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 32,
+        "pointIndex": 32,
+        "location": "RI",
+        "customdata": [
+            "ITE42",
+            "Rieti"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 33,
+        "pointIndex": 33,
+        "location": "RM",
+        "customdata": [
+            "ITE43",
+            "Roma"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 34,
+        "pointIndex": 34,
+        "location": "VT",
+        "customdata": [
+            "ITE41",
+            "Viterbo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 35,
+        "pointIndex": 35,
+        "location": "GE",
+        "customdata": [
+            "ITC33",
+            "Genova"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 36,
+        "pointIndex": 36,
+        "location": "IM",
+        "customdata": [
+            "ITC31",
+            "Imperia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 37,
+        "pointIndex": 37,
+        "location": "SP",
+        "customdata": [
+            "ITC34",
+            "La Spezia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 38,
+        "pointIndex": 38,
+        "location": "SV",
+        "customdata": [
+            "ITC32",
+            "Savona"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 39,
+        "pointIndex": 39,
+        "location": "BG",
+        "customdata": [
+            "ITC46",
+            "Bergamo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 40,
+        "pointIndex": 40,
+        "location": "BS",
+        "customdata": [
+            "ITC47",
+            "Brescia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 41,
+        "pointIndex": 41,
+        "location": "CO",
+        "customdata": [
+            "ITC42",
+            "Como"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 42,
+        "pointIndex": 42,
+        "location": "CR",
+        "customdata": [
+            "ITC4A",
+            "Cremona"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 43,
+        "pointIndex": 43,
+        "location": "LC",
+        "customdata": [
+            "ITC43",
+            "Lecco"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 44,
+        "pointIndex": 44,
+        "location": "LO",
+        "customdata": [
+            "ITC49",
+            "Lodi"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 45,
+        "pointIndex": 45,
+        "location": "MN",
+        "customdata": [
+            "ITC4B",
+            "Mantova"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 46,
+        "pointIndex": 46,
+        "location": "MI",
+        "customdata": [
+            "ITC45",
+            "Milano"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 47,
+        "pointIndex": 47,
+        "location": "MB",
+        "customdata": [
+            "IT108",
+            "Monza e della Brianza"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 48,
+        "pointIndex": 48,
+        "location": "PV",
+        "customdata": [
+            "ITC48",
+            "Pavia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 49,
+        "pointIndex": 49,
+        "location": "SO",
+        "customdata": [
+            "ITC44",
+            "Sondrio"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 50,
+        "pointIndex": 50,
+        "location": "VA",
+        "customdata": [
+            "ITC41",
+            "Varese"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 51,
+        "pointIndex": 51,
+        "location": "AN",
+        "customdata": [
+            "ITE32",
+            "Ancona"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 52,
+        "pointIndex": 52,
+        "location": "AP",
+        "customdata": [
+            "ITE34",
+            "Ascoli Piceno"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 53,
+        "pointIndex": 53,
+        "location": "FM",
+        "customdata": [
+            "IT109",
+            "Fermo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 54,
+        "pointIndex": 54,
+        "location": "MC",
+        "customdata": [
+            "ITE33",
+            "Macerata"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 55,
+        "pointIndex": 55,
+        "location": "PU",
+        "customdata": [
+            "ITE31",
+            "Pesaro e Urbino"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 56,
+        "pointIndex": 56,
+        "location": "CB",
+        "customdata": [
+            "ITF22",
+            "Campobasso"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 57,
+        "pointIndex": 57,
+        "location": "IS",
+        "customdata": [
+            "ITF21",
+            "Isernia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 58,
+        "pointIndex": 58,
+        "location": "AL",
+        "customdata": [
+            "ITC18",
+            "Alessandria"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 59,
+        "pointIndex": 59,
+        "location": "AT",
+        "customdata": [
+            "ITC17",
+            "Asti"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 60,
+        "pointIndex": 60,
+        "location": "BI",
+        "customdata": [
+            "ITC13",
+            "Biella"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 61,
+        "pointIndex": 61,
+        "location": "CN",
+        "customdata": [
+            "ITC16",
+            "Cuneo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 62,
+        "pointIndex": 62,
+        "location": "NO",
+        "customdata": [
+            "ITC15",
+            "Novara"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 63,
+        "pointIndex": 63,
+        "location": "TO",
+        "customdata": [
+            "ITC11",
+            "Torino"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 64,
+        "pointIndex": 64,
+        "location": "VB",
+        "customdata": [
+            "ITC14",
+            "Verbano-Cusio-Ossola"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 65,
+        "pointIndex": 65,
+        "location": "VC",
+        "customdata": [
+            "ITC12",
+            "Vercelli"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 66,
+        "pointIndex": 66,
+        "location": "BA",
+        "customdata": [
+            "ITF42",
+            "Bari"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 67,
+        "pointIndex": 67,
+        "location": "BT",
+        "customdata": [
+            "IT110",
+            "Barletta-Andria-Trani"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 68,
+        "pointIndex": 68,
+        "location": "BR",
+        "customdata": [
+            "ITF44",
+            "Brindisi"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 69,
+        "pointIndex": 69,
+        "location": "FG",
+        "customdata": [
+            "ITF41",
+            "Foggia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 70,
+        "pointIndex": 70,
+        "location": "LE",
+        "customdata": [
+            "ITF45",
+            "Lecce"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 71,
+        "pointIndex": 71,
+        "location": "TA",
+        "customdata": [
+            "ITF43",
+            "Taranto"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 72,
+        "pointIndex": 72,
+        "location": "CA",
+        "customdata": [
+            "ITG27",
+            "Cagliari"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 73,
+        "pointIndex": 73,
+        "location": "NU",
+        "customdata": [
+            "ITG26",
+            "Nuoro"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 74,
+        "pointIndex": 74,
+        "location": "OR",
+        "customdata": [
+            "ITG28",
+            "Oristano"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 75,
+        "pointIndex": 75,
+        "location": "SS",
+        "customdata": [
+            "ITG25",
+            "Sassari"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 76,
+        "pointIndex": 76,
+        "location": "SU",
+        "customdata": [
+            "IT111",
+            "Sud Sardegna"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 77,
+        "pointIndex": 77,
+        "location": "AG",
+        "customdata": [
+            "ITG14",
+            "Agrigento"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 78,
+        "pointIndex": 78,
+        "location": "CL",
+        "customdata": [
+            "ITG15",
+            "Caltanissetta"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 79,
+        "pointIndex": 79,
+        "location": "CT",
+        "customdata": [
+            "ITG17",
+            "Catania"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 80,
+        "pointIndex": 80,
+        "location": "EN",
+        "customdata": [
+            "ITG16",
+            "Enna"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 81,
+        "pointIndex": 81,
+        "location": "ME",
+        "customdata": [
+            "ITG13",
+            "Messina"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 82,
+        "pointIndex": 82,
+        "location": "PA",
+        "customdata": [
+            "ITG12",
+            "Palermo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 83,
+        "pointIndex": 83,
+        "location": "RG",
+        "customdata": [
+            "ITG18",
+            "Ragusa"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 84,
+        "pointIndex": 84,
+        "location": "SR",
+        "customdata": [
+            "ITG19",
+            "Siracusa"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 85,
+        "pointIndex": 85,
+        "location": "TP",
+        "customdata": [
+            "ITG11",
+            "Trapani"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 86,
+        "pointIndex": 86,
+        "location": "AR",
+        "customdata": [
+            "ITE18",
+            "Arezzo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 87,
+        "pointIndex": 87,
+        "location": "FI",
+        "customdata": [
+            "ITE14",
+            "Firenze"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 88,
+        "pointIndex": 88,
+        "location": "GR",
+        "customdata": [
+            "ITE1A",
+            "Grosseto"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 89,
+        "pointIndex": 89,
+        "location": "LI",
+        "customdata": [
+            "ITE16",
+            "Livorno"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 90,
+        "pointIndex": 90,
+        "location": "LU",
+        "customdata": [
+            "ITE12",
+            "Lucca"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 91,
+        "pointIndex": 91,
+        "location": "MS",
+        "customdata": [
+            "ITE11",
+            "Massa Carrara"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 92,
+        "pointIndex": 92,
+        "location": "PI",
+        "customdata": [
+            "ITE17",
+            "Pisa"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 93,
+        "pointIndex": 93,
+        "location": "PT",
+        "customdata": [
+            "ITE13",
+            "Pistoia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 94,
+        "pointIndex": 94,
+        "location": "PO",
+        "customdata": [
+            "ITE15",
+            "Prato"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 95,
+        "pointIndex": 95,
+        "location": "SI",
+        "customdata": [
+            "ITE19",
+            "Siena"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 96,
+        "pointIndex": 96,
+        "location": "TN",
+        "customdata": [
+            "ITD20",
+            "Trento"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 97,
+        "pointIndex": 97,
+        "location": "PG",
+        "customdata": [
+            "ITE21",
+            "Perugia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 98,
+        "pointIndex": 98,
+        "location": "TR",
+        "customdata": [
+            "ITE22",
+            "Terni"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 99,
+        "pointIndex": 99,
+        "location": "AO",
+        "customdata": [
+            "ITC20",
+            "Aosta"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 100,
+        "pointIndex": 100,
+        "location": "BL",
+        "customdata": [
+            "ITD33",
+            "Belluno"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 101,
+        "pointIndex": 101,
+        "location": "PD",
+        "customdata": [
+            "ITD36",
+            "Padova"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 102,
+        "pointIndex": 102,
+        "location": "RO",
+        "customdata": [
+            "ITD37",
+            "Rovigo"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 103,
+        "pointIndex": 103,
+        "location": "TV",
+        "customdata": [
+            "ITD34",
+            "Treviso"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 104,
+        "pointIndex": 104,
+        "location": "VE",
+        "customdata": [
+            "ITD35",
+            "Venezia"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 105,
+        "pointIndex": 105,
+        "location": "VR",
+        "customdata": [
+            "ITD31",
+            "Verona"
+        ]
+    },
+    {
+        "curveNumber": 0,
+        "pointNumber": 106,
+        "pointIndex": 106,
+        "location": "VI",
+        "customdata": [
+            "ITD32",
+            "Vicenza"
+        ]
+    }
+]

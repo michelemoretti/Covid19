@@ -320,7 +320,6 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 hovertemplate = "<b>%{x}</b><br>Deceduti: %{y}<extra></extra>",
                                 #text=,
                                 line = dict(dash='dot'),
-                                showlegend =False,
                                 marker=go.scatter.Marker(color=colors[1]),
                                 ))
         fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 

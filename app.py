@@ -72,17 +72,41 @@ df_regioni_map_index = {
     "Puglia": "13",
     "Sardegna": "14",
     "Sicilia": "15",
-    "P.A. Trento": "16",
+    "Trentino Alto Adige": "16",
     "Toscana": "17",
     "Umbria": "18",
     "Valle d'Aosta": "19",
     "Veneto": "20",
 }
+
+region_names = df_regioni["denominazione_regione"].unique().tolist()
+region_names.remove("P.A. Bolzano")
+region_names = [
+    "Trentino Alto Adige" if x == "P.A. Trento" else x for x in region_names
+]
+region_dropdown_options = [
+    {"label": regione, "value": codice_regione}
+    for regione, codice_regione in zip(region_names, region_names,)
+]
+
+provinces_dropdown_options = [
+    {
+        "label": provincia,
+        "value": df[df["denominazione_provincia"] == provincia]["NUTS3"].tolist()[0],
+    }
+    for provincia in df["denominazione_provincia"].unique().tolist()
+]
+
+
+with open("provinces_map_indexes.json", "r") as f:
+    provinces_datapoint_json = json.load(f)
+
+
 df_province_map_index = {
-    value: str(idx) for idx, value in enumerate(sorted(df["NUTS3"].unique().tolist()))
+    x["customdata"][0]: str(x["pointNumber"]) for x in provinces_datapoint_json
 }
 
-print(df_regioni_map_index)
+
 
 air_series = pd.read_csv(
     os.path.join("ISTAT_DATA", "air_pollution_2018.csv"), encoding="utf-8"
@@ -727,11 +751,18 @@ def set_filter_location(selectedData, area_tab, dropdown_values, figure):
         return "", "", area_tab
 
     if "dropdown-select.value" in triggerer:
-        return (
-            "|".join(dropdown_values),
-            "|".join([df_regioni_map_index[x] for x in dropdown_values]),
-            area_tab,
-        )
+        if area_tab == "regioni":
+            return (
+                "|".join(dropdown_values),
+                "|".join([df_regioni_map_index[x] for x in dropdown_values]),
+                area_tab,
+            )
+        else:
+            return (
+                "|".join(dropdown_values),
+                "|".join([df_province_map_index[x] for x in dropdown_values]),
+                area_tab,
+            )
 
     if selectedData:
 
@@ -813,11 +844,10 @@ def set_map_type_filter(area_type):
         Input("filter", "data-map-datatype-selected"),
         Input("filter", component_property="data-map-type"),
     ],
-    [State("filter", "data-area-index"),
-    State("dropdown-select","value")],
+    [State("filter", "data-area-index"), State("dropdown-select", "value")],
 )
 @cache.memoize(timeout=TIMEOUT)
-def update_map(ordinal_date, data_selected, area_map, preselection,dropdown_select):
+def update_map(ordinal_date, data_selected, area_map, preselection, dropdown_select):
 
     if not ordinal_date:
         return None
@@ -827,7 +857,6 @@ def update_map(ordinal_date, data_selected, area_map, preselection,dropdown_sele
 
     giorno = date.fromordinal(ordinal_date)
 
-    
     # check if region or province map was requested
     if area_map == "regioni":
         filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
@@ -859,7 +888,7 @@ def update_map(ordinal_date, data_selected, area_map, preselection,dropdown_sele
 
     if dropdown_select:
         figure.update_layout(clickmode="event",)
-        
+
     return figure
 
 
@@ -1012,7 +1041,21 @@ def open_fullscreen_graph(btn1, btn2, btn3, close_btn, fig1, fig2, fig3):
     return go.Figure(), False
 
 
-#def update_dropdown:
+@app.callback(
+    [
+        Output("dropdown-select", component_property="options"),
+        Output("dropdown-select", component_property="placeholder"),
+    ],
+    [Input("filter", component_property="data-map-type")],
+)
+def update_dropdown(area_type):
+
+    if not area_type:
+        return []
+    if area_type == "regioni":
+        return region_dropdown_options,"Scegli le regioni di interesse"
+    else:
+        return provinces_dropdown_options,"Scegli le province di interesse"
 
 
 if __name__ == "__main__":
