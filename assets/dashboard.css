@@ -29,9 +29,7 @@ html {
 
 
 
-#info-tooltips{
-    text-align: center;
-}
+
 #logo img {
     height: 6vh;
     margin: 0.5vh;
@@ -159,6 +157,65 @@ button.mapButton {
     width: 30px;
 }
 
+
+@media only screen and (orientation:portrait){
+    #area-map span{
+        font-size: 2rem;
+    }
+   
+    #data-selected span{
+        font-size: 1.3rem;
+    }
+
+    .rc-slider-mark-text{
+        font-size: 1rem;
+    }
+
+    #info-tooltips{
+        text-align: center !important;
+        margin:30px 0;
+    }
+    #date-slider{
+        margin-bottom: 40px;
+    }
+    label{
+        font-size: 1.5rem !important;
+    }
+    #footer > div{
+        /* height: 18vh; */
+        /* overflow-y:hidden; */
+    }
+    
+    #notes{
+        font-size: 1.2rem; 
+        height: 18vh; 
+    }
+    #footer h4{ 
+        font-size: 2rem; 
+        margin: 1.5rem 0 0.5rem 0; 
+    }
+    #notes-list{
+        text-align: left;
+        /* overflow-y: scroll; */ 
+        height: 500px;
+    }
+    
+    #license{
+        /* height: 18vh; */
+        text-align:left;
+        font-size: 1.2rem;
+    }
+    
+    #license p{
+        margin-bottom:0;
+    }
+    
+}
+@media only screen and (max-width: 960px){
+    #info-tooltips{
+        text-align: center;
+    }
+}
 @media only screen and (min-width: 960px){
     #info-tooltips{
         text-align: end;
