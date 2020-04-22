@@ -1,3 +1,4 @@
+import base64
 import importlib
 import json
 import locale
@@ -21,30 +22,14 @@ import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
 from flask_caching import Cache
 
-from figures import (
-    get_growth_rate_graph,
-    get_positive_tests_ratio_graph,
-    get_provincial_map,
-    get_regional_map,
-    get_tamponi_graph,
-    get_variable_graph,
-    get_respiratory_deaths_graph,
-    get_removed_graph,
-)
-
+from figures import (get_growth_rate_graph, get_positive_tests_ratio_graph,
+                     get_provincial_map, get_regional_map, get_removed_graph,
+                     get_respiratory_deaths_graph, get_tamponi_graph,
+                     get_variable_graph)
 from utils import (
-    calcolo_giorni_da_min_positivi,
-    calculate_line,
-    exp_viridis,
-    filter_dates,
-    get_areas,
-    get_dataset,
-    get_map_json,
-    linear_reg,
-    mean_absolute_percentage_error,
-    pretty_colors,
-    viridis,
-)
+    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
+    get_areas, get_dataset, get_map_json, linear_reg,
+    mean_absolute_percentage_error, pretty_colors, viridis)
 
 locale.setlocale(locale.LC_ALL, "")
 logger = logging.getLogger("dash_application")
@@ -102,6 +87,11 @@ metric_list = [
     "terapia_intensiva",
 ]
 
+fullscreen_icon = os.path.join(
+    "imgs", "fullscreen-enter-2x.png"
+)  # replace with your own image
+fullscreen_icon_encoded = base64.b64encode(open(fullscreen_icon, "rb").read())
+fullscreen_img_tag = html.Img(src="data:image/png;base64,{}".format(fullscreen_icon_encoded.decode()))
 
 redis_found = importlib.util.find_spec("redis_connection")
 
@@ -364,7 +354,7 @@ app.layout = dfx.Grid(
                                     className="dashboardContainer dash-graph",
                                 ),
                                 dbc.Button(
-                                    "FULLSCREEN",
+                                    fullscreen_img_tag,
                                     id="graph1-fullscreen-button",
                                     n_clicks=0,
                                     className="floating-button",
@@ -381,7 +371,7 @@ app.layout = dfx.Grid(
                                     className="dashboardContainer dash-graph",
                                 ),
                                 dbc.Button(
-                                    "FULLSCREEN",
+                                    fullscreen_img_tag,
                                     id="graph2-fullscreen-button",
                                     n_clicks=0,
                                     className="floating-button",
@@ -398,7 +388,7 @@ app.layout = dfx.Grid(
                                     className="dashboardContainer dash-graph",
                                 ),
                                 dbc.Button(
-                                    "FULLSCREEN",
+                                    fullscreen_img_tag,
                                     id="graph3-fullscreen-button",
                                     n_clicks=0,
                                     className="floating-button",
