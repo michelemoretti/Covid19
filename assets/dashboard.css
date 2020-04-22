@@ -147,9 +147,7 @@ button.floating-button {
     max-width: 100% !important;
 }
 
-button.floating-button {
-    display: none;
-}
+
 
 button.mapButton {
     border-radius: 100px;
@@ -159,6 +157,9 @@ button.mapButton {
 
 
 @media only screen and (orientation:portrait){
+    button.floating-button {
+        display: none !important;
+    }
     #area-map span{
         font-size: 2rem;
     }
