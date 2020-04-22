@@ -20,6 +20,8 @@ temporal_graph_layout={
         "title" :{"xanchor":"center", "x":0.5},
 }
 
+colors = px.colors.qualitative.Plotly
+
 def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selected_label,max_scale_value):
 
     fig = px.choropleth_mapbox(
@@ -225,7 +227,7 @@ def get_variable_graph(filtered_data,aggregate,logy=False,datatype="totale_casi"
 def get_growth_rate_graph(filtered_data,aggregate):
 
     fig = go.Figure()
-    colors = px.colors.qualitative.Plotly
+
     comparison_column = "denominazione_provincia" if "codice_provincia" in filtered_data.columns else "denominazione_regione"
 
     if aggregate:
@@ -301,14 +303,6 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
         summed_data_by_date = filtered_data.sort_values("data").groupby("data").sum()
         
         fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
-                                y=summed_data_by_date["dimessi_guariti"]/summed_data_by_date["totale_casi"], 
-                                fill='tozeroy',
-                                mode='lines',
-                                name="Guariti/Contagi",
-                                hovertemplate = "<b>%{x}</b><br>Guariti: %{y}<extra></extra>",
-                                #text=,
-                                ))
-        fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
                                 y=summed_data_by_date["deceduti"]/summed_data_by_date["totale_casi"], 
                                 fill='tozeroy',
                                 mode='lines',
@@ -316,9 +310,18 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 hovertemplate = "<b>%{x}</b><br>Deceduti: %{y}<extra></extra>",
                                 #text=,
                                 line = dict(dash='dot'),
+                                marker=go.scatter.Marker(color=colors[1]),
+                                ))
+        fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
+                                y=summed_data_by_date["dimessi_guariti"]/summed_data_by_date["totale_casi"], 
+                                fill='tonexty',
+                                mode='lines',
+                                name="Guariti/Contagi",
+                                hovertemplate = "<b>%{x}</b><br>Guariti: %{y}<extra></extra>",
+                                marker=go.scatter.Marker(color=colors[0]),
+                                #text=,
                                 ))
     else:
-        colors = px.colors.qualitative.Plotly
 
         for idx,regione in enumerate(filtered_data["denominazione_regione"].unique()):
             regional_data = filtered_data[filtered_data["denominazione_regione"] == regione]
