@@ -22,14 +22,29 @@ import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
 from flask_caching import Cache
 
-from figures import (get_growth_rate_graph, get_positive_tests_ratio_graph,
-                     get_provincial_map, get_regional_map, get_removed_graph,
-                     get_respiratory_deaths_graph, get_tamponi_graph,
-                     get_variable_graph)
+from figures import (
+    get_growth_rate_graph,
+    get_positive_tests_ratio_graph,
+    get_provincial_map,
+    get_regional_map,
+    get_removed_graph,
+    get_respiratory_deaths_graph,
+    get_tamponi_graph,
+    get_variable_graph,
+)
 from utils import (
-    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
-    get_areas, get_dataset, get_map_json, linear_reg,
-    mean_absolute_percentage_error, pretty_colors, viridis)
+    calcolo_giorni_da_min_positivi,
+    calculate_line,
+    exp_viridis,
+    filter_dates,
+    get_areas,
+    get_dataset,
+    get_map_json,
+    linear_reg,
+    mean_absolute_percentage_error,
+    pretty_colors,
+    viridis,
+)
 
 locale.setlocale(locale.LC_ALL, "")
 logger = logging.getLogger("dash_application")
@@ -91,7 +106,9 @@ fullscreen_icon = os.path.join(
     "imgs", "fullscreen-enter-2x.png"
 )  # replace with your own image
 fullscreen_icon_encoded = base64.b64encode(open(fullscreen_icon, "rb").read())
-fullscreen_img_tag = html.Img(src="data:image/png;base64,{}".format(fullscreen_icon_encoded.decode()))
+fullscreen_img_tag = html.Img(
+    src="data:image/png;base64,{}".format(fullscreen_icon_encoded.decode())
+)
 
 redis_found = importlib.util.find_spec("redis_connection")
 
@@ -163,7 +180,7 @@ app.layout = dfx.Grid(
                 dfx.Col(
                     xs=12,
                     lg=8,
-                    children=[html.Div("Dashboard COVID-19", id="menu")],
+                    children=[html.Div("Dashboard Neurality COVID-19", id="menu")],
                     className="menuItem",
                 ),
                 dfx.Col(
@@ -439,7 +456,12 @@ app.layout = dfx.Grid(
             [
                 dbc.Tooltip(
                     f"Contiene anche i casi guariti o già deceduti",
-                    target=f"daily-totale_casi-number",
+                    target=f"daily-totale_casi",
+                    placement="right",
+                ),
+                dbc.Tooltip(
+                    f"Non coincide con il numero di persone sottoposte a test, alcune persone sono state testate più volte",
+                    target=f"daily-tamponi",
                     placement="right",
                 ),
                 dbc.Tooltip(
