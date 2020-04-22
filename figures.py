@@ -343,7 +343,6 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 name=regione,
                                 hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Guariti: %{y}<extra></extra>",
                                 #text=,
-                                legendgroup=regione,
                                 marker=go.scatter.Marker(color=colors[idx]),
                                 ))
             fig.add_trace(go.Scatter(x=filtered_data.sort_values("data")["data"].dt.date.unique(), 
@@ -353,8 +352,8 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 name=regione,
                                 hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Guariti: %{y}<extra></extra>",
                                 #text=,
-                                legendgroup=regione,
                                 line = dict(dash='dot'),
+                                showlegend =False,
                                 marker=go.scatter.Marker(color=colors[idx]),
                                 ))
     fig.update_layout(temporal_graph_layout)
