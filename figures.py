@@ -302,6 +302,7 @@ def get_respiratory_deaths_graph(morti_resp):
     ])
     fig.update_layout(temporal_graph_layout)
     fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},)
+    fig.update_layout({"title_text":'Decessi per malattie respiratorie'})
     return fig
 
 def get_removed_graph(filtered_data,aggregate=True,logy=True):
