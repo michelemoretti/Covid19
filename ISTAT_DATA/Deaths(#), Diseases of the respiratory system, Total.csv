@@ -1,0 +1,54 @@
+index,State,Year,Value, Source
+0,Italy,2020,-,
+1,Italy,2019,-, 
+2,Italy,2018,-, 
+3,Italy,2017,53372, http://dati.istat.it/
+4,Italy,2016,-, 
+5,Italy,2015,48518, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+6,Italy,2014,41543, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+7,Italy,2013,41711, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+8,Italy,2012,43444, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+9,Italy,2011,40559, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+10,Italy,2010,38798, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+11,Italy,2009,39949, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+12,Italy,2008,37771, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+13,Italy,2007,37812, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+14,Italy,2006,35751, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+15,Italy,2005,40310, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+16,Italy,2004,34189, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+17,Italy,2003,40852, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+18,Italy,2002,35941, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+19,Italy,2001,33826, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+20,Italy,2000,37782, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+21,Italy,1999,39071, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+22,Italy,1998,37270, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+23,Italy,1997,35455, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+24,Italy,1996,32279, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+25,Italy,1995,33857, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+26,Italy,1994,33787, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+27,Italy,1993,32078, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+28,Italy,1992,32499, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+29,Italy,1991,33825, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+30,Italy,1990,35620, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+31,Italy,1989,33266, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+32,Italy,1988,34529, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+33,Italy,1987,33932, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+34,Italy,1986,38724, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+35,Italy,1985,37290, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+36,Italy,1984,35118, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+37,Italy,1983,40010, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+38,Italy,1982,34335, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+39,Italy,1981,40073, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+40,Italy,1980,39397, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+41,Italy,1979,36690, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+42,Italy,1978,37511, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+43,Italy,1977,42246, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+44,Italy,1976,41630, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+45,Italy,1975,47465, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+46,Italy,1974,39238, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+47,Italy,1973,46163, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+48,Italy,1972,42760, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+49,Italy,1971,41511, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+50,Italy,1970,50595, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+51,Italy,1969,56756, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
+52,Italy,1968,53414, https://gateway.euro.who.int/en/indicators/hfamdb_292-deaths-diseases-of-the-respiratory-system/visualizations/#id=29884
