@@ -23,22 +23,66 @@ from dash.dependencies import Input, Output, State
 from flask import request
 from flask_caching import Cache
 
-from figures import (get_growth_rate_graph, get_PM10_graph,
-                     get_positive_tests_ratio_graph, get_provincial_map,
-                     get_regional_map, get_removed_graph,
-                     get_respiratory_deaths_graph, get_smokers_graph,
-                     get_tamponi_graph, get_variable_graph)
+from figures import (
+    get_growth_rate_graph,
+    get_PM10_graph,
+    get_positive_tests_ratio_graph,
+    get_provincial_map,
+    get_regional_map,
+    get_removed_graph,
+    get_respiratory_deaths_graph,
+    get_smokers_graph,
+    get_tamponi_graph,
+    get_variable_graph,
+)
 from utils import (
-    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
-    get_areas, get_dataset, get_map_json, linear_reg,
-    mean_absolute_percentage_error, pretty_colors, viridis)
+    calcolo_giorni_da_min_positivi,
+    calculate_line,
+    exp_viridis,
+    filter_dates,
+    get_areas,
+    get_dataset,
+    get_map_json,
+    linear_reg,
+    mean_absolute_percentage_error,
+    pretty_colors,
+    viridis,
+)
 
 locale.setlocale(locale.LC_ALL, "it_IT.UTF-8")
 logger = logging.getLogger("dash_application")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
 df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
+
+df_regioni_map_index = {
+    "Abruzzo": "0",
+    "Basilicata": "1",
+    "Calabria": "3",
+    "Campania": "4",
+    "Emilia-Romagna": "5",
+    "Friuli Venezia Giulia": "6",
+    "Lazio": "7",
+    "Liguria": "8",
+    "Lombardia": "9",
+    "Marche": "10",
+    "Molise": "11",
+    "Piemonte": "12",
+    "Puglia": "13",
+    "Sardegna": "14",
+    "Sicilia": "15",
+    "P.A. Trento": "16",
+    "Toscana": "17",
+    "Umbria": "18",
+    "Valle d'Aosta": "19",
+    "Veneto": "20",
+}
+df_province_map_index = {
+    value: str(idx) for idx, value in enumerate(sorted(df["NUTS3"].unique().tolist()))
+}
+
+print(df_regioni_map_index)
 
 air_series = pd.read_csv(
     os.path.join("ISTAT_DATA", "air_pollution_2018.csv"), encoding="utf-8"
@@ -73,7 +117,7 @@ regions, provinces = get_areas(df)
 giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
 viridis_exp_scale = exp_viridis(giorni_da_min_positivi)
 
-TIMEOUT= 6*60*60
+TIMEOUT = 20  # 6*60*60
 
 metric_names = {
     "totale_casi": "Contagiati",
@@ -384,6 +428,29 @@ app.layout = dfx.Grid(
                             ),
                             center="xs",
                         ),
+                        dfx.Row(
+                            [
+                                dcc.Dropdown(
+                                    id="dropdown-select",
+                                    options=[
+                                        {"label": regione, "value": codice_regione}
+                                        for regione, codice_regione in zip(
+                                            df_regioni[
+                                                "denominazione_regione"
+                                            ].unique(),
+                                            df_regioni[
+                                                "denominazione_regione"
+                                            ].unique(),
+                                        )
+                                    ],
+                                    value=[],
+                                    multi=True,
+                                    placeholder="Scegli le regioni",
+                                    searchable=False,
+                                )
+                            ],
+                            id="area-selection-row",
+                        ),
                     ],
                 ),
                 dfx.Col(
@@ -639,20 +706,32 @@ def update_area_graphs(
         Output("filter", component_property="data-area-index"),
         Output("filter", component_property="data-map-type"),
     ],
-    [Input("main-map", component_property="selectedData"), Input("area-map", "value"),],
+    [
+        Input("main-map", component_property="selectedData"),
+        Input("area-map", "value"),
+        Input("dropdown-select", "value"),
+    ],
     [State("main-map", component_property="figure")],
 )
-def set_filter_location(selectedData, area_tab, figure):
+def set_filter_location(selectedData, area_tab, dropdown_values, figure):
 
     ctx = dash.callback_context
     triggerer = [x["prop_id"] for x in ctx.triggered]
     logger.debug(f"set_filter_location triggered by {triggerer}")
 
-    ctx = dash.callback_context
+    print(f"set_filter_location triggered by {triggerer}")
+    print(selectedData)
 
     # If the callback was triggered by a tab click reset the selection
     if ctx.triggered[0]["prop_id"] == "area-map.value":
         return "", "", area_tab
+
+    if "dropdown-select.value" in triggerer:
+        return (
+            "|".join(dropdown_values),
+            "|".join([df_regioni_map_index[x] for x in dropdown_values]),
+            area_tab,
+        )
 
     if selectedData:
 
@@ -734,10 +813,11 @@ def set_map_type_filter(area_type):
         Input("filter", "data-map-datatype-selected"),
         Input("filter", component_property="data-map-type"),
     ],
-    [State("filter", "data-area-index")],
+    [State("filter", "data-area-index"),
+    State("dropdown-select","value")],
 )
 @cache.memoize(timeout=TIMEOUT)
-def update_map(ordinal_date, data_selected, area_map, preselection):
+def update_map(ordinal_date, data_selected, area_map, preselection,dropdown_select):
 
     if not ordinal_date:
         return None
@@ -747,6 +827,7 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
 
     giorno = date.fromordinal(ordinal_date)
 
+    
     # check if region or province map was requested
     if area_map == "regioni":
         filtered_df = df_regioni[df_regioni["data"].dt.date == giorno]
@@ -775,6 +856,10 @@ def update_map(ordinal_date, data_selected, area_map, preselection):
         logger.debug(f"new_selection ->{figure.data[0].selectedpoints}")
 
     logger.debug("\n")
+
+    if dropdown_select:
+        figure.update_layout(clickmode="event",)
+        
     return figure
 
 
@@ -925,6 +1010,9 @@ def open_fullscreen_graph(btn1, btn2, btn3, close_btn, fig1, fig2, fig3):
         return fig3, True
 
     return go.Figure(), False
+
+
+#def update_dropdown:
 
 
 if __name__ == "__main__":

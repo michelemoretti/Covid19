@@ -155,8 +155,20 @@ button.mapButton {
     width: 30px;
 }
 
+#area-selection-row{
 
+    display:none;
+
+}
 @media only screen and (orientation:portrait){
+
+    #area-selection-row{
+
+        display:block !important;
+        font-size: 30px;
+        margin-bottom: 30px;
+    
+    }
 
     .tooltip-inner{
         font-size: 1.4rem;
@@ -164,6 +176,9 @@ button.mapButton {
 
     button.floating-button {
         display: none !important;
+    }
+    button.mapButton {
+        display: block !important;
     }
     #area-map span{
         font-size: 2rem;
