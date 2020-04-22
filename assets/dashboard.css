@@ -157,6 +157,11 @@ button.mapButton {
 
 
 @media only screen and (orientation:portrait){
+
+    .tooltip-inner{
+        font-size: 1.4rem;
+    }
+
     button.floating-button {
         display: none !important;
     }
