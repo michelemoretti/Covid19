@@ -871,7 +871,6 @@ def enable_aggregation(areas_string):
         if len(area_list) > 1:
 
             if len(area_list) > 3:
-                print("IT SHOULD WORK")
                 return {"display": ""}, True, True
 
             else:
