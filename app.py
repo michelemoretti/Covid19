@@ -188,7 +188,7 @@ app.layout = dfx.Grid(
                                 ),
                                 daq.BooleanSwitch(
                                     id="logarithmic-toggle",
-                                    label="Assey Logaritmico",
+                                    label="Asse-y Log",
                                     labelPosition="bottom",
                                     on=False,
                                     className="toggle",
@@ -441,7 +441,22 @@ app.layout = dfx.Grid(
                     f"Contiene anche i casi guariti o già deceduti",
                     target=f"daily-totale_casi-number",
                     placement="right",
-                )
+                ),
+                dbc.Tooltip(
+                    f"Visualizza correlazioni con dati storici sulla popolazione",
+                    target=f"istat-button",
+                    placement="bottom",
+                ),
+                dbc.Tooltip(
+                    f"Modifica l'asse y di alcuni grafici rendendolo logaritmico. In questo modo gli andamenti esponenziali vengono visualizzati da una linea retta ",
+                    target=f"logarithmic-toggle",
+                    placement="bottom",
+                ),
+                dbc.Tooltip(
+                    f"Aggrega i dati delle aree selezionate, escludendo quelle non selezionate",
+                    target=f"aggregation-toggle",
+                    placement="bottom",
+                ),
             ],
             id="tooltips-container",
             style={"display": "none"},
