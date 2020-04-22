@@ -107,7 +107,6 @@ df_province_map_index = {
 }
 
 
-
 air_series = pd.read_csv(
     os.path.join("ISTAT_DATA", "air_pollution_2018.csv"), encoding="utf-8"
 ).set_index("NUTS3")
@@ -327,31 +326,62 @@ app.layout = dfx.Grid(
                     lg=5,
                     children=[
                         dfx.Row(
+                            [   
+                                html.H2("Mappa Contagio"),
+                                dcc.Dropdown(
+                                    id="dropdown-select",
+                                    options=[
+                                        {"label": regione, "value": codice_regione}
+                                        for regione, codice_regione in zip(
+                                            df_regioni[
+                                                "denominazione_regione"
+                                            ].unique(),
+                                            df_regioni[
+                                                "denominazione_regione"
+                                            ].unique(),
+                                        )
+                                    ],
+                                    value=[],
+                                    multi=True,
+                                    placeholder="Scegli le regioni",
+                                    searchable=False,
+                                    optionHeight=50,
+                                    style={"text-align": "center", "font-size": "2rem"},
+                                )
+                            ],
+                            id="area-selection-row",
+                        ),
+                        dfx.Row(
                             [
-                                dcc.Graph(
-                                    id="main-map",
-                                    figure=get_regional_map(
-                                        df_regioni,
-                                        regions_map_json,
-                                        viridis_exp_scale,
-                                        "totale_casi",
-                                        "Totale Casi",
-                                        max_scale_value=math.ceil(
-                                            df_regioni["totale_casi"].max() + 1
+                                html.Div(
+                                    [
+                                        dcc.Graph(
+                                            id="main-map",
+                                            figure=get_regional_map(
+                                                df_regioni,
+                                                regions_map_json,
+                                                viridis_exp_scale,
+                                                "totale_casi",
+                                                "Totale Casi",
+                                                max_scale_value=math.ceil(
+                                                    df_regioni["totale_casi"].max() + 1
+                                                ),
+                                            ),
+                                            # animate=True,
+                                            # config={"displayModeBar": False}),
+                                            className="dashboardContainer",
+                                            # style={"min-width": "100%"}
                                         ),
-                                    ),
-                                    # animate=True,
-                                    # config={"displayModeBar": False}),
-                                    className="dashboardContainer",
-                                    # style={"min-width": "100%"}
-                                ),
-                                dbc.Button(
-                                    " ? ",
-                                    id="map-info-button",
-                                    className="floating-button mapButton",
-                                    size="sm",
-                                    color="info",
-                                ),
+                                        dbc.Button(
+                                            " ? ",
+                                            id="map-info-button",
+                                            className="floating-button mapButton",
+                                            size="sm",
+                                            color="info",
+                                        ),
+                                    ],
+                                    style={"position": "relative","width":"100%"},
+                                )
                             ],
                             center="xs",
                         ),
@@ -451,31 +481,6 @@ app.layout = dfx.Grid(
                                 # tooltip={"always_visible": True, "placement": "bottom"},
                             ),
                             center="xs",
-                        ),
-                        dfx.Row(
-                            [
-                                dcc.Dropdown(
-                                    id="dropdown-select",
-                                    options=[
-                                        {"label": regione, "value": codice_regione}
-                                        for regione, codice_regione in zip(
-                                            df_regioni[
-                                                "denominazione_regione"
-                                            ].unique(),
-                                            df_regioni[
-                                                "denominazione_regione"
-                                            ].unique(),
-                                        )
-                                    ],
-                                    value=[],
-                                    multi=True,
-                                    placeholder="Scegli le regioni",
-                                    searchable=False,
-                                    optionHeight=50,
-                                    style={"text-align":"center","font-size":"2rem"}
-                                )
-                            ],
-                            id="area-selection-row",
                         ),
                     ],
                 ),
@@ -673,7 +678,10 @@ def update_area_graphs(
 
             area_list = area_string.split("|")
             if "Trentino Alto Adige" in area_list:
-                area_list = [x if x != "Trentino Alto Adige" else "P.A. Trento" for x in area_list]
+                area_list = [
+                    x if x != "Trentino Alto Adige" else "P.A. Trento"
+                    for x in area_list
+                ]
             filter_ = df_regioni["denominazione_regione"].isin(area_list)
             filtered_data = df_regioni[filter_]
 
@@ -1055,11 +1063,11 @@ def open_fullscreen_graph(btn1, btn2, btn3, close_btn, fig1, fig2, fig3):
 def update_dropdown(area_type):
 
     if not area_type:
-        return [],""
+        return [], ""
     if area_type == "regioni":
-        return region_dropdown_options,"Scegli le regioni di interesse"
+        return region_dropdown_options, "Scegli le regioni di interesse"
     else:
-        return provinces_dropdown_options,"Scegli le province di interesse"
+        return provinces_dropdown_options, "Scegli le province di interesse"
 
 
 if __name__ == "__main__":
