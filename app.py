@@ -72,8 +72,8 @@ df_regioni_map_index = {
     "Puglia": "13",
     "Sardegna": "14",
     "Sicilia": "15",
-    "Trentino Alto Adige": "16",
-    "Toscana": "17",
+    "Trentino Alto Adige": "17",
+    "Toscana": "16",
     "Umbria": "18",
     "Valle d'Aosta": "19",
     "Veneto": "20",
@@ -471,6 +471,8 @@ app.layout = dfx.Grid(
                                     multi=True,
                                     placeholder="Scegli le regioni",
                                     searchable=False,
+                                    optionHeight=50,
+                                    style={"text-align":"center","font-size":"2rem"}
                                 )
                             ],
                             id="area-selection-row",
@@ -670,6 +672,8 @@ def update_area_graphs(
         if area_string:
 
             area_list = area_string.split("|")
+            if "Trentino Alto Adige" in area_list:
+                area_list = [x if x != "Trentino Alto Adige" else "P.A. Trento" for x in area_list]
             filter_ = df_regioni["denominazione_regione"].isin(area_list)
             filtered_data = df_regioni[filter_]
 
@@ -1051,7 +1055,7 @@ def open_fullscreen_graph(btn1, btn2, btn3, close_btn, fig1, fig2, fig3):
 def update_dropdown(area_type):
 
     if not area_type:
-        return []
+        return [],""
     if area_type == "regioni":
         return region_dropdown_options,"Scegli le regioni di interesse"
     else:
