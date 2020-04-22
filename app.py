@@ -586,24 +586,25 @@ def set_filter_location(selectedData, area_tab, figure):
     if ctx.triggered[0]["prop_id"] == "area-map.value":
         return "", "", area_tab
 
-    if (area_tab == "regioni") and (len(selectedData["points"]) == 20):
-        return "", "", area_tab
-    if (area_tab == "province") and (len(selectedData["points"]) == 107):
-        return "", "", area_tab
+    if selectedData:
 
-    else:
-        if selectedData:
-            selected_indexes = figure["data"][0]["selectedpoints"]
-            area_list = [point["customdata"][0] for point in selectedData["points"]]
-            logger.debug(f"selected area in map = {area_list}")
-            logger.debug(f"selected area in map with indexes = {selected_indexes}")
-            return (
-                "|".join(area_list),
-                "|".join(str(x) for x in selected_indexes),
-                area_tab,
-            )
-        else:
+        if (area_tab == "regioni") and (len(selectedData["points"]) == 20):
             return "", "", area_tab
+        if (area_tab == "province") and (len(selectedData["points"]) == 107):
+            return "", "", area_tab
+
+        
+        selected_indexes = figure["data"][0]["selectedpoints"]
+        area_list = [point["customdata"][0] for point in selectedData["points"]]
+        logger.debug(f"selected area in map = {area_list}")
+        logger.debug(f"selected area in map with indexes = {selected_indexes}")
+        return (
+            "|".join(area_list),
+            "|".join(str(x) for x in selected_indexes),
+            area_tab,
+        )
+    else:
+        return "", "", area_tab
 
 
 @app.callback(
