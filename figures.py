@@ -290,9 +290,15 @@ def get_growth_rate_graph(filtered_data,aggregate):
 
 def get_respiratory_deaths_graph(morti_resp):
 
+    morti_2017 = int(morti_resp[morti_resp["Year"]==2017]["Value"].tolist()[0])
+
+    #Non essendoci dati 2020 proiettiamo ad oggi quelli del 2017
+    proiezione_morti_2020 = (morti_2017 * int(datetime.now().timetuple().tm_yday))/365
+
     fig = go.Figure(data=[
-        go.Bar(name='Malattie Sistema Respiratorio', x=morti_resp['Year'], y=morti_resp['Value']),
-        go.Bar(name='COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'])
+        go.Bar(name='Decessi Malattie Respiratorie', x=morti_resp['Year'], y=morti_resp['Value']),
+        go.Bar(name='Decessi Malattie Respiratorie (proiezione ad oggi)', x=[2020], y=[proiezione_morti_2020]),
+        go.Bar(name='Decessi COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'])
     ])
     fig.update_layout(temporal_graph_layout)
     fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},)
