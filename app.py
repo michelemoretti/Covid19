@@ -74,6 +74,7 @@ app = dash.Dash(
     __name__, external_stylesheets=[dbc.themes.BOOTSTRAP]
 )  # , external_stylesheets=external_stylesheets)
 
+server = app.server
 logger.error(dbc.themes.BOOTSTRAP)
 
 province_map_json, regions_map_json = get_map_json()
