@@ -48,7 +48,7 @@ from utils import (
     viridis,
 )
 
-locale.setlocale(locale.LC_ALL, "")
+locale.setlocale(locale.LC_ALL, 'it_IT')
 logger = logging.getLogger("dash_application")
 logger.setLevel(logging.DEBUG)
 
