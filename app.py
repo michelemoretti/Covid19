@@ -20,42 +20,29 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sd_material_ui as dui
 from dash.dependencies import Input, Output, State
+from flask import request
 from flask_caching import Cache
 
-from figures import (
-    get_growth_rate_graph,
-    get_positive_tests_ratio_graph,
-    get_provincial_map,
-    get_regional_map,
-    get_removed_graph,
-    get_respiratory_deaths_graph,
-    get_tamponi_graph,
-    get_variable_graph,
-    get_PM10_graph,
-    get_smokers_graph,
-)
+from figures import (get_growth_rate_graph, get_PM10_graph,
+                     get_positive_tests_ratio_graph, get_provincial_map,
+                     get_regional_map, get_removed_graph,
+                     get_respiratory_deaths_graph, get_smokers_graph,
+                     get_tamponi_graph, get_variable_graph)
 from utils import (
-    calcolo_giorni_da_min_positivi,
-    calculate_line,
-    exp_viridis,
-    filter_dates,
-    get_areas,
-    get_dataset,
-    get_map_json,
-    linear_reg,
-    mean_absolute_percentage_error,
-    pretty_colors,
-    viridis,
-)
+    calcolo_giorni_da_min_positivi, calculate_line, exp_viridis, filter_dates,
+    get_areas, get_dataset, get_map_json, linear_reg,
+    mean_absolute_percentage_error, pretty_colors, viridis)
 
-locale.setlocale(locale.LC_ALL, 'it_IT.UTF-8')
+locale.setlocale(locale.LC_ALL, "it_IT.UTF-8")
 logger = logging.getLogger("dash_application")
 logger.setLevel(logging.DEBUG)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
 df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
 
-air_series = pd.read_csv(os.path.join("ISTAT_DATA","air_pollution_2018.csv"), encoding="utf-8").set_index("NUTS3")
+air_series = pd.read_csv(
+    os.path.join("ISTAT_DATA", "air_pollution_2018.csv"), encoding="utf-8"
+).set_index("NUTS3")
 
 df_notes = pd.read_csv(
     "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/note/dpc-covid19-ita-note-it.csv"
@@ -120,10 +107,40 @@ if redis_found:
     from redis_connection import config as cache_config
 else:
     cache_config = {
-        'CACHE_TYPE': 'filesystem',
-        'CACHE_DIR': 'cache-directory',
+        "CACHE_TYPE": "filesystem",
+        "CACHE_DIR": "cache-directory",
     }
 cache = Cache(app.server, config=cache_config)
+
+app.index_string = """<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162843377-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-162843377-2');
+        gtag('config', 'GA_TRACKING_ID', { 'anonymize_ip': true });
+
+        </script>
+
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>"""
+
 
 def get_big_numbers(metrics_list, area="IT", day=datetime.today):
 
@@ -494,14 +511,14 @@ app.layout = dfx.Grid(
                     placement="bottom",
                 ),
                 dbc.Tooltip(
-                    [html.P("Click per selezionare una regione"),
-                     html.P("Shift+Click per selezionare regioni multiple"),
-                     html.P("Doppio click su una regione per deselezionare tutto"),
+                    [
+                        html.P("Click per selezionare una regione"),
+                        html.P("Shift+Click per selezionare regioni multiple"),
+                        html.P("Doppio click su una regione per deselezionare tutto"),
                     ],
                     target=f"map-info-button",
                     placement="top",
                 ),
-                
             ],
             id="tooltips-container",
             style={"display": "none"},
@@ -553,7 +570,7 @@ def update_area_graphs(
     if istat_flag:
         return (
             get_respiratory_deaths_graph(morti_resp),
-            get_PM10_graph(df,air_series),
+            get_PM10_graph(df, air_series),
             get_smokers_graph(df_regioni),
         )
 
@@ -644,7 +661,6 @@ def set_filter_location(selectedData, area_tab, figure):
         if (area_tab == "province") and (len(selectedData["points"]) == 107):
             return "", "", area_tab
 
-        
         selected_indexes = figure["data"][0]["selectedpoints"]
         area_list = [point["customdata"][0] for point in selectedData["points"]]
         logger.debug(f"selected area in map = {area_list}")
