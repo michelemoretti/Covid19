@@ -32,7 +32,7 @@ def get_regional_map(df_regioni,regions_map_json,cmap,data_selected,data_selecte
         color=data_selected,
         color_continuous_scale=cmap,
         range_color=(0, max_scale_value),
-        hover_data=[data_selected],
+        hover_data=["denominazione_regione"],
         custom_data=["denominazione_regione","codice_regione"],
         mapbox_style="carto-positron",
         zoom=4.5, center = {"lat": 42.00107394, "lon": 10.3283498},
