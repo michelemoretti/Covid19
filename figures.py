@@ -296,12 +296,12 @@ def get_respiratory_deaths_graph(morti_resp):
     proiezione_morti_2020 = (morti_2017 * int(datetime.now().timetuple().tm_yday))/365
 
     fig = go.Figure(data=[
-        go.Bar(name='Decessi Malattie Respiratorie', x=morti_resp['Year'], y=morti_resp['Value']),
-        go.Bar(name='Decessi Malattie Respiratorie (proiezione ad oggi)', x=[2020], y=[proiezione_morti_2020]),
-        go.Bar(name='Decessi COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'])
+        go.Bar(name='Decessi Malattie Respiratorie', x=morti_resp['Year'], y=morti_resp['Value'],),
+        go.Bar(name='Decessi Malattie Respiratorie (proiezione ad oggi)', x=[2020], y=[proiezione_morti_2020],marker_color=colors[2]),
+        go.Bar(name='Decessi COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'],marker_color=colors[1])
     ])
     fig.update_layout(temporal_graph_layout)
-    fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.2)"},)
+    fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.5)"},)
     fig.update_layout({"title_text":'Decessi per malattie respiratorie'})
     return fig
 
