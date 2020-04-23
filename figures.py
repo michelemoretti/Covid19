@@ -339,7 +339,7 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 y=regional_data["dimessi_guariti"]/regional_data["totale_casi"], 
                                 #fill='tonexty',
                                 mode='lines',
-                                name=regione,
+                                name=regione + " - Guariti",
                                 hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Guariti: %{y}<extra></extra>",
                                 #text=,
                                 marker=go.scatter.Marker(color=colors[idx]),
@@ -348,13 +348,16 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 y=regional_data["deceduti"]/regional_data["totale_casi"], 
                                 #fill='tonexty',
                                 mode='lines',
-                                name=regione,
+                                name=regione + " - Deceduti",
                                 hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Deceduti: %{y}<extra></extra>",
                                 #text=,
                                 line = dict(dash='dot'),
-                                showlegend =False,
+                                #showlegend =False,
                                 marker=go.scatter.Marker(color=colors[idx]),
                                 ))
+        
+        fig.update_layout(legend_orientation="h")
+
     fig.update_layout(temporal_graph_layout)
     fig.update_layout({"title_text":'Guariti/Deceduti per contagiato',"yaxis" : {"tickformat":"%"},})
    
