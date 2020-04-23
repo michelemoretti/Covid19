@@ -27,7 +27,9 @@ html {
     margin-right:10px;
 }
 
-
+.modebar{
+    display:none;
+}
 
 
 #logo img {
@@ -203,7 +205,9 @@ button.mapButton {
     
     }
     .Select-placeholder{
+        font-weight: bold;
         color:#000 !important;
+        padding-top: 5px;
     }
 
     .tooltip-inner{
@@ -231,6 +235,7 @@ button.mapButton {
     #info-tooltips{
         text-align: center !important;
         margin:30px 0;
+        display: none;
     }
     #date-slider{
         margin-bottom: 40px;
@@ -270,16 +275,18 @@ button.mapButton {
     }
     
 }
-@media only screen and (max-width: 480px){
-    /*phones*/
-    #info-tooltips{
-        height: 10em;
-        text-align: center;
-    }
-}
-
-@media (pointer:none), (pointer:coarse) and (orientation:landscape) {
+@media (pointer:none), (pointer:coarse) and (orientation:landscape) and (max-width:992px){
     /*landscape phones*/
+
+    h1, h2, h3, h4{
+        text-align: center !important;
+    }
+
+    #logo img{
+        width:288px;
+        height:351px;
+        margin: 4rem 0 2rem 0;
+    }
 
     #area-selection-row{
 
@@ -291,17 +298,21 @@ button.mapButton {
     }
     .Select-placeholder{
         color:#000 !important;
+        font-weight: bold;
+        padding-top: 5px;
+
     }
 
     .tooltip-inner{
         font-size: 1.4rem;
     }
     #info-tooltips{
+        display:none;
         height: 2em;
         text-align: center;
     }
     #graphs-column .dash-graph {
-        height: 50vh;
+        height: 50vh !important;
         margin: 5vh 0 ;
     }
 
@@ -347,7 +358,7 @@ button.mapButton {
     }
     
     #license{
-        /* height: 18vh; */
+        height: auto !important;
         text-align:left;
         font-size: 1.5rem;
     }
@@ -357,12 +368,5 @@ button.mapButton {
     }
 }
 
-@media only screen and (min-width: 960px){
-    #info-tooltips{
-        text-align: end;
-    }
-    button.floating-button {
-        display: block;
-    }
-    
-}
+
+/* @media (pointer:none), (pointer:coarse) and (orientation:landscape) and (min-width:1500){ */
