@@ -54,7 +54,7 @@ logger = logging.getLogger("dash_application")
 logger.setLevel(logging.INFO)
 
 # external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",os.path.join("assets","dashboard.css")]
-df, df_regioni, smokers_series, imprese_series = get_dataset(datetime.today())
+df, df_regioni, smokers_series, imprese_series, _ = get_dataset(datetime.today())
 
 df_regioni_map_index = {
     "Abruzzo": "0",
