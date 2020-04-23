@@ -67,7 +67,7 @@ styling = """
 
 intro_text = """
         Questa pagina è nata dalla volontà di integrare i dati forniti dalla [Protezione Civile](https://github.com/pcm-dpc/COVID-19) con i database pubblici [ISTAT](http://dati.istat.it). L’obiettivo è quello di trovare possibili correlazioni tra indicatori ambientali, geografici e demografici e i dati sulla diffusione del virus.
-        \n**Qui sotto** è possibile visualizzare l’andamento dei dati principali in una mappa animata. Premere play per ripercorrere l’andamento nazionale dal 24 Febbraio ad oggi
+        \n**Qui sopra** è possibile visualizzare l’andamento dei dati principali in una mappa animata. Premere play per ripercorrere l’andamento nazionale dal 24 Febbraio ad oggi
         \nNel **menu a sinistra** è possibile visualizzare molte altre metriche tra cui la comparazione diretta tra Regioni o Province italiane o la correlazione tra gli indicatori ISTAT e i dati sul COVID-19.
 """
 
@@ -171,7 +171,7 @@ def fig_totale_casi_regione(filtered_data,log_y):
                     log_y=log_y,
                     color='denominazione_regione',
                     title="Totale Casi per giorno", 
-                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_regione': 'Regione'})
+                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_regione': 'Regione', "increased_cases": "Nuovi Casi"})
     return fig.update_traces(mode='lines+markers')
 
 @st.cache(allow_output_mutation=True,show_spinner=False)
@@ -183,7 +183,7 @@ def fig_totale_casi_provincia(filtered_data,log_y):
                     hover_data=["increased_cases"],
                     color='denominazione_provincia',
                     title="Totale Casi per giorno", 
-                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_provincia': 'Provincia'})
+                    labels={'totale_casi':'Casi confermati', 'data': 'Data', 'denominazione_provincia': 'Provincia', "increased_cases": "Nuovi Casi"})
     return fig.update_traces(mode='lines+markers')
 
 
@@ -214,8 +214,33 @@ def fig_nuovi_casi_giornalieri(filtered_data):
         y="increased_cases",
         color='denominazione_provincia',
         title="Nuovi Casi al giorno", 
-        labels={'increased_cases':'Incremento Casi', 'data': 'Data', 'denominazione_provincia': 'Provincia'})
+        labels={'increased_cases':'Nuovi Casi', 'data': 'Data', 'denominazione_provincia': 'Provincia'})
     return fig.update_traces(mode='lines+markers')
+
+@st.cache(allow_output_mutation=True,show_spinner=False)
+def traces_punti_e_trend(x_data, y_data, idx, hovertemplate, text, name='data'):
+           
+    line_x, line_y, r_value, mape = linear_reg(x_data, y_data)
+
+    trace_line = go.Scatter(
+                        x=line_x,
+                        y=line_y,
+                        mode='lines',
+                        hovertemplate = f"Trend:<br><b>R^2</b> : {str(round((r_value**2)*100, 2))}% <br><b>MAPE</b> : {str(round(mape, 2))}%  <extra></extra>",
+                        legendgroup='group'+str(idx),
+                        showlegend =False,
+                        marker=go.scatter.Marker(color=pretty_colors[idx]))
+    
+    trace_markers = go.Scatter(
+                        x=x_data, 
+                        y=y_data,
+                        mode='markers',
+                        hovertemplate = hovertemplate,
+                        text=text,
+                        name=name,
+                        legendgroup='group'+str(idx),
+                        marker=go.scatter.Marker(color=pretty_colors[idx]))
+    return trace_line, trace_markers
 
 mapbox_token = open(".mapbox_token").read()
 px.set_mapbox_access_token(mapbox_token)
@@ -239,7 +264,7 @@ st.sidebar.markdown("<hr/>",unsafe_allow_html=True)
 st.markdown(logo_html, unsafe_allow_html=True)
 st.markdown(subtitle_html, unsafe_allow_html=True)
         
-df, df_regioni, smokers_series, imprese_series = get_dataset(date.today())
+df, df_regioni, smokers_series, imprese_series, air_series  = get_dataset(date.today())
 
 province_map_json,regions_map_json = get_map_json()
 regions,provinces = get_areas(df)
@@ -249,8 +274,7 @@ area_filter = st.sidebar.radio("Seleziona il raggio di interesse",["Nazione","Re
 st.markdown("<hr class='portraitAlert'/><p class='portraitAlert'>Per visualizzare i grafici si consiglia di orientare il telefono in orizzontale</p>",unsafe_allow_html=True)
 
 if area_filter == "Nazione":
-    st.markdown("---")
-    st.markdown(intro_text)
+    
     st.markdown("---")
     analytics.page(session_state.user,"Main_category",'Nazionale',{
     'path': '/',
@@ -260,8 +284,8 @@ if area_filter == "Nazione":
     })
 
 
-    cmap = st.sidebar.radio("Scelta Color Map", ("Lineare", "Esponenziale"),index=1)
-    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale esponenziali per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+    cmap = st.sidebar.radio("Scelta Color Map", ("Lineare", "Logaritmica"),index=1)
+    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale logaritmiche per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
 
     if cmap == "Lineare":
         cmap = viridis
@@ -275,6 +299,7 @@ if area_filter == "Nazione":
     st.sidebar.markdown("---")
     st.sidebar.markdown("**Incrocia i Dati ISTAT con i dati del Ministero della Salute**")
     fumatori_switch = st.sidebar.checkbox("Fumatori",False)
+    air_switch = st.sidebar.checkbox("Inquinamento Aria",False)
     imprese_switch = st.sidebar.checkbox("Imprese",False)
     ISTAT_switches = [fumatori_switch,imprese_switch]
     ISTAT_switches_labels = ["Fumatori","Imprese"]
@@ -303,6 +328,9 @@ if area_filter == "Nazione":
                 })
         fig = get_provincial_map(df_province,province_map_json,cmap)
     st.plotly_chart(fig,use_container_width=True)
+
+    st.markdown("---")
+    st.markdown(intro_text)
 
     if True in ISTAT_switches:
         st.markdown("---")
@@ -370,6 +398,91 @@ if area_filter == "Nazione":
         fig.update_xaxes(title_text='% popolazione deceduta per casi confermati')
         fig.update_yaxes(title_text='Metrica selezionata')
         st.plotly_chart(fig,use_container_width=True)
+
+    if air_switch:
+
+        st.markdown("---")
+        st.markdown("### Analisi Indicatori Qualità dell'Aria")
+
+        air_reg_series = air_series.drop(columns=["CODICE PROVINCIA", "COMUNI"]).pivot_table(index='NUTS3_regione')
+
+        analytics.track(USER_UNIQUE_ID, "Aria", {
+                'category':'ISTAT Selected',
+            })
+        
+        df_regioni_today = df_regioni.set_index("NUTS3")
+        df_regioni_today = df_regioni_today[df_regioni_today["data"] == df_regioni_today["data"].max()]
+
+        df_regioni_today = df_regioni_today.join(air_reg_series)
+
+        scelta_dati_aria = ["PM10", "PM2.5"]
+        
+        selected_cat = st.radio(
+                        label="Scegli quali dati sul inquinamento dell'aria da visualizzare per regione ",
+                        options=scelta_dati_aria)        
+
+        all_columns = [x for x in air_reg_series.columns if selected_cat in x ]
+        if selected_cat == 'PM10':
+            idx = 0
+            df_regioni_today = df_regioni_today.drop(df_regioni_today[all_columns[idx]][df_regioni_today[all_columns[idx]] == 0].index)
+            fig = go.Figure()
+            line, markers = traces_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Giorni sopra il limite consigliato %{y}<extra></extra>", df_regioni_today['denominazione_regione'])
+            fig.add_trace(line)
+            fig.add_trace(markers)
+            fig.update_layout(
+                title = "Inquinamento Aria (giorni con PM10 superiore al limite consigliato) / COVID",
+                )
+            fig.update_xaxes(title_text='Contagi Procapite')
+            fig.update_yaxes(title_text='Giorni al di sopra del limite consigliato - 50 μg/m^3')
+            fig.add_trace(go.Scatter(
+                        x=np.arange(0,0.009, 0.001),
+                        y=[35,]*9,
+                        mode='lines',
+                        showlegend =False,
+                        hovertemplate='Limite di giorni sopra limite consigliati<extra></extra>')
+            )
+            st.plotly_chart(fig,use_container_width=True)
+
+            idx = 1
+            df_regioni_today = df_regioni_today.drop(df_regioni_today[all_columns[idx]][df_regioni_today[all_columns[idx]] == 0].index)
+            fig = go.Figure()
+            line, markers = traces_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Media Annuale PM10 %{y}<extra></extra>", df_regioni_today['denominazione_regione'])
+            fig.add_trace(line)
+            fig.add_trace(markers)
+            fig.update_layout(
+                title = "Inquinamento Aria (valore annuale medio) PM10 / COVID",
+                )
+            fig.update_xaxes(title_text='Contagi Procapite')
+            fig.update_yaxes(title_text='Valore medio annuale [μg/m^3]')
+
+            fig.add_trace(go.Scatter(
+                        x=np.arange(0,0.009, 0.001),
+                        y=[40,]*9,
+                        mode='lines',
+                        showlegend =False,
+                        hovertemplate='Limite di emissioni consigliato<extra></extra>')
+            )
+            st.plotly_chart(fig,use_container_width=True)
+        else:
+            idx = 0
+            df_regioni_today = df_regioni_today.drop(df_regioni_today[all_columns[idx]][df_regioni_today[all_columns[idx]] == 0].index)
+            fig = go.Figure()
+            line, markers = traces_punti_e_trend(df_regioni_today["totale_casi"]/df_regioni_today["Popolazione_ETA1_Total"], df_regioni_today[all_columns[idx]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Media Annuale PM10 %{y}<extra></extra>", df_regioni_today['denominazione_regione'])
+            fig.add_trace(line)
+            fig.add_trace(markers)
+            fig.update_layout(
+                title = "Analisi Correlazione Inquinamento Aria (valore annuale medio) PM2.5 / COVID",
+                )
+            fig.add_trace(go.Scatter(
+                        x=np.arange(0,0.009, 0.001),
+                        y=[25,]*9,
+                        mode='lines',
+                        showlegend =False,
+                        hovertemplate='Limite di emissioni consigliato<extra></extra>')
+            )
+            fig.update_xaxes(title_text='Contagi Procapite')
+            fig.update_yaxes(title_text='Valore medio annuale')
+            st.plotly_chart(fig,use_container_width=True)
     
     if imprese_switch:
 
@@ -479,9 +592,13 @@ elif area_filter == "Regione":
     #region_name = st.sidebar.selectbox("Seleziona la regione di interesse",sorted(regions))
     region_name = st.sidebar.multiselect("Seleziona una o più regioni di interesse",sorted(regions),default=["Emilia-Romagna","Lombardia"])
 
-    cmap_radio = st.sidebar.radio("Scelta Color Map ed andamento asse y", ("Lineare", "Esponenziale"),index=1)
+    cmap_radio = st.sidebar.radio("Scelta Color Map ed andamento asse y", ("Lineare", "Logaritmica"),index=1)
 
-    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale esponenziali per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+    st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale logaritmiche per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+    
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("**Incrocia i Dati ISTAT con i dati del Ministero della Salute**")
+    air_switch = st.sidebar.checkbox("Inquinamento Aria",False)
 
     regional_data = df_regioni[df_regioni["denominazione_regione"].isin(region_name)].reset_index()
     
@@ -574,7 +691,7 @@ elif area_filter == "Regione":
                     log_y=False,
                     color='denominazione_regione',
                     title="Growth rate media ultimi 3gg", 
-                    labels={'increased_cases':'Nuovi casi positivi', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Growth Rate"})
+                    labels={'increased_cases':'Nuovi Casi', 'data': 'Data', 'denominazione_regione': 'Regione',"smooth_growth_rate":"Growth Rate"})
         fig.update_traces(mode='lines+markers',hovertemplate = "<b>Growth Rate: %{y}</b><extra></extra>")
         st.plotly_chart(fig,use_container_width=True)
 
@@ -586,13 +703,128 @@ elif area_filter == "Regione":
         
         else:
             
-            fig = fig_totale_casi_regione(filtered_data,cmap_radio=="Esponenziale")
+            fig = fig_totale_casi_regione(filtered_data,cmap_radio=="Logaritmica")
 
             st.plotly_chart(fig,use_container_width=True)
             st.markdown("---")
 
             fig = fig_totale_casi_su_tamponi(filtered_data)
             st.plotly_chart(fig,use_container_width=True)
+
+        if air_switch:
+
+            st.markdown("---")
+            st.markdown("### Analisi Indicatori Qualità dell'Aria")
+
+            #air_reg_series = air_series.drop(columns=["CODICE PROVINCIA", "COMUNI"]).pivot_table(index='NUTS3_regione')
+
+            analytics.track(USER_UNIQUE_ID, "Aria", {
+                    'category':'ISTAT Selected',
+                })
+            
+            filtered_province_today = filtered_province_data.set_index("NUTS3")
+            
+            filtered_province_today = filtered_province_today[filtered_province_today["data"] == filtered_province_today["data"].max()]
+
+            filtered_air_data = air_series[air_series["denominazione_regione"].isin(region_name)]
+
+            filtered_province_today = filtered_province_today.join(filtered_air_data, rsuffix='_other').drop(columns=['denominazione_regione_other', "COMUNI", "NUTS3_regione"])
+
+            scelta_dati_aria = ["PM10", "PM2.5"]
+            
+            selected_cat = st.radio(
+                            label="Scegli quali dati sul inquinamento dell'aria da visualizzare per regione ",
+                            options=scelta_dati_aria)        
+
+            all_columns = [x for x in filtered_province_today.columns if selected_cat in x ]
+            if selected_cat == 'PM10':
+                
+                fig = go.Figure()
+                fig2 = go.Figure()
+                for idx, region in enumerate(filtered_province_today.denominazione_regione.unique()):
+                    filtered_province_today_reg = filtered_province_today[filtered_province_today['denominazione_regione'] == region]
+
+                    prov_data = (filtered_province_today_reg["totale_casi"]/filtered_province_today_reg["Popolazione_ETA1_Total"]).rename('totale_casi_procapite')
+                
+                    prov_data = pd.concat([filtered_province_today_reg.denominazione_provincia, prov_data, filtered_province_today_reg[all_columns[0]], filtered_province_today_reg[all_columns[1]]], axis=1)
+
+                    prov_data_zero = prov_data.drop(prov_data[all_columns[0]][prov_data[all_columns[0]] == 0].index)
+                    if prov_data_zero.empty:
+                        st.write("Nessun dato PM10 giornaliero disponibile per la regione "+region)
+                    else:
+
+                        line, markers = traces_punti_e_trend(prov_data_zero.totale_casi_procapite, prov_data_zero[all_columns[0]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Giorni sopra il limite consigliato: %{y}<extra></extra>", prov_data_zero.denominazione_provincia, name=region)
+                        fig.add_trace(line)
+                        fig.add_trace(markers)
+
+                    prov_data_one = prov_data.drop(prov_data[all_columns[1]][prov_data[all_columns[1]] == 0].index)
+                    if prov_data_one.empty:
+                        st.write("Nessun dato PM10 annuale disponibile per la regione "+region)
+                    else:
+                        line, markers = traces_punti_e_trend(prov_data_one.totale_casi_procapite, prov_data_one[all_columns[1]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Media Annuale PM10: %{y}<extra></extra>", prov_data_one.denominazione_provincia, name=region)
+                        fig2.add_trace(line)
+                        fig2.add_trace(markers)
+                
+                fig.add_trace(go.Scatter(
+                            x=np.arange(start=0, stop=0.018, step=0.001),
+                            y=[35,]*16,
+                            mode='lines',
+                            showlegend =False,
+                            hovertemplate='Limite di giorni sopra limite consigliati<extra></extra>')
+                )
+                fig.update_layout(
+                    title = "Inquinamento Aria (giorni con PM10 superiore al limite consigliato) / COVID",
+                    )
+                fig.update_xaxes(title_text='Contagi Procapite')
+                fig.update_yaxes(title_text='Giorni al di sopra del limite consigliato - 50 μg/m^3')
+                st.plotly_chart(fig,use_container_width=True)
+
+                fig2.add_trace(go.Scatter(
+                            x=np.arange(start=0, stop=0.018, step=0.001),
+                            y=[40,]*16,
+                            mode='lines',
+                            showlegend =False,
+                            hovertemplate='Limite di emissioni annuali consigliato<extra></extra>')
+                )
+                fig2.update_layout(
+                    title = "Analisi Correlazione Inquinamento Aria (valore annuale medio) PM10 / COVID",
+                    )
+                fig2.update_xaxes(title_text='Contagi Procapite')
+                fig2.update_yaxes(title_text='Valore medio annuale [μg/m^3]')
+                st.plotly_chart(fig2,use_container_width=True)
+
+            else:
+                fig = go.Figure()
+                fig2 = go.Figure()
+                for idx, region in enumerate(filtered_province_today.denominazione_regione.unique()):
+                    filtered_province_today_reg = filtered_province_today[filtered_province_today['denominazione_regione'] == region]
+
+                    prov_data = (filtered_province_today_reg["totale_casi"]/filtered_province_today_reg["Popolazione_ETA1_Total"]).rename('totale_casi_procapite')
+
+                    prov_data = pd.concat([filtered_province_today_reg.denominazione_provincia, prov_data, filtered_province_today_reg[all_columns[0]]], axis=1)
+
+                    prov_data = prov_data.drop(prov_data[all_columns[0]][prov_data[all_columns[0]] == 0].index)
+                    if prov_data.empty:
+                        st.write("Nessun dato PM2.5 annuale disponibile per la regione "+region)
+                    else:
+                        line, markers = traces_punti_e_trend(prov_data.totale_casi_procapite, prov_data[all_columns[0]], idx, "<b>%{text}</b><br>Casi Positivi procapite confermati: %{x:.3f}%<br>Media Annuale PM2.5: %{y}<extra></extra>", prov_data.denominazione_provincia, name=region)
+                        fig.add_trace(line)
+                        fig.add_trace(markers)
+
+                
+                fig.add_trace(go.Scatter(
+                            x=np.arange(start=0, stop=0.018, step=0.001),
+                            y=[25,]*16,
+                            mode='lines',
+                            showlegend =False,
+                            hovertemplate='Limite di emissioni annuali consigliato<extra></extra>')
+                )
+                fig.update_layout(
+                    title = "Analisi Correlazione Inquinamento Aria (valore annuale medio) PM2.5 / COVID",
+                    )
+                fig.update_xaxes(title_text='Contagi Procapite')
+                fig.update_yaxes(title_text='Valore medio annuale')
+                st.plotly_chart(fig,use_container_width=True)
 
     else:
         st.markdown("--- \n ### Seleziona una o più Regioni")
@@ -625,8 +857,8 @@ elif area_filter == "Provincia":
 
     filtered_data = df[_filter]
     if not filtered_data.empty:
-        log_y = st.sidebar.radio("Scegli andamento asse y", (False, True), format_func=lambda x:"Esponenziale" if x else "Lineare",index=1)
-        st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale esponenziali per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
+        log_y = st.sidebar.radio("Scegli andamento asse y", (False, True), format_func=lambda x:"Logaritmica" if x else "Lineare",index=1)
+        st.sidebar.markdown("<p class='smallText marginTop'>Per un approfondimento sull'utilizzo di scale logaritmiche per visualizzare l'andamento del virus clicca <a target='_blank' href=https://www.neodemos.info/articoli/la-curva-dei-contagiati-da-covid-19-la-ricerca-del-punto-di-svolta/>qui</a></p>",unsafe_allow_html=True)
         
         fig = fig_totale_casi_provincia(filtered_data,log_y)
         st.plotly_chart(fig,use_container_width=True)

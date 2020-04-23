@@ -15,8 +15,12 @@ from scipy import stats
 
 viridis = ((0.0, '#440154'), (0.1111111111, '#482878'), (0.2222222222, '#3e4989'), (0.3333333333, '#31688e'), (0.4444444444, '#26828e'), (0.5555555555, '#1f9e89'), (0.6666666666, '#35b779'), (0.7777777777, '#6ece58'), (0.8888888888, '#b5de2b'), (1.0, '#fde725'))
 
-pretty_colors = ["#9E0031","#92B9BD","#5D2E8C","#0C6291","#F1E8B8","#FFF07C","#80FF72","#7EE8FA","#F7E2E5","#E58C8A",
-                "#FF6666","#506568","#977AB5","#A0E4DD","#F8F4DE","#8C8344","#468C3F","#457F89","#AE8C91","#A76665"]
+pretty_colors = ["#ff0000","#00ff00","#0000ff","#ffff00","#00ffff","#ffffff",
+                 "#000000","#ffff00","#ff0000","#009900","#0099ff","#00cc00",
+                 "#0000ff","#996600","#006600","#cc0033","#cc6600","#6600ff",
+                 "#00ccff","#00ff33","#00ffff","#3300ff","#336600","#663399",
+                 "#EF233C","#18FF6D","#916953","#FFF07C","#80FF72","#7EE8FA",
+                 "#285238","#977AB5","#A0E4DD","#8C8344","#468C3F","#457F89"]
 
 def format_df(df):
     df = df.fillna(0).replace(np.inf, 0).replace(-np.inf, 0)
@@ -161,9 +165,9 @@ def get_dataset(current_date: datetime.date):
     df_nazione = df_nazione.apply(lambda x: convert_datetime(x) if x.name == 'data' else x)
 
     #aggiungere una data formattata come colonna per le mappe
-    df_nazione["giorno"] = df_nazione["data"].apply(lambda x: x.strftime("%m/%d"))
-    df_regioni["giorno"] = df_regioni["data"].apply(lambda x: x.strftime("%m/%d"))
-    df["giorno"] = df["data"].apply(lambda x: x.strftime("%m/%d"))
+    df_nazione["giorno"] = df_nazione["data"].apply(lambda x: x.strftime("%d/%m"))
+    df_regioni["giorno"] = df_regioni["data"].apply(lambda x: x.strftime("%d/%m"))
+    df["giorno"] = df["data"].apply(lambda x: x.strftime("%d/%m"))
 
     pop_path = os.path.join("ISTAT_DATA", "Popolazione.csv")
     if os.path.exists(pop_path):
@@ -186,7 +190,9 @@ def get_dataset(current_date: datetime.date):
         smokers = ISTAT_return_filtered_series(df_istat_smokers,selected_column="Tipo dato")
         smokers.to_csv(os.path.join("ISTAT_DATA", df_istat_smokers.metadata['main_data_type']+".csv"))
 
-
+    air_path = os.path.join("ISTAT_DATA", "air_pollution_2018.csv")
+    df_istat_air = pd.read_csv(air_path, encoding='utf-8').set_index('NUTS3')
+    
     imprese_path = os.path.join("ISTAT_DATA", "Imprese.csv")
     if os.path.exists(imprese_path):
         imprese = pd.read_csv(imprese_path).pivot_table(index="D1")
@@ -223,7 +229,7 @@ def get_dataset(current_date: datetime.date):
     df_regioni = df_regioni.groupby('denominazione_regione').apply(add_statistics)
     df_regioni = format_df(df_regioni)
 
-    return df, df_regioni, smokers, imprese
+    return df, df_regioni, smokers, imprese, df_istat_air
 
 
 def read_conversion_tables():
