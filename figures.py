@@ -301,10 +301,8 @@ def get_respiratory_deaths_graph(morti_resp):
         go.Bar(name='Decessi COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'],marker_color=colors[1])
     ])
     fig.update_layout(temporal_graph_layout)
-    fig.update_layout(
-        barmode='stack', 
-        legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.5)"},
-    )
+    fig.update_traces(hovertemplate = "<b>Anno: %{x}</b><br>Decessi: %{y}<extra></extra>",)
+    fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.5)"},)
     fig.update_layout({"title_text":'Decessi per malattie respiratorie'})
     return fig
 
@@ -436,12 +434,12 @@ def get_smokers_graph(df_regioni):
 
     prov_data = pd.concat([filtered_regioni_today.denominazione_regione, prov_data, filtered_regioni_today["Popolazione_ETA1_61-100+"].div(filtered_regioni_today["Popolazione_ETA1_Total"],axis=0).rename("pop_rischio")*100], axis=1)
 
-    line, markers = traces_punti_e_trend(prov_data.decessi_su_totale_casi, prov_data["pop_rischio"], 0, "<b>%{text}</b><br>Decessi su casi positivi confermati: %{x:.2f}%<br>Percentuale popolazione a rischio: %{y:.2f}%<extra></extra>", prov_data.denominazione_regione)
+    line, markers = traces_punti_e_trend(prov_data.decessi_su_totale_casi, prov_data["pop_rischio"], 0, "<b>%{text}</b><br>Decessi su casi positivi confermati: %{x:.2f}%<br>Percentuale popolazione in età avanzata: %{y:.2f}%<extra></extra>", prov_data.denominazione_regione)
     fig.add_trace(line)
     fig.add_trace(markers)
 
     fig.update_layout(
-        title = "Correlazione tra Tasso di letalità e popolazione in età avanzata",
+        title = "Correlazione tra Tasso di letalità e popolazione in età avanzata (60+ anni)",
         )
 
     fig.update_layout({
