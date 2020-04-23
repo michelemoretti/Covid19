@@ -640,14 +640,27 @@ app.layout = dfx.Grid(
                 ),
                 dbc.Tooltip(
                     [
-                        html.P("Click su una regione per selezionarla",className="tooltip-map-p"),
-                        html.P("Shift+Click su più regioni per selezionarle" ,className="tooltip-map-p"),
-                        html.P("Doppio click su una regione pre riassunto nazionale",className="tooltip-map-p"),
-                        html.P("Oppure usa la tendina in basso per scegliere le aree da confrontare o aggregare",className="tooltip-map-p"),
+                        html.P(
+                            "Click su una regione per selezionarla",
+                            className="tooltip-map-p",
+                        ),
+                        html.P(
+                            "Shift+Click su più regioni per selezionarle",
+                            className="tooltip-map-p",
+                        ),
+                        html.P(
+                            "Doppio click su una regione pre riassunto nazionale",
+                            className="tooltip-map-p",
+                        ),
+                        html.P("OPPURE"),
+                        html.P(
+                            "Usa la tendina in basso per scegliere le aree da confrontare o aggregare (In questo caso le regioni non saranno più selezionabili sulla mappa)",
+                            className="tooltip-map-p",
+                        ),
                     ],
                     target=f"map-info-button",
                     placement="top",
-                    className="tooltip-map"
+                    className="tooltip-map",
                 ),
                 dbc.Tooltip(
                     [
