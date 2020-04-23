@@ -31,7 +31,10 @@ html {
     color: #000;
     border-bottom: none;
 }
-
+#dropdown-select{
+    width: 60%;
+    margin: auto;
+}
 .toggle{
     display:inline-block;
     margin-right:10px;
@@ -157,6 +160,11 @@ button.floating-button {
     left: 5%;
 }
 
+.graph-tooltip-button{
+    left:10% !important;
+    cursor: default !important;
+}
+
 .modal-xl{
     width:80% !important;
     height:80% !important;
@@ -168,7 +176,8 @@ button.floating-button {
 button.mapButton {
     border-radius: 100px;
     height: 30px;
-    width: 30px;
+    width: auto;
+    cursor: default !important;
 }
 
 #area-selection-row{
@@ -231,6 +240,9 @@ button.mapButton {
     button.floating-button {
         display: none !important;
     }
+    button.graph-tooltip-button {
+        display: block !important;
+    }
     button.mapButton {
         display: block !important;
     }
@@ -289,8 +301,23 @@ button.mapButton {
     }
     
 }
+
+@media (pointer:none), (pointer:coarse){
+    .graph-tooltip-button{
+        left:10% !important;
+        cursor: default !important;
+        display:block !important;
+    }
+    #map-info-button{
+        display:none !important;
+    }
+}
 @media (pointer:none), (pointer:coarse) and (orientation:landscape) and (max-width:992px){
     /*landscape phones*/
+
+    button.graph-tooltip-button {
+        display: block !important;
+    }
 
     h1, h2, h3, h4{
         text-align: center !important;
