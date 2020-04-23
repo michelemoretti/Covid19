@@ -235,7 +235,9 @@ button.mapButton {
         margin: 2rem 0;
         font-weight: bold;
     }
-
+    #graphs-column > div{
+        margin:2rem 0;
+    }
     #area-selection-row{
 
         display:block !important;
@@ -316,6 +318,17 @@ button.mapButton {
     #license p{
         margin-bottom:0;
     }
+
+    .graph-tooltip-button{
+        height: 4rem !important;
+        font-size: 3rem !important;
+        width: 4rem !important;
+        padding: 0 !important;
+        border-radius: 4rem !important;
+        top: -1.5rem !important;
+        cursor: default !important;
+        display:block !important;
+    }
     
 }
 
@@ -327,16 +340,6 @@ button.mapButton {
         font-size: 1.4rem !important;
         text-align: end;
         right:15%;
-    }
-    .graph-tooltip-button{
-        height: 4rem !important;
-        font-size: 3rem !important;
-        width: 4rem !important;
-        padding: 0 !important;
-        border-radius: 4rem !important;
-        right: 5% !important;
-        cursor: default !important;
-        display:block !important;
     }
     #map-info-button{
         display:none !important;
@@ -350,7 +353,16 @@ button.mapButton {
 }
 @media (pointer:none), (pointer:coarse) and (orientation:landscape) and (max-width:992px){
     /*landscape phones*/
-
+    .graph-tooltip-button{
+        height: 4rem !important;
+        font-size: 3rem !important;
+        width: 4rem !important;
+        padding: 0 !important;
+        border-radius: 4rem !important;
+        top: -1.5rem !important;
+        cursor: default !important;
+        display:block !important;
+    }
     button.graph-tooltip-button {
         display: block !important;
     }
