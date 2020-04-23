@@ -301,7 +301,10 @@ def get_respiratory_deaths_graph(morti_resp):
         go.Bar(name='Decessi COVID-19', x=morti_resp['Year'], y=morti_resp['Covid'],marker_color=colors[1])
     ])
     fig.update_layout(temporal_graph_layout)
-    fig.update_layout(barmode='stack', legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.5)"},)
+    fig.update_layout(
+        barmode='stack', 
+        legend={"xanchor":"center","yanchor":"top","x":0.5,"y":1,"bgcolor":"rgba(255,255,255,0.5)"},
+    )
     fig.update_layout({"title_text":'Decessi per malattie respiratorie'})
     return fig
 

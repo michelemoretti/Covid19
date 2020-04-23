@@ -140,7 +140,7 @@ regions, provinces = get_areas(df)
 giorni_da_min_positivi = calcolo_giorni_da_min_positivi(df_regioni)
 viridis_exp_scale = exp_viridis(giorni_da_min_positivi)
 
-TIMEOUT = 20  # 6*60*60
+TIMEOUT = 6*60*60
 
 metric_names = {
     "totale_casi": "Contagiati",
@@ -687,6 +687,11 @@ app.layout = dfx.Grid(
             id="tooltips-container",
             style={"display": "none"},
         ),
+        dcc.Interval(
+            id='interval-datapull',
+            interval=2*1000, # in milliseconds
+            n_intervals=0,
+        ),
         dbc.Modal(
             [
                 dbc.ModalBody(dcc.Graph(id="modal-graph")),
@@ -1135,6 +1140,19 @@ def update_dropdown(area_type):
     else:
         return provinces_dropdown_options, "Scegli le province da confrontare"
 
+@app.callback(
+    Output("filter", component_property="data-refresh-intervals"),
+    [Input("interval-datapull", component_property="interval")],
+)
+@cache.memoize(timeout=TIMEOUT)
+def interval_datapull(n_intervals):
+    print("#"*30)
+    print("UPDATING DATAFRAME FROM GITHUB")
+    print("#"*30)
+    global df
+    global df_regioni
+    df, df_regioni, _, _, _ = get_dataset(datetime.today())
+    return n_intervals
 
 if __name__ == "__main__":
     app.run_server(debug=True)
