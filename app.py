@@ -334,32 +334,7 @@ app.layout = dfx.Grid(
                     xs=12,
                     lg=5,
                     children=[
-                        dfx.Row(
-                            [
-                                html.H2("Mappa Contagio"),
-                                dcc.Dropdown(
-                                    id="dropdown-select",
-                                    options=[
-                                        {"label": regione, "value": codice_regione}
-                                        for regione, codice_regione in zip(
-                                            df_regioni[
-                                                "denominazione_regione"
-                                            ].unique(),
-                                            df_regioni[
-                                                "denominazione_regione"
-                                            ].unique(),
-                                        )
-                                    ],
-                                    value=[],
-                                    multi=True,
-                                    placeholder="Scegli le regioni",
-                                    searchable=False,
-                                    optionHeight=50,
-                                    style={"text-align": "center", "font-size": "2rem"},
-                                ),
-                            ],
-                            id="area-selection-row",
-                        ),
+                        dfx.Row([html.H2("Mappa Contagio"),], id="area-selection-row",),
                         dfx.Row(
                             [
                                 html.Div(
@@ -392,6 +367,25 @@ app.layout = dfx.Grid(
                                     style={"position": "relative", "width": "100%"},
                                 )
                             ],
+                            center="xs",
+                        ),
+                        dfx.Row(
+                            dcc.Dropdown(
+                                id="dropdown-select",
+                                options=[
+                                    {"label": regione, "value": codice_regione}
+                                    for regione, codice_regione in zip(
+                                        df_regioni["denominazione_regione"].unique(),
+                                        df_regioni["denominazione_regione"].unique(),
+                                    )
+                                ],
+                                value=[],
+                                multi=True,
+                                placeholder="Scegli le regioni",
+                                searchable=False,
+                                optionHeight=50,
+                                style={"text-align": "center", "font-size": "2rem"},
+                            ),
                             center="xs",
                         ),
                         dfx.Row(
@@ -523,7 +517,7 @@ app.layout = dfx.Grid(
                                     className="graph-tooltip-button floating-button",
                                     size="sm",
                                     outline=True,
-                                    color="info"
+                                    color="info",
                                 ),
                             ]
                         ),
@@ -549,7 +543,7 @@ app.layout = dfx.Grid(
                                     className="graph-tooltip-button floating-button",
                                     size="sm",
                                     outline=True,
-                                    color="info"
+                                    color="info",
                                 ),
                             ]
                         ),
@@ -575,7 +569,7 @@ app.layout = dfx.Grid(
                                     className="graph-tooltip-button floating-button",
                                     size="sm",
                                     outline=True,
-                                    color="info"
+                                    color="info",
                                 ),
                             ]
                         ),
@@ -646,12 +640,14 @@ app.layout = dfx.Grid(
                 ),
                 dbc.Tooltip(
                     [
-                        html.P("Click su una regione per selezionarla"),
-                        html.P("Shift+Click su più regioni per selezionarle"),
-                        html.P("Doppio click su una regione pre riassunto nazionale"),
+                        html.P("Click su una regione per selezionarla",className="tooltip-map-p"),
+                        html.P("Shift+Click su più regioni per selezionarle" ,className="tooltip-map-p"),
+                        html.P("Doppio click su una regione pre riassunto nazionale",className="tooltip-map-p"),
+                        html.P("Oppure usa la tendina in basso per scegliere le aree da confrontare o aggregare",className="tooltip-map-p"),
                     ],
                     target=f"map-info-button",
                     placement="top",
+                    className="tooltip-map"
                 ),
                 dbc.Tooltip(
                     [
@@ -677,7 +673,6 @@ app.layout = dfx.Grid(
                     target=f"graph3-tooltip-button",
                     placement="top",
                 ),
-                
             ],
             id="tooltips-container",
             style={"display": "none"},
@@ -1126,9 +1121,9 @@ def update_dropdown(area_type):
     if not area_type:
         return [], ""
     if area_type == "regioni":
-        return region_dropdown_options, "Scegli le regioni di interesse"
+        return region_dropdown_options, "Scegli le regioni da confrontare"
     else:
-        return provinces_dropdown_options, "Scegli le province di interesse"
+        return provinces_dropdown_options, "Scegli le province da confrontare"
 
 
 if __name__ == "__main__":
