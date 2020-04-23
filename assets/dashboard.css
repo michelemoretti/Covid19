@@ -238,10 +238,16 @@ button.mapButton {
     label{
         font-size: 1.5rem !important;
     }
-    
+    #footer{
+        height:auto !important;
+    }
     #notes{
         font-size: 1.5rem; 
-        height: 18vh; 
+        height: auto; 
+    }
+    #footer > div{
+        height: auto !important;
+        overflow-y:hidden;
     }
     #footer h4{ 
         font-size: 2rem; 
@@ -250,7 +256,7 @@ button.mapButton {
     #notes-list{
         text-align: left;
         /* overflow-y: scroll; */ 
-        height: 600px !important;
+        height: auto !important;
     }
     
     #license{
@@ -264,11 +270,93 @@ button.mapButton {
     }
     
 }
-@media only screen and (max-width: 960px){
+@media only screen and (max-width: 480px){
+    /*phones*/
     #info-tooltips{
+        height: 10em;
         text-align: center;
     }
 }
+
+@media (pointer:none), (pointer:coarse) and (orientation:landscape) {
+    /*landscape phones*/
+
+    #area-selection-row{
+
+        display:block !important;
+        font-size: 30px;
+        margin: 30px 0; 
+        text-align:center !important;
+    
+    }
+    .Select-placeholder{
+        color:#000 !important;
+    }
+
+    .tooltip-inner{
+        font-size: 1.4rem;
+    }
+    #info-tooltips{
+        height: 2em;
+        text-align: center;
+    }
+    #graphs-column .dash-graph {
+        height: 50vh;
+        margin: 5vh 0 ;
+    }
+
+    .big-metric {
+        flex-grow: 1;
+        width: 80%;
+        text-align: center;
+        padding: 5px;
+        margin: 10px 200px;
+        
+    }
+    
+    .big-metric-number {
+        font-weight: 800;
+        font-size: 4rem;
+        line-height: normal !important;
+    }
+    
+    .big-metric-label {
+        font-size: 1.5rem !important;
+    }
+
+    label{
+        font-size: 1.5rem !important;
+    }
+    
+    #notes{
+        font-size: 1.5rem; 
+        height: auto !important; 
+    }
+    #footer > div{
+        height: auto !important;
+        overflow-y:hidden;
+    }
+    #footer h4{ 
+        font-size: 2rem; 
+        margin: 1.5rem 0 0.5rem 0; 
+    }
+    #notes-list{
+        text-align: left;
+        overflow-y: scroll;
+        height: auto !important;
+    }
+    
+    #license{
+        /* height: 18vh; */
+        text-align:left;
+        font-size: 1.5rem;
+    }
+    
+    #license p{
+        margin-bottom:0;
+    }
+}
+
 @media only screen and (min-width: 960px){
     #info-tooltips{
         text-align: end;
