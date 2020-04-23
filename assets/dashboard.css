@@ -320,6 +320,14 @@ button.mapButton {
 }
 
 @media (pointer:none), (pointer:coarse){
+    g.ycbcoloraxistick text {
+        font-size: 1.4rem !important;
+    }
+    .cbtitle text{
+        font-size: 1.4rem !important;
+        text-align: end;
+        right:15%;
+    }
     .graph-tooltip-button{
         height: 4rem !important;
         font-size: 3rem !important;
