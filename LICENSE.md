@@ -1,0 +1,4 @@
+<p>I dati visualizzati in questa pagina sono forniti dal Ministero della Salute ed elaborati dal <a target='_blank' href='https://github.com/pcm-dpc/COVID-19'>Dipartimento della Protezione Civile</a> e dall' <a target='_blank' href='http://dati.istat.it'>Istituto Nazionale di Statistica</a>.</p>
+<p>I dati forniti dal Ministero della Salute sono soggetti a licenza <a target='_blank' href='https://github.com/pcm-dpc/COVID-19/blob/master/LICENSE'>CC-BY-4.0</a> - <a target='_blank' href='https://creativecommons.org/licenses/by/4.0/deed.en'>Visualizza licenza</a></p>
+<p>I dati ISTAT sono soggetti a licenza <a target='_blank' href='https://www.istat.it/it/note-legali'>CC-BY-3.0</a> - <a target='_blank' href='https://creativecommons.org/licenses/by/3.0/it/'>Visualizza licenza</a></p>
+<p>Puoi trovare il source code di questo progetto su <a target='_blank' href='http://github.com/neurality/covid19'>Github</a></p>

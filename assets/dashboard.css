@@ -1,0 +1,393 @@
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Roboto+Mono:wght@300;400;500&display=swap');
+body {
+    font-family: 'Quattrocento Sans', sans-serif;
+}
+
+body,
+html {
+    margin: 0;
+}
+
+.toggle label{
+    font-size:0.8rem;
+    margin:0;
+}
+
+#menu-bar {
+    /* height:9vh;
+    padding:1vh 0;
+ */
+    text-align: center;
+    font-size: 2rem;
+}
+
+#menu-bar a {
+    color: #000;
+}
+
+#menu-bar a:hover {
+    text-decoration: none;
+    color: #000;
+    border-bottom: none;
+}
+
+.toggle{
+    display:inline-block;
+    margin-right:10px;
+}
+
+.modebar{
+    display:none;
+}
+
+
+#logo img {
+    height: 6vh;
+    margin: 0.5vh;
+}
+
+#main-content {
+    /* height: 75vh; */
+}
+
+#info-tooltips{
+    text-align: end;
+}
+
+#footer {
+    height: 18vh;
+    font-family: 'Fira Mono','Roboto Mono', sans-serif;
+}
+
+#map-column {
+    text-align: center;
+}
+
+#main-map {
+    min-width: 100%;
+    height: 60vh;
+}
+
+#date-slider {
+    min-width: 90%;
+    padding: 0 !important;
+    margin: 10px auto 0 auto;
+    cursor:pointer;
+}
+
+#graphs-column .dash-graph {
+    height: 25vh;
+}
+
+
+
+.dashboardColumn {
+    /* border: 1px solid #f00 */
+}
+
+
+.rounded_boxes{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.big-metric {
+    flex-grow: 1;
+    width: 80%;
+    text-align: center;
+    padding: 5px;
+    margin: 0 20px 10px 20px;
+    
+}
+
+.big-metric-number {
+    font-weight: 800;
+    font-size: 6vh;
+    line-height: normal !important;
+}
+
+.big-metric-label {
+    font-size: 2vh;
+}
+
+
+#footer > div{
+    height: 18vh;
+    overflow-y:hidden;
+}
+
+#notes{
+    font-size: 0.7rem; 
+    height: 18vh;
+    
+    overflow-y: hidden;  
+}
+#footer h4{ 
+    font-size: 1rem; 
+    margin: 1.5rem 0 0.5rem 0; 
+}
+#notes-list{
+    text-align: left;
+    overflow-y: scroll; 
+    height: 12vh;
+}
+
+#license{
+    height: 18vh;
+    text-align:left;
+    font-size: 0.7rem;
+}
+
+#license p{
+    margin-bottom:0;
+}
+
+#graphs-column > div{
+    position:relative;
+}
+
+button.floating-button {
+    position: absolute;
+    z-index: 0; 
+    top: 0;
+    left: 5%;
+}
+
+.modal-xl{
+    width:80% !important;
+    height:80% !important;
+    max-width: 100% !important;
+}
+
+
+
+button.mapButton {
+    border-radius: 100px;
+    height: 30px;
+    width: 30px;
+}
+
+#area-selection-row{
+
+    display:none;
+
+}
+@media only screen and (orientation:portrait){
+
+    h1, h2, h3, h4{
+        text-align: center !important;
+    }
+
+    #logo img{
+        width:288px;
+        height:351px;
+        margin: 4rem 0 2rem 0;
+    }
+
+    #map-column{
+        margin-bottom: 5rem;
+    }
+
+    .big-metric{
+        margin: 20px 160px;
+    }
+
+    .big-metric-label{
+        font-size: 2.5rem;
+    }
+    h2{
+        font-size: 3rem;
+        margin: 1rem;
+        font-weight: bold;
+    }
+    #menu{
+        font-size: 3rem;
+        margin: 2rem 0;
+        font-weight: bold;
+    }
+
+    #area-selection-row{
+
+        display:block !important;
+        font-size: 30px;
+        margin: 30px 0; 
+        text-align:center !important;
+    
+    }
+    .Select-placeholder{
+        font-weight: bold;
+        color:#000 !important;
+        padding-top: 5px;
+    }
+
+    .tooltip-inner{
+        font-size: 1.4rem;
+    }
+
+    button.floating-button {
+        display: none !important;
+    }
+    button.mapButton {
+        display: block !important;
+    }
+    #area-map span{
+        font-size: 2rem;
+    }
+   
+    #data-selected span{
+        font-size: 1.3rem;
+    }
+
+    .rc-slider-mark-text{
+        font-size: 1rem;
+    }
+
+    #info-tooltips{
+        text-align: center !important;
+        margin:30px 0;
+        display: none;
+    }
+    #date-slider{
+        margin-bottom: 40px;
+    }
+    label{
+        font-size: 1.5rem !important;
+    }
+    #footer{
+        height:auto !important;
+    }
+    #notes{
+        font-size: 1.5rem; 
+        height: auto; 
+    }
+    #footer > div{
+        height: auto !important;
+        overflow-y:hidden;
+    }
+    #footer h4{ 
+        font-size: 2rem; 
+        margin: 1.5rem 0 0.5rem 0; 
+    }
+    #notes-list{
+        text-align: left;
+        /* overflow-y: scroll; */ 
+        height: auto !important;
+    }
+    
+    #license{
+        /* height: 18vh; */
+        text-align:left;
+        font-size: 1.5rem;
+    }
+    
+    #license p{
+        margin-bottom:0;
+    }
+    
+}
+@media (pointer:none), (pointer:coarse) and (orientation:landscape) and (max-width:992px){
+    /*landscape phones*/
+
+    h1, h2, h3, h4{
+        text-align: center !important;
+    }
+
+    #logo img{
+        width:288px;
+        height:351px;
+        margin: 4rem 0 2rem 0;
+    }
+
+    #area-selection-row{
+
+        display:block !important;
+        font-size: 30px;
+        margin: 30px 0; 
+        text-align:center !important;
+    
+    }
+    .Select-placeholder{
+        color:#000 !important;
+        font-weight: bold;
+        padding-top: 5px;
+
+    }
+
+    .tooltip-inner{
+        font-size: 1.4rem;
+    }
+    #info-tooltips{
+        display:none;
+        height: 2em;
+        text-align: center;
+    }
+    #graphs-column .dash-graph {
+        height: 50vh !important;
+        margin: 5vh 0 ;
+    }
+
+    .big-metric {
+        flex-grow: 1;
+        width: 80%;
+        text-align: center;
+        padding: 5px;
+        margin: 10px 200px;
+        
+    }
+    
+    .big-metric-number {
+        font-weight: 800;
+        font-size: 4rem;
+        line-height: normal !important;
+    }
+    
+    .big-metric-label {
+        font-size: 1.5rem !important;
+    }
+
+    label{
+        font-size: 1.5rem !important;
+    }
+    
+    #notes{
+        font-size: 1.5rem; 
+        height: auto !important; 
+    }
+    #footer > div{
+        height: auto !important;
+        overflow-y:hidden;
+    }
+    #footer h4{ 
+        font-size: 2rem; 
+        margin: 1.5rem 0 0.5rem 0; 
+    }
+    #notes-list{
+        text-align: left;
+        overflow-y: scroll;
+        height: auto !important;
+    }
+    
+    #license{
+        height: auto !important;
+        text-align:left;
+        font-size: 1.5rem;
+    }
+    
+    #license p{
+        margin-bottom:0;
+    }
+}
+
+
+/* @media (pointer:none), (pointer:coarse) and (orientation:landscape) and (min-width:1500){ */
+
+@media (pointer:none), (pointer:coarse) and (orientation:landscape) and (min-width:992px){
+
+    .big-metric-number{
+        font-size: 1.8rem;
+    }
+}

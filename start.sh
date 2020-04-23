@@ -1,0 +1,1 @@
+gunicorn -b :8501 app:server
