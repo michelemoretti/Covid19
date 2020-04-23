@@ -41,6 +41,10 @@ html {
     /* height: 75vh; */
 }
 
+#info-tooltips{
+    text-align: end;
+}
+
 #footer {
     height: 18vh;
     font-family: 'Fira Mono','Roboto Mono', sans-serif;
@@ -370,3 +374,10 @@ button.mapButton {
 
 
 /* @media (pointer:none), (pointer:coarse) and (orientation:landscape) and (min-width:1500){ */
+
+@media (pointer:none), (pointer:coarse) and (orientation:landscape) and (min-width:992px){
+
+    .big-metric-number{
+        font-size: 1.8rem;
+    }
+}
