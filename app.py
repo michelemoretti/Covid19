@@ -384,7 +384,7 @@ app.layout = dfx.Grid(
                                 placeholder="Scegli le regioni",
                                 searchable=False,
                                 optionHeight=50,
-                                style={"text-align": "center", "font-size": "2rem"},
+                                style={"text-align": "center"},
                             ),
                             center="xs",
                         ),
@@ -516,7 +516,6 @@ app.layout = dfx.Grid(
                                     n_clicks=0,
                                     className="graph-tooltip-button floating-button",
                                     size="sm",
-                                    outline=True,
                                     color="info",
                                 ),
                             ]
@@ -542,7 +541,6 @@ app.layout = dfx.Grid(
                                     n_clicks=0,
                                     className="graph-tooltip-button floating-button",
                                     size="sm",
-                                    outline=True,
                                     color="info",
                                 ),
                             ]
@@ -568,7 +566,6 @@ app.layout = dfx.Grid(
                                     n_clicks=0,
                                     className="graph-tooltip-button floating-button",
                                     size="sm",
-                                    outline=True,
                                     color="info",
                                 ),
                             ]

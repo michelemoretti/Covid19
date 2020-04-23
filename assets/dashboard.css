@@ -35,10 +35,11 @@ html {
     width: 100%;
     margin: 0;
     /* height:5vh;*/
+    font-size:1.6rem;
 } 
 .Select-placeholder{
     color:#000 !important;
-    padding-top: 0.5rem;
+    padding-top: 0.2rem;
     
 
 }
@@ -234,7 +235,9 @@ button.mapButton {
         margin: 2rem 0;
         font-weight: bold;
     }
-
+    #graphs-column > div{
+        margin:2rem 0;
+    }
     #area-selection-row{
 
         display:block !important;
@@ -315,27 +318,51 @@ button.mapButton {
     #license p{
         margin-bottom:0;
     }
+
+    .graph-tooltip-button{
+        height: 4rem !important;
+        font-size: 3rem !important;
+        width: 4rem !important;
+        padding: 0 !important;
+        border-radius: 4rem !important;
+        top: -1.5rem !important;
+        cursor: default !important;
+        display:block !important;
+    }
     
 }
 
 @media (pointer:none), (pointer:coarse){
-    .graph-tooltip-button{
-        left:10% !important;
-        cursor: default !important;
-        display:block !important;
+    g.ycbcoloraxistick text {
+        font-size: 1.4rem !important;
+    }
+    .cbtitle text{
+        font-size: 1.4rem !important;
+        text-align: end;
+        right:15%;
     }
     #map-info-button{
         display:none !important;
     }
     #dropdown-select{
-        width: 60% !important;
+        width: 80% !important;
         margin: 0;
         height:auto !important;
+        font-size: 3rem;
     }
 }
 @media (pointer:none), (pointer:coarse) and (orientation:landscape) and (max-width:992px){
     /*landscape phones*/
-
+    .graph-tooltip-button{
+        height: 4rem !important;
+        font-size: 3rem !important;
+        width: 4rem !important;
+        padding: 0 !important;
+        border-radius: 4rem !important;
+        top: -1.5rem !important;
+        cursor: default !important;
+        display:block !important;
+    }
     button.graph-tooltip-button {
         display: block !important;
     }
