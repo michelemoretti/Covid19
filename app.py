@@ -469,7 +469,7 @@ app.layout = dfx.Grid(
                                 value=df["data"].max().toordinal(),
                                 marks={
                                     giorno.toordinal(): {
-                                        "label": f"{str(giorno.day).zfill(2)}/{str(giorno.month).zfill(2)}/{str(giorno.year)[:2]}",
+                                        "label": f"{str(giorno.day).zfill(2)}/{str(giorno.month).zfill(2)}",#/{str(giorno.year)[:2]}",
                                         "style": {
                                             "color": "#444",
                                             # "transform": "rotate(45deg)",
