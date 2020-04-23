@@ -268,7 +268,16 @@ app.layout = dfx.Grid(
                 dfx.Col(
                     xs=12,
                     lg=8,
-                    children=[html.Div("Dashboard Neurality COVID-19", id="menu")],
+                    children=[
+                        html.Div(
+                            html.A(
+                                "Dashboard Neurality COVID-19",
+                                href="https://neurality.it",
+                                target="_blank",
+                            ),
+                            id="menu",
+                        )
+                    ],
                     className="menuItem",
                 ),
                 dfx.Col(
@@ -326,7 +335,7 @@ app.layout = dfx.Grid(
                     lg=5,
                     children=[
                         dfx.Row(
-                            [   
+                            [
                                 html.H2("Mappa Contagio"),
                                 dcc.Dropdown(
                                     id="dropdown-select",
@@ -347,7 +356,7 @@ app.layout = dfx.Grid(
                                     searchable=False,
                                     optionHeight=50,
                                     style={"text-align": "center", "font-size": "2rem"},
-                                )
+                                ),
                             ],
                             id="area-selection-row",
                         ),
@@ -380,7 +389,7 @@ app.layout = dfx.Grid(
                                             color="info",
                                         ),
                                     ],
-                                    style={"position": "relative","width":"100%"},
+                                    style={"position": "relative", "width": "100%"},
                                 )
                             ],
                             center="xs",
@@ -469,7 +478,7 @@ app.layout = dfx.Grid(
                                 value=df["data"].max().toordinal(),
                                 marks={
                                     giorno.toordinal(): {
-                                        "label": f"{str(giorno.day).zfill(2)}/{str(giorno.month).zfill(2)}",#/{str(giorno.year)[:2]}",
+                                        "label": f"{str(giorno.day).zfill(2)}/{str(giorno.month).zfill(2)}",  # /{str(giorno.year)[:2]}",
                                         "style": {
                                             "color": "#444",
                                             # "transform": "rotate(45deg)",
