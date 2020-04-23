@@ -349,7 +349,7 @@ def get_removed_graph(filtered_data,aggregate=True,logy=True):
                                 #fill='tonexty',
                                 mode='lines',
                                 name=regione,
-                                hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Guariti: %{y}<extra></extra>",
+                                hovertemplate = "<b>"+regione+"</b><br>%{x}<br>Deceduti: %{y}<extra></extra>",
                                 #text=,
                                 line = dict(dash='dot'),
                                 showlegend =False,
