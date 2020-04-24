@@ -683,6 +683,13 @@ app.layout = dfx.Grid(
                     target=f"graph3-tooltip-button",
                     placement="top",
                 ),
+                dbc.Tooltip(
+                    [
+                        "Persone ricoverate in terapia intensiva"
+                    ],
+                    target=f"daily-terapia_intensiva",
+                    placement="right",
+                ),
             ],
             id="tooltips-container",
             style={"display": "none"},
