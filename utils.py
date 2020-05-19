@@ -90,8 +90,10 @@ def get_map_json():
     return province_map_json,regions_map_json
 
 def group_trentino(df):
-    trentino = df[df["codice_regione"] == 4]
+    trentino = df[df["codice_regione"] >=21]
     trentino = trentino.groupby("data").apply(aggregate_trentino)
+    trentino["codice_regione"] = 4
+    trentino["denominazione_regione"] = "Trentino Alto Adige"
     trentino = trentino.reset_index(drop=True)
     df = df.append(trentino).sort_values(["data","denominazione_regione"])
     df = df.reset_index(drop=True)
@@ -118,6 +120,7 @@ def aggregate_trentino(x):
         "deceduti":"sum",
         "totale_casi":"sum",
         "tamponi":"sum",
+        "casi_testati":"sum",
 
         }
     )
@@ -145,7 +148,7 @@ def get_dataset(current_date: datetime.date):
 
     check_ds_istat()
 
-    #df_regioni = group_trentino(df_regioni)
+    df_regioni = group_trentino(df_regioni)
 
     conversioni_province, conversioni_regioni = read_conversion_tables()
     
